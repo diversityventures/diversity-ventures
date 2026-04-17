@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- LIVE TICKER BAR -->
+<div class="ticker-bar">
+  <div class="ticker-track" id="tickerTrack">
+    {% for coin in market_data %}
+    <div class="ticker-item">
+      <img src="{{ coin.logo }}" alt="{{ coin.short }}">
+      <span class="ticker-pair">{{ coin.pair }}</span>
+      <span class="ticker-price">{{ coin.price }}</span>
+      <span class="ticker-change {{ coin.direction }}">{{ coin.change }}</span>
+    </div>
+    {% endfor %}
+    {% for coin in market_data %}
+    <div class="ticker-item">
+      <img src="{{ coin.logo }}" alt="{{ coin.short }}">
+      <span class="ticker-pair">{{ coin.pair }}</span>
+      <span class="ticker-price">{{ coin.price }}</span>
+      <span class="ticker-change {{ coin.direction }}">{{ coin.change }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="market-hero">
+  <div class="market-hero-inner">
+
+    <div class="market-hero-left">
+      <span class="tag">Professional Digital Asset Platform</span>
+      <h1>Trade, Earn & Invest<br>with <span>Diversity Ventures</span></h1>
+      <p>
+        A premium ecosystem for investors, affiliate partners, futures traders and
+        digital asset participants. Access professional services, live market insight,
+        VIP products, and structured account onboarding in one place.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="{% if session.get('user_id') %}/dashboard{% else %}/register{% endif %}" class="btn gold">
+          Open Dashboard
+        </a>
+        <a href="/free-signals" class="btn dark">
+          Free Signals
+        </a>
+      </div>
+
+      <div class="mini-stats">
+        <div class="mini-stat">
+          <span>VIP Futures</span>
+          <strong>3–9 Signals Daily</strong>
+        </div>
+        <div class="mini-stat">
+          <span>Affiliate Access</span>
+          <strong>Invite-Based Earning</strong>
+        </div>
+        <div class="mini-stat">
+          <span>Trading Bots</span>
+          <strong>Private Onboarding</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE MARKET PANEL -->
+    <div class="market-hero-right">
+      <div class="home-market-panel">
+        <div class="panel-head">
+          <div>
+            <h3>Live Markets</h3>
+            <p>Powered by Binance · Updates every 30s</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="live-dot-badge">
+              <span class="live-pulse"></span> LIVE
+            </span>
+            <span class="panel-badge" id="countdown">30s</span>
+          </div>
+        </div>
+
+        <!-- TABLE HEADER -->
+        <div class="market-table-head">
+          <span>Pair</span>
+          <span>Price</span>
+          <span>24h Change</span>
+          <span>24h Volume</span>
+        </div>
+
+        <!-- MARKET ROWS -->
+        <div class="market-list" id="marketList">
+          {% for coin in market_data %}
+          <div class="market-row" data-symbol="{{ coin.short }}USDT">
+            <div class="market-coin">
+              <img src="{{ coin.logo }}" alt="{{ coin.short }}" onerror="this.src='https://via.placeholder.com/30'">
+              <div>
+                <strong>{{ coin.pair }}</strong>
+                <span>{{ coin.name }}</span>
+              </div>
+            </div>
+            <div class="market-data">
+              <strong class="m-price">{{ coin.price }}</strong>
+            </div>
+            <div class="market-data">
+              <span class="market-volume {{ coin.direction }} m-change">{{ coin.change }}</span>
+            </div>
+            <div class="market-data">
+              <span class="market-vol-label m-volume">{{ coin.volume }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="panel-footer">
+          <span id="lastUpdated">Last updated just now</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EARN ECOSYSTEM -->
+<section class="content-section">
+  <div class="section-header">
+    <span class="tag">Earn Ecosystem</span>
+    <h2>Multiple Ways to Participate</h2>
+    <p>Professional opportunities for investors, community leaders, traders and bot users.</p>
+  </div>
+
+  <div class="section-grid three">
+    <div class="info-card premium-home-card">
+      <div class="home-card-icon">💼</div>
+      <h3>Diversity Investment Programme</h3>
+      <p>Structured account-based onboarding for users who want a premium investment access flow with transparent review.</p>
+      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="inline-link">Open Access →</a>
+    </div>
+    <div class="info-card premium-home-card">
+      <div class="home-card-icon">🤝</div>
+      <h3>Affiliate Programmes</h3>
+      <p>Earn by connecting serious investors and qualified users from trusted digital communities and networks.</p>
+      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="inline-link">Start Earning →</a>
+    </div>
+    <div class="info-card premium-home-card">
+      <div class="home-card-icon">👑</div>
+      <h3>VIP Daily Futures Signals</h3>
+      <p>High-quality futures signal access with disciplined structure, premium market updates, and expert analysis.</p>
+      <a href="{% if session.get('user_id') %}/vip-futures{% else %}/login{% endif %}" class="inline-link">View VIP →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="content-section">
+  <div class="section-header">
+    <span class="tag">Products</span>
+    <h2>Professional Trading Access</h2>
+    <p>Built to look and feel like a serious modern exchange and investment platform.</p>
+  </div>
+
+  <div class="section-grid three">
+    <div class="info-card premium-home-card">
+      <div class="home-card-icon">📈</div>
+      <h3>Free Futures Pairs Trading Signals</h3>
+      <p>Community-facing signals for users who want to follow live market ideas and learn futures trading.</p>
+      <a href="/free-signals" class="inline-link">Explore Free Signals →</a>
+    </div>
+    <div class="info-card premium-home-card">
+      <div class="home-card-icon">🤖</div>
+      <h3>Trading Bots</h3>
+      <p>Private onboarding flow for users who want a bot-based execution environment with structured support.</p>
+      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="inline-link">Request Access →</a>
+    </div>
+    <div class="info-card premium-home-card">
+      <div class="home-card-icon">💱</div>
+      <h3>Buy / Exchange Crypto</h3>
+      <p>Access account-based crypto conversion and guided purchase flow inside the platform ecosystem.</p>
+      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="inline-link">Open Exchange →</a>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY STRIP -->
+<section class="content-section">
+  <div class="home-wide-panel">
+    <div>
+      <span class="tag">Community & Learning</span>
+      <h2>Learn, Interact & Grow with the Ecosystem</h2>
+      <p>
+        Explore future trading education, join the official Diversity Ventures Telegram community,
+        and access customer support from a professional client experience.
+      </p>
+    </div>
+    <div class="home-wide-actions">
+      <a href="/vip-futures" class="btn dark">Learn Future Trading</a>
+      <a href="/community" class="btn dark">Telegram Community</a>
+      <a href="/contact" class="btn gold">Customer Support</a>
+    </div>
+  </div>
+</section>
+
+<!-- AUTO-REFRESH SCRIPT -->
+<script>
+const COINS = [
+    { symbol: "BTCUSDT",  name: "Bitcoin",  short: "BTC",  logo: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
+    { symbol: "ETHUSDT",  name: "Ethereum", short: "ETH",  logo: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
+    { symbol: "SOLUSDT",  name: "Solana",   short: "SOL",  logo: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
+    { symbol: "BNBUSDT",  name: "BNB",      short: "BNB",  logo: "https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png" },
+    { symbol: "XRPUSDT",  name: "XRP",      short: "XRP",  logo: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
+    { symbol: "ADAUSDT",  name: "Cardano",  short: "ADA",  logo: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
+    { symbol: "DOGEUSDT", name: "Dogecoin", short: "DOGE", logo: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
+];
+
+  let countdownVal = 30;
+  const countdownEl = document.getElementById("countdown");
+  const lastUpdatedEl = document.getElementById("lastUpdated");
+
+  function formatVolume(v) {
+    if (v >= 1e9) return "$" + (v / 1e9).toFixed(2) + "B";
+    if (v >= 1e6) return "$" + (v / 1e6).toFixed(2) + "M";
+    return "$" + v.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function formatPrice(p) {
+    if (p < 0.01) return "$" + p.toFixed(6);
+    if (p < 1)    return "$" + p.toFixed(4);
+    return "$" + p.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  async function refreshMarket() {
+    try {
+      const symbols = COINS.map(c => `"${c.symbol}"`).join(",");
+      const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols}]`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      data.forEach(item => {
+        const coin = COINS.find(c => c.symbol === item.symbol);
+        if (!coin) return;
+
+        const price   = parseFloat(item.lastPrice);
+        const change  = parseFloat(item.priceChangePercent);
+        const volume  = parseFloat(item.quoteVolume);
+        const dir     = change >= 0 ? "up" : "down";
+        const changeStr = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+
+        const row = document.querySelector(`.market-row[data-symbol="${item.symbol}"]`);
+        if (!row) return;
+
+        const priceEl  = row.querySelector(".m-price");
+        const changeEl = row.querySelector(".m-change");
+        const volEl    = row.querySelector(".m-volume");
+
+        if (priceEl) {
+          priceEl.textContent = formatPrice(price);
+          priceEl.classList.add("flash-update");
+          setTimeout(() => priceEl.classList.remove("flash-update"), 800);
+        }
+
+        if (changeEl) {
+          changeEl.textContent = changeStr;
+          changeEl.className = `market-volume ${dir} m-change`;
+        }
+
+        if (volEl) volEl.textContent = formatVolume(volume);
+      });
+
+      const now = new Date();
+      lastUpdatedEl.textContent = `Last updated ${now.toLocaleTimeString()}`;
+
+    } catch (e) {
+      console.warn("Market refresh failed:", e);
+    }
+  }
+
+  // COUNTDOWN TIMER
+  function startCountdown() {
+    countdownVal = 30;
+    const timer = setInterval(() => {
+      countdownVal--;
+      if (countdownEl) countdownEl.textContent = countdownVal + "s";
+      if (countdownVal <= 0) {
+        clearInterval(timer);
+        refreshMarket();
+        startCountdown();
+      }
+    }, 1000);
+  }
+
+  // START
+  startCountdown();
+</script>
+
+{% endblock %}

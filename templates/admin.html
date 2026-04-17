@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag">Admin</span>
+    <h1>Submission Review Center</h1>
+    <p>Review all client submissions, inspect payment proof, update statuses, and leave admin notes.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="section-grid three">
+    <div class="info-card summary-card">
+      <h3>{{ t('submissions') }}</h3>
+      <p>{{ submissions|length }}</p>
+    </div>
+
+    <div class="info-card summary-card">
+      <h3>{{ t('approved') }}</h3>
+      <p>{{ submissions|selectattr('status', 'equalto', 'Approved')|list|length }}</p>
+    </div>
+
+    <div class="info-card summary-card">
+      <h3>{{ t('pending_review') }}</h3>
+      <p>{{ submissions|selectattr('status', 'equalto', 'Pending Review')|list|length }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="contact-box">
+    <h2>{{ t('your_submissions') }}</h2>
+
+    {% if submissions %}
+      <div class="admin-grid">
+        {% for submission in submissions %}
+          <div class="admin-card polished-card">
+            <div class="card-top">
+              <div>
+                <h3>{{ submission.plan_name }}</h3>
+                <p class="subtle-line">{{ user_map[submission.user_id].full_name }} · {{ user_map[submission.user_id].email }}</p>
+              </div>
+
+              {% if submission.status == 'Pending Review' %}
+                <span class="status-badge status-pending">{{ t('pending_review') }}</span>
+              {% elif submission.status == 'Approved' %}
+                <span class="status-badge status-approved">{{ t('approved') }}</span>
+              {% elif submission.status == 'Rejected' %}
+                <span class="status-badge status-rejected">{{ t('rejected') }}</span>
+              {% else %}
+                <span class="status-badge status-pending">{{ submission.status }}</span>
+              {% endif %}
+            </div>
+
+            <div class="detail-list">
+              <p><strong>{{ t('payment_method') }}:</strong> {{ submission.payment_method }}</p>
+              <p><strong>{{ t('reference') }}:</strong> {{ submission.transaction_ref or '—' }}</p>
+              <p><strong>{{ t('notes') }}:</strong> {{ submission.notes or t('no_notes_provided') }}</p>
+              <p><strong>{{ t('admin_update') }}:</strong> {{ submission.admin_note or t('no_admin_note') }}</p>
+            </div>
+
+            {% if submission.proof_filename %}
+              <div class="proof-box">
+                <div class="wallet-label">{{ t('payment_proof') }}</div>
+                <img
+                  src="{{ url_for('static', filename='uploads/' + submission.proof_filename) }}"
+                  alt="Proof"
+                  class="proof-image"
+                >
+              </div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('admin_update', submission_id=submission.id) }}" class="admin-form">
+              <div class="form-group">
+                <label>{{ t('account_status') }}</label>
+                <select name="status" required>
+                  <option value="Pending Review" {% if submission.status == 'Pending Review' %}selected{% endif %}>
+                    {{ t('pending_review') }}
+                  </option>
+                  <option value="Approved" {% if submission.status == 'Approved' %}selected{% endif %}>
+                    {{ t('approved') }}
+                  </option>
+                  <option value="Rejected" {% if submission.status == 'Rejected' %}selected{% endif %}>
+                    {{ t('rejected') }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>{{ t('admin_update') }}</label>
+                <textarea name="admin_note" placeholder="Write admin note here...">{{ submission.admin_note or '' }}</textarea>
+              </div>
+
+              <button type="submit" class="btn gold">{{ t('save_changes') }}</button>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="margin-top: 20px; color: #cbd5e1;">No submissions found.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

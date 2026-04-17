@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag">{{ t('portal') }}</span>
+    <h1>{{ t('portal_title') }}</h1>
+    <p>{{ t('portal_subtitle') }}</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="form-box">
+    <form method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label>{{ t('package') }}</label>
+        <select name="plan_name" required>
+          <option value="VIP Futures">VIP Futures</option>
+          <option value="VIP Futures Pro">VIP Futures Pro</option>
+          <option value="Private Partnership">Private Partnership</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>{{ t('payment_method') }}</label>
+        <select name="payment_method" id="payment_method" required onchange="updatePaymentInstructions()">
+          <option value="USDT">USDT</option>
+          <option value="BTC">BTC</option>
+          <option value="SOL">SOL</option>
+          <option value="USDC">USDC</option>
+          <option value="Local Currency">Local Currency</option>
+        </select>
+      </div>
+
+      <div id="payment-instructions" class="payment-box">
+        <h3>Crypto Payment Instructions</h3>
+        <p><strong>USDT Payment Selected</strong></p>
+        <p>Send your payment to the wallet below, then upload proof and enter your transaction reference.</p>
+
+        <div class="wallet-box">
+          <div class="wallet-label">USDT Wallet Address</div>
+          <div class="wallet-address" id="wallet-address">YOUR_USDT_WALLET_ADDRESS_HERE</div>
+          <button type="button" class="copy-btn" onclick="copyWalletAddress()">Copy Address</button>
+          <div id="copy-message" class="copy-message"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>{{ t('transaction_ref') }}</label>
+        <input type="text" name="transaction_ref" placeholder="{{ t('transaction_ref') }}">
+      </div>
+
+      <div class="form-group">
+        <label>{{ t('upload_proof') }}</label>
+        <input type="file" name="proof_file" id="proof_file" accept="image/*" onchange="previewProof(event)">
+      </div>
+
+      <div id="proof-preview-box" class="proof-preview-box" style="display: none;">
+        <div class="wallet-label">Proof Preview</div>
+        <img id="proof-preview" class="proof-preview" alt="Proof Preview">
+      </div>
+
+      <div class="form-group">
+        <label>{{ t('notes') }}</label>
+        <textarea name="notes" placeholder="{{ t('notes') }}"></textarea>
+      </div>
+
+      <button type="submit" class="btn gold">{{ t('submit_review') }}</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

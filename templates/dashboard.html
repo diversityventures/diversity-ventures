@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="content-section" style="padding-top:40px;">
+  <div class="dash-welcome">
+    <div>
+      <h1 class="dash-title">{{ t('dashboard_title') }}</h1>
+      <p class="dash-sub">Welcome back, <strong>{{ session.get('user_name') }}</strong></p>
+    </div>
+    <a href="{{ url_for('portal') }}" class="btn gold">
+      <i class="fa-solid fa-plus"></i> {{ t('new_submission') }}
+    </a>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="section-grid four">
+    <div class="info-card summary-card">
+      <div class="summary-icon"><i class="fa-solid fa-user"></i></div>
+      <div class="summary-label">{{ t('client') }}</div>
+      <div class="summary-value">{{ session.get('user_name') }}</div>
+    </div>
+    <div class="info-card summary-card">
+      <div class="summary-icon"><i class="fa-solid fa-envelope"></i></div>
+      <div class="summary-label">Email</div>
+      <div class="summary-value small">{{ session.get('user_email') }}</div>
+    </div>
+    <div class="info-card summary-card">
+      <div class="summary-icon"><i class="fa-solid fa-folder-open"></i></div>
+      <div class="summary-label">{{ t('submissions') }}</div>
+      <div class="summary-value">{{ submissions|length }}</div>
+    </div>
+    <div class="info-card summary-card">
+      <div class="summary-icon green"><i class="fa-solid fa-circle-check"></i></div>
+      <div class="summary-label">{{ t('account_status') }}</div>
+      <div class="summary-value green">{{ t('verified_access') }}</div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="dash-quick-actions">
+    <a href="{{ url_for('portal') }}" class="quick-action-btn">
+      <i class="fa-solid fa-wallet"></i>
+      <span>Client Portal</span>
+    </a>
+    <a href="{{ url_for('free_signals') }}" class="quick-action-btn">
+      <i class="fa-solid fa-bolt"></i>
+      <span>Free Signals</span>
+    </a>
+    <a href="{{ url_for('packages') }}" class="quick-action-btn">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>Packages</span>
+    </a>
+    <a href="{{ url_for('community') }}" class="quick-action-btn">
+      <i class="fa-brands fa-telegram"></i>
+      <span>Community</span>
+    </a>
+    <a href="{{ url_for('profile') }}" class="quick-action-btn">
+      <i class="fa-solid fa-user-gear"></i>
+      <span>Profile</span>
+    </a>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="dash-section-title">{{ t('your_submissions') }}</div>
+
+  {% if submissions %}
+    <div class="submissions-list">
+      {% for submission in submissions %}
+      <div class="submission-card polished-card">
+        <div class="card-top">
+          <div>
+            <div class="submission-plan">{{ submission.plan_name }}</div>
+            <div class="subtle-line">{{ submission.payment_method }}</div>
+          </div>
+          {% if submission.status == 'Pending Review' %}
+            <span class="status-badge status-pending">{{ t('pending_review') }}</span>
+          {% elif submission.status == 'Approved' %}
+            <span class="status-badge status-approved">{{ t('approved') }}</span>
+          {% elif submission.status == 'Rejected' %}
+            <span class="status-badge status-rejected">{{ t('rejected') }}</span>
+          {% else %}
+            <span class="status-badge status-pending">{{ submission.status }}</span>
+          {% endif %}
+        </div>
+
+        <div class="detail-list">
+          <div class="detail-row"><span class="detail-label">{{ t('reference') }}</span><span class="detail-val">{{ submission.transaction_ref or '—' }}</span></div>
+          <div class="detail-row"><span class="detail-label">{{ t('notes') }}</span><span class="detail-val">{{ submission.notes or t('no_notes_provided') }}</span></div>
+        </div>
+
+        <div class="admin-note-box">
+          <div class="wallet-label">{{ t('admin_update') }}</div>
+          <p>{{ submission.admin_note or t('no_admin_note') }}</p>
+        </div>
+
+        {% if submission.proof_filename %}
+        <div class="proof-box">
+          <div class="wallet-label">{{ t('payment_proof') }}</div>
+          <img src="{{ url_for('static', filename='uploads/' + submission.proof_filename) }}" alt="Proof" class="proof-image">
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <i class="fa-solid fa-inbox"></i>
+      <h3>{{ t('no_submissions') }}</h3>
+      <p>Select a package and submit your investment to get started.</p>
+      <a href="{{ url_for('packages') }}" class="btn gold">View Packages</a>
+    </div>
+  {% endif %}
+</section>
+
+{% endblock %}

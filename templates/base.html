@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+  <meta charset="UTF-8">
+  <title>Diversity Ventures</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-container">
+
+    <a href="/" class="logo">
+      <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Diversity Ventures Logo" class="nav-logo-img">
+      <span>DIVERSITY VENTURES</span>
+    </a>
+
+    <nav class="nav-links desktop-nav">
+
+      <a href="/" class="nav-item">
+        <i class="fa-solid fa-house"></i>
+        <span>{{ t('home') }}</span>
+      </a>
+
+      <div class="nav-dropdown">
+        <button class="nav-drop-btn">
+          <span>Earn</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="/packages">
+            <i class="fa-solid fa-layer-group"></i> Investment Packages
+          </a>
+<a href="/packages">
+  <i class="fa-solid fa-briefcase"></i> Diversity Investment Programme
+</a>
+          <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}">
+            <i class="fa-solid fa-handshake"></i> Earn by Affiliates Programmes
+          </a>
+          <a href="/free-signals">
+            <i class="fa-solid fa-signal"></i> Free Futures Pairs Trading Signals
+          </a>
+          <a href="{% if session.get('user_id') %}/vip-futures{% else %}/login{% endif %}">
+            <i class="fa-solid fa-crown"></i> VIP Daily Futures Trading Signals
+          </a>
+          <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}">
+            <i class="fa-solid fa-robot"></i> Trading Bots
+          </a>
+        </div>
+      </div>
+
+      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="nav-item">
+        <i class="fa-solid fa-right-left"></i>
+        <span>Buy / Exchange Crypto</span>
+      </a>
+
+      <div class="nav-dropdown">
+        <button class="nav-drop-btn">
+          <span>More</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="/vip-futures">
+            <i class="fa-solid fa-book-open"></i> Learn Future Trading
+          </a>
+          <a href="/community">
+            <i class="fa-brands fa-telegram"></i> Diversity Ventures Telegram Community
+          </a>
+          <a href="/contact">
+            <i class="fa-solid fa-headset"></i> Customer Support
+          </a>
+        </div>
+      </div>
+
+      {% if session.get('user_id') %}
+        <a href="/dashboard" class="nav-item">
+          <i class="fa-solid fa-gauge"></i> {{ t('dashboard') }}
+        </a>
+        <a href="/investment-portal" class="nav-item">
+          <i class="fa-solid fa-chart-pie"></i> Investor Portal
+        </a>
+        <a href="/profile" class="nav-item">
+          <i class="fa-solid fa-user-gear"></i> {{ t('profile') }}
+        </a>
+        <a href="/portal" class="nav-item">
+          <i class="fa-solid fa-wallet"></i> {{ t('portal') }}
+        </a>
+        {% if session.get('is_admin') %}
+          <a href="/admin" class="nav-item">
+            <i class="fa-solid fa-user-shield"></i> Admin
+          </a>
+        {% endif %}
+        <a href="/logout" class="nav-item nav-outline">
+          <i class="fa-solid fa-right-from-bracket"></i> {{ t('logout') }}
+        </a>
+      {% else %}
+        <a href="/login" class="nav-item">
+          <i class="fa-solid fa-right-to-bracket"></i> {{ t('login') }}
+        </a>
+        <a href="/register" class="nav-item nav-gold">
+          <i class="fa-solid fa-user-plus"></i> {{ t('register') }}
+        </a>
+      {% endif %}
+
+      <!-- LANGUAGE GLOBE DROPDOWN -->
+      <div class="nav-dropdown lang-dropdown">
+        <button class="nav-drop-btn">
+          <i class="fa-solid fa-earth-africa"></i>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="nav-drop-menu lang-menu">
+          <a href="/set-language/en">
+            <span class="lang-flag">🇬🇧</span> English
+            {% if current_lang == 'en' %}<i class="fa-solid fa-check lang-check"></i>{% endif %}
+          </a>
+          <a href="/set-language/pt">
+            <span class="lang-flag">🇲🇿</span> Portuguese
+            {% if current_lang == 'pt' %}<i class="fa-solid fa-check lang-check"></i>{% endif %}
+          </a>
+          <a href="/set-language/de">
+            <span class="lang-flag">🇩🇪</span> German
+            {% if current_lang == 'de' %}<i class="fa-solid fa-check lang-check"></i>{% endif %}
+          </a>
+        </div>
+      </div>
+
+    </nav>
+
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileMenu" class="mobile-menu">
+    <a href="/"><i class="fa-solid fa-house"></i> {{ t('home') }}</a>
+<a href="/packages"><i class="fa-solid fa-briefcase"></i> Diversity Investment Programme</a>
+    <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}"><i class="fa-solid fa-handshake"></i> Earn by Affiliates Programmes</a>
+    <a href="/free-signals"><i class="fa-solid fa-signal"></i> Free Futures Pairs Trading Signals</a>
+    <a href="{% if session.get('user_id') %}/vip-futures{% else %}/login{% endif %}"><i class="fa-solid fa-crown"></i> VIP Daily Futures Trading Signals</a>
+    <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}"><i class="fa-solid fa-robot"></i> Trading Bots</a>
+    <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}"><i class="fa-solid fa-right-left"></i> Buy / Exchange Crypto</a>
+    <a href="/vip-futures"><i class="fa-solid fa-book-open"></i> Learn Future Trading</a>
+    <a href="/community"><i class="fa-brands fa-telegram"></i> Diversity Ventures Telegram Community</a>
+    <a href="/contact"><i class="fa-solid fa-headset"></i> Customer Support</a>
+
+    {% if session.get('user_id') %}
+      <a href="/dashboard"><i class="fa-solid fa-gauge"></i> {{ t('dashboard') }}</a>
+      <a href="/investment-portal"><i class="fa-solid fa-chart-pie"></i> Investor Portal</a>
+      <a href="/profile"><i class="fa-solid fa-user-gear"></i> {{ t('profile') }}</a>
+      <a href="/portal"><i class="fa-solid fa-wallet"></i> {{ t('portal') }}</a>
+      {% if session.get('is_admin') %}
+        <a href="/admin"><i class="fa-solid fa-user-shield"></i> Admin</a>
+      {% endif %}
+      <a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> {{ t('logout') }}</a>
+    {% else %}
+      <a href="/login"><i class="fa-solid fa-right-to-bracket"></i> {{ t('login') }}</a>
+      <a href="/register"><i class="fa-solid fa-user-plus"></i> {{ t('register') }}</a>
+    {% endif %}
+
+    <div class="mobile-lang-block">
+      <a href="/set-language/en">🇬🇧 EN</a>
+      <a href="/set-language/pt">🇲🇿 PT</a>
+      <a href="/set-language/de">🇩🇪 DE</a>
+    </div>
+  </div>
+</header>
+
+<!-- FLASH MESSAGES -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-container">
+      {% for message in messages %}
+        <div class="flash-message">
+          <i class="fa-solid fa-circle-info"></i> {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- MAIN CONTENT -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <div class="footer-logo">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Diversity Ventures" class="footer-logo-img">
+        <span>DIVERSITY VENTURES</span>
+      </div>
+      <p>
+        A premium digital ecosystem for investment access, futures trading services,
+        affiliate opportunities, trading bots, and structured client onboarding.
+      </p>
+    </div>
+    <div class="footer-section">
+      <h4>Platform</h4>
+      <a href="/">{{ t('home') }}</a>
+      <a href="/dashboard">{{ t('dashboard') }}</a>
+      <a href="/portal">{{ t('portal') }}</a>
+      <a href="/free-signals">{{ t('free_signals') }}</a>
+      <a href="/community">{{ t('community') }}</a>
+    </div>
+    <div class="footer-section">
+      <h4>{{ t('contact') }}</h4>
+      <p>Email: support@diversityventures.com</p>
+      <p>Telegram: @agent_rogermanuel</p>
+      <br>
+      <a href="/contact">{{ t('contact_title') }}</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 Diversity Ventures. All rights reserved. &nbsp;·&nbsp; Trading involves risk.
+  </div>
+</footer>
+
+<!-- GLOBAL JS -->
+<script>
+  const i18n = {
+    resend: "{{ t('resend_code') }}",
+    resend_in: {
+      en: "Resend in",
+      pt: "Reenviar em",
+      de: "Erneut senden in"
+    },
+    resend_available: {
+      en: "You can resend now",
+      pt: "Ja pode reenviar",
+      de: "Sie konnen jetzt erneut senden"
+    }
+  };
+
+  const currentLang = "{{ session.get('lang', 'en') }}";
+
+  function startCooldown(linkId, timerId, seconds) {
+    const link = document.getElementById(linkId);
+    const timer = document.getElementById(timerId);
+    if (!link) return;
+
+    let remaining = seconds;
+    link.style.pointerEvents = "none";
+    link.classList.add("disabled-link");
+
+    const updateText = () => {
+      link.textContent = `${i18n.resend_in[currentLang]} ${remaining}s`;
+      if (timer) timer.textContent = `${i18n.resend_in[currentLang]} ${remaining}s`;
+    };
+
+    updateText();
+
+    const interval = setInterval(() => {
+      remaining--;
+      updateText();
+      if (remaining <= 0) {
+        clearInterval(interval);
+        link.textContent = i18n.resend;
+        if (timer) timer.textContent = i18n.resend_available[currentLang];
+        link.style.pointerEvents = "auto";
+        link.classList.remove("disabled-link");
+      }
+    }, 1000);
+  }
+
+  function toggleMobileMenu() {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) menu.classList.toggle("show-mobile-menu");
+  }
+</script>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

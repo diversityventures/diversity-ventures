@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="content-section" style="padding-top:40px;">
+  <div class="dash-welcome">
+    <div>
+      <h1 class="dash-title">Investor Portal</h1>
+      <p class="dash-sub">Welcome, <strong>{{ session.get('user_name') }}</strong> &mdash; Your active investments at a glance</p>
+    </div>
+    <a href="{{ url_for('packages') }}" class="btn gold">
+      <i class="fa-solid fa-plus"></i> New Investment
+    </a>
+  </div>
+</section>
+
+{% if submissions %}
+
+<!-- ACTIVE INVESTMENTS -->
+<section class="content-section">
+  <div class="ip-section-title">
+    <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
+    Active Investments
+  </div>
+
+  {% for sub in submissions %}
+  <div class="ip-card">
+
+    <!-- TOP ROW -->
+    <div class="ip-card-top">
+      <div class="ip-plan-info">
+        <div class="ip-plan-badge">
+          {% if 'Gold' in sub.plan_name %}
+            <span class="pkg-tier gold-tier">GOLD</span>
+          {% elif 'VIP' in sub.plan_name %}
+            <span class="pkg-tier vip-tier">VIP</span>
+          {% else %}
+            <span class="pkg-tier basic-tier">BASIC</span>
+          {% endif %}
+        </div>
+        <div>
+          <div class="ip-plan-name">{{ sub.plan_name }}</div>
+          <div class="ip-plan-method">via {{ sub.payment_method }}</div>
+        </div>
+      </div>
+      <span class="status-badge status-approved">
+        <i class="fa-solid fa-circle-check"></i> Active
+      </span>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="ip-stats-grid">
+      <div class="ip-stat">
+        <div class="ip-stat-label">Payment Method</div>
+        <div class="ip-stat-val">{{ sub.payment_method }}</div>
+      </div>
+      <div class="ip-stat">
+        <div class="ip-stat-label">Reference</div>
+        <div class="ip-stat-val">{{ sub.transaction_ref or '—' }}</div>
+      </div>
+      <div class="ip-stat">
+        <div class="ip-stat-label">Status</div>
+        <div class="ip-stat-val green">Approved & Active</div>
+      </div>
+      <div class="ip-stat">
+        <div class="ip-stat-label">Admin Note</div>
+        <div class="ip-stat-val">{{ sub.admin_note or '—' }}</div>
+      </div>
+    </div>
+
+    <!-- PROFIT PROJECTION -->
+    <div class="ip-profit-section">
+      <div class="ip-profit-header">
+        <i class="fa-solid fa-chart-line"></i> Investment Summary
+      </div>
+      <div class="ip-profit-grid">
+        <div class="ip-profit-box invest">
+          <div class="ip-profit-label">Plan Selected</div>
+          <div class="ip-profit-val">{{ sub.plan_name }}</div>
+        </div>
+        <div class="ip-profit-box profit">
+          <div class="ip-profit-label">Expected Return</div>
+          <div class="ip-profit-val green">
+            {% if 'Gold' in sub.plan_name %}
+              Based on Gold tier
+            {% elif 'VIP' in sub.plan_name %}
+              Based on VIP tier
+            {% else %}
+              Based on Basic tier
+            {% endif %}
+          </div>
+        </div>
+        <div class="ip-profit-box roi">
+          <div class="ip-profit-label">ROI Rate</div>
+          <div class="ip-profit-val gold">~250–350%</div>
+        </div>
+        <div class="ip-profit-box time">
+          <div class="ip-profit-label">Payout Schedule</div>
+          <div class="ip-profit-val">Per agreed terms</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="ip-progress-section">
+      <div class="ip-progress-label">
+        <span>Investment Progress</span>
+        <span class="ip-progress-status">Active &mdash; Admin managing</span>
+      </div>
+      <div class="ip-progress-bar-wrap">
+        <div class="ip-progress-bar" style="width:60%"></div>
+      </div>
+      <div class="ip-progress-steps">
+        <div class="ip-step done"><i class="fa-solid fa-check"></i> Submitted</div>
+        <div class="ip-step done"><i class="fa-solid fa-check"></i> Verified</div>
+        <div class="ip-step done"><i class="fa-solid fa-check"></i> Approved</div>
+        <div class="ip-step active"><i class="fa-solid fa-spinner fa-spin"></i> In Progress</div>
+        <div class="ip-step pending"><i class="fa-solid fa-clock"></i> Payout</div>
+      </div>
+    </div>
+
+    <!-- PROOF -->
+    {% if sub.proof_filename %}
+    <div class="ip-proof-section">
+      <div class="ip-proof-label">Payment Proof</div>
+      <img src="{{ url_for('static', filename='uploads/' + sub.proof_filename) }}" alt="Proof" class="proof-image">
+    </div>
+    {% endif %}
+
+    <!-- CONTACT SUPPORT -->
+    <div class="ip-support-bar">
+      <i class="fa-brands fa-telegram" style="color:var(--blue)"></i>
+      <span>For payout inquiries contact your agent:</span>
+      <strong style="color:var(--gold)">@agent_rogermanuel</strong>
+    </div>
+
+  </div>
+  {% endfor %}
+</section>
+
+{% else %}
+
+<!-- NO ACTIVE INVESTMENTS -->
+<section class="content-section">
+  <div class="ip-empty">
+    <div class="ip-empty-icon"><i class="fa-solid fa-chart-pie"></i></div>
+    <h2>No Active Investments Yet</h2>
+    <p>Your investment portal will display your active plans here once your payment has been approved by our admin team.</p>
+
+    {% if all_submissions %}
+    <div class="ip-pending-notice">
+      <i class="fa-solid fa-hourglass-half"></i>
+      You have <strong>{{ all_submissions|length }}</strong> submission(s) pending admin review.
+      You will see your investor dashboard here once approved.
+    </div>
+    {% endif %}
+
+    <div class="ip-empty-actions">
+      <a href="{{ url_for('packages') }}" class="btn gold">
+        <i class="fa-solid fa-layer-group"></i> View Investment Packages
+      </a>
+      <a href="{{ url_for('dashboard') }}" class="btn dark">
+        <i class="fa-solid fa-gauge"></i> Back to Dashboard
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endif %}
+
+<!-- QUICK ACTIONS -->
+<section class="content-section">
+  <div class="ip-quick-grid">
+    <a href="{{ url_for('packages') }}" class="ip-quick-btn">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>Investment Packages</span>
+    </a>
+    <a href="{{ url_for('portal') }}" class="ip-quick-btn">
+      <i class="fa-solid fa-wallet"></i>
+      <span>Client Portal</span>
+    </a>
+    <a href="{{ url_for('free_signals') }}" class="ip-quick-btn">
+      <i class="fa-solid fa-bolt"></i>
+      <span>Free Signals</span>
+    </a>
+    <a href="{{ url_for('community') }}" class="ip-quick-btn">
+      <i class="fa-brands fa-telegram"></i>
+      <span>Community</span>
+    </a>
+    <a href="{{ url_for('results') }}" class="ip-quick-btn">
+      <i class="fa-solid fa-chart-bar"></i>
+      <span>Results</span>
+    </a>
+  </div>
+</section>
+
+{% endblock %}

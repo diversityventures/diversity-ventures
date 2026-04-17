@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag">{{ t('contact') }}</span>
+    <h1>{{ t('contact_title') }}</h1>
+    <p>{{ t('contact_subtitle') }}</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="contact-box">
+    <h2>{{ t('contact_channels') }}</h2>
+    <p><strong>Telegram Community:</strong> <a href="https://t.me/+ANky3Lzpq-A0ZDQ0" target="_blank" class="inline-link">Open Telegram</a></p>
+    <p><strong>{{ t('local_currency_help') }}:</strong> @agent_rogermanuel</p>
+    <p><strong>{{ t('support_email') }}:</strong> support@diversityventures.com</p>
+  </div>
+</section>
+{% endblock %}

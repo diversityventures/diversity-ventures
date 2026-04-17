@@ -1,0 +1,360 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag">Diversity Investment Programme</span>
+    <h1>Choose Your Country & Plan</h1>
+    <p>Select your country to see investment packages in your local currency. All plans also support USD crypto payments. Subject to manual review and admin confirmation.</p>
+  </div>
+</section>
+
+<!-- STEP 1: COUNTRY -->
+<section class="content-section" id="countrySection">
+  <div class="step-label">Step 1 — Select Your Country</div>
+  <div class="country-grid">
+    <button class="country-btn" onclick="selectCountry('mz')"><span class="country-flag">🇲🇿</span><span class="country-name">Mozambique</span><span class="country-currency">MZN</span></button>
+    <button class="country-btn" onclick="selectCountry('zm')"><span class="country-flag">🇿🇲</span><span class="country-name">Zambia</span><span class="country-currency">ZMW</span></button>
+    <button class="country-btn" onclick="selectCountry('za')"><span class="country-flag">🇿🇦</span><span class="country-name">South Africa</span><span class="country-currency">ZAR</span></button>
+    <button class="country-btn" onclick="selectCountry('ao')"><span class="country-flag">🇦🇴</span><span class="country-name">Angola</span><span class="country-currency">AOA</span></button>
+    <button class="country-btn" onclick="selectCountry('br')"><span class="country-flag">🇧🇷</span><span class="country-name">Brazil</span><span class="country-currency">BRL</span></button>
+    <button class="country-btn" onclick="selectCountry('ug')"><span class="country-flag">🇺🇬</span><span class="country-name">Uganda</span><span class="country-currency">UGX</span></button>
+    <button class="country-btn" onclick="selectCountry('other')"><span class="country-flag">🌍</span><span class="country-name">Others</span><span class="country-currency">USD / USDT</span></button>
+  </div>
+</section>
+
+<!-- STEP 2: PLANS -->
+<div id="plansSection" style="display:none;">
+
+  <section class="content-section">
+    <div class="selected-country-bar">
+      <div class="selected-country-info">
+        <span id="selectedFlag" class="selected-flag"></span>
+        <div>
+          <div class="selected-country-name" id="selectedCountryName"></div>
+          <div class="selected-country-sub">Choose your investment plan below</div>
+        </div>
+      </div>
+      <button class="change-country-btn" onclick="changeCountry()">
+        <i class="fa-solid fa-arrow-left"></i> Change Country
+      </button>
+    </div>
+  </section>
+
+  <section class="content-section" id="currencyToggleSection">
+    <div class="currency-toggle-wrap">
+      <button class="currency-btn active" id="btnLocal" onclick="showCurrency('local')"><span id="localCurrencyLabel">🇲🇿 Local Currency</span></button>
+      <button class="currency-btn" id="btnCrypto" onclick="showCurrency('crypto')">🌍 USD / USDT (Crypto)</button>
+    </div>
+  </section>
+
+  <!-- LOCAL PLANS -->
+  <div id="localPlans">
+
+    <!-- MOZAMBIQUE -->
+    <div class="country-plans" id="plans-mz">
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge basic">💼 Basic Plan — MZN</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>12,650 MZN</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">56,925 MZN</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review process</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Local agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Most Popular</div><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>19,200 MZN</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">86,400 MZN</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review process</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Local agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>32,600 MZN</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">146,700 MZN</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review process</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Local agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge vip">💎 VIP Plan — MZN</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>50,600 MZN</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">227,700 MZN</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Best Value</div><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>63,250 MZN</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">284,625 MZN</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>88,550 MZN</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">398,475 MZN</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge gold-tier-badge">🥇 Gold Plan — MZN</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>126,500 MZN</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">569,250 MZN</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Top Tier</div><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>151,800 MZN</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">683,100 MZN</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>189,750 MZN</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">853,875 MZN</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ZAMBIA -->
+    <div class="country-plans" id="plans-zm" style="display:none;">
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge basic">💼 Basic Plan — ZMW</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>K 4,700</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">K 21,100</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Most Popular</div><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>K 7,100</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">K 32,000</div><div class="pkg-roi">ROI: 351%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>K 12,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">K 54,300</div><div class="pkg-roi">ROI: 353%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge vip">💎 VIP Plan — ZMW</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>K 18,700</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">K 84,200</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Best Value</div><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>K 23,400</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">K 105,300</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>K 32,800</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">K 147,400</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge gold-tier-badge">🥇 Gold Plan — ZMW</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>K 46,800</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">K 210,600</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Top Tier</div><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>K 56,200</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">K 252,700</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>K 70,200</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">K 315,900</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- SOUTH AFRICA -->
+    <div class="country-plans" id="plans-za" style="display:none;">
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge basic">💼 Basic Plan — ZAR</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>R 3,900</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R 17,600</div><div class="pkg-roi">ROI: 351%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Most Popular</div><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>R 6,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R 26,800</div><div class="pkg-roi">ROI: 347%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>R 10,100</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R 45,500</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge vip">💎 VIP Plan — ZAR</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>R 15,700</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R 70,600</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Best Value</div><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>R 19,600</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R 88,200</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>R 27,500</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R 123,500</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge gold-tier-badge">🥇 Gold Plan — ZAR</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>R 39,200</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R 176,500</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Top Tier</div><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>R 47,100</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R 211,800</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>R 58,800</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R 264,700</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ANGOLA -->
+    <div class="country-plans" id="plans-ao" style="display:none;">
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge basic">💼 Basic Plan — AOA</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>Kz 180,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">Kz 815,000</div><div class="pkg-roi">ROI: 353%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Most Popular</div><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>Kz 275,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">Kz 1,235,000</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>Kz 465,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">Kz 2,100,000</div><div class="pkg-roi">ROI: 352%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge vip">💎 VIP Plan — AOA</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>Kz 725,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">Kz 3,255,000</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Best Value</div><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>Kz 905,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">Kz 4,070,000</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>Kz 1,265,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">Kz 5,700,000</div><div class="pkg-roi">ROI: 351%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge gold-tier-badge">🥇 Gold Plan — AOA</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>Kz 1,810,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">Kz 8,140,000</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Top Tier</div><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>Kz 2,170,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">Kz 9,770,000</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>Kz 2,715,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">Kz 12,210,000</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- BRAZIL -->
+    <div class="country-plans" id="plans-br" style="display:none;">
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge basic">💼 Basic Plan — BRL</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>R$ 1,025</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R$ 4,600</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Most Popular</div><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>R$ 1,550</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R$ 7,000</div><div class="pkg-roi">ROI: 352%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>R$ 2,650</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R$ 11,900</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge vip">💎 VIP Plan — BRL</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>R$ 4,100</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R$ 18,400</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Best Value</div><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>R$ 5,150</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R$ 23,100</div><div class="pkg-roi">ROI: 348%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>R$ 7,200</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R$ 32,300</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge gold-tier-badge">🥇 Gold Plan — BRL</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>R$ 10,250</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R$ 46,000</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Top Tier</div><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>R$ 12,300</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R$ 55,300</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>R$ 15,400</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">R$ 69,200</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- UGANDA -->
+    <div class="country-plans" id="plans-ug" style="display:none;">
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge basic">💼 Basic Plan — UGX</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>USh 700,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">USh 3,150,000</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Most Popular</div><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>USh 1,050,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">USh 4,750,000</div><div class="pkg-roi">ROI: 352%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>USh 1,800,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">USh 8,050,000</div><div class="pkg-roi">ROI: 347%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Manual review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Agent support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge vip">💎 VIP Plan — UGX</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>USh 2,800,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">USh 12,500,000</div><div class="pkg-roi">ROI: 346%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Best Value</div><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>USh 3,500,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">USh 15,650,000</div><div class="pkg-roi">ROI: 347%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>USh 4,900,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">USh 22,000,000</div><div class="pkg-roi">ROI: 349%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard</li><li><i class="fa-solid fa-check"></i> Dedicated support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+      <section class="content-section">
+        <div class="plan-section-header"><span class="plan-tier-badge gold-tier-badge">🥇 Gold Plan — UGX</span></div>
+        <div class="section-grid three">
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>USh 7,000,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">USh 31,500,000</div><div class="pkg-roi">ROI: 350%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Top Tier</div><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>USh 8,400,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">USh 37,900,000</div><div class="pkg-roi">ROI: 351%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+          <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>USh 10,500,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">USh 47,000,000</div><div class="pkg-roi">ROI: 348%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> Elite processing</li><li><i class="fa-solid fa-check"></i> Gold badge</li><li><i class="fa-solid fa-check"></i> Senior support</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Get Started</a><p class="pkg-note">Contact @agent_rogermanuel</p></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- OTHERS -->
+    <div class="country-plans" id="plans-other" style="display:none;">
+      <section class="content-section">
+        <div class="info-card" style="max-width:680px;margin:0 auto;text-align:center;padding:40px 30px;">
+          <div style="font-size:44px;margin-bottom:16px;">🌍</div>
+          <h3 style="font-size:20px;color:var(--text);margin-bottom:12px;">USD / USDT Crypto Plans Available</h3>
+          <p style="color:var(--muted);line-height:1.8;">Your country is not listed for local currency payments. Please switch to the <strong style="color:var(--gold);">USD / USDT (Crypto)</strong> tab above to view and select your investment plan.</p>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <!-- CRYPTO / USD PLANS -->
+  <div id="cryptoPlans" style="display:none;">
+    <section class="content-section">
+      <div class="plan-section-header"><span class="plan-tier-badge basic">💼 Basic Plan — USD</span></div>
+      <div class="section-grid three">
+        <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>$200</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">$800</div><div class="pkg-roi">ROI: 300%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> USDT / BTC / SOL / USDC</li><li><i class="fa-solid fa-check"></i> Manual payment review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Global access</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Invest Now</a><p class="pkg-note">Upload proof on portal after payment</p></div>
+        <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Most Popular</div><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>$300</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">$1,000</div><div class="pkg-roi">ROI: 233%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> USDT / BTC / SOL / USDC</li><li><i class="fa-solid fa-check"></i> Manual payment review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Global access</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Invest Now</a><p class="pkg-note">Upload proof on portal after payment</p></div>
+        <div class="info-card pkg-card"><div class="pkg-tier basic-tier">BASIC</div><div class="pkg-invest">Invest <strong>$500</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">$1,700</div><div class="pkg-roi">ROI: 240%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> USDT / BTC / SOL / USDC</li><li><i class="fa-solid fa-check"></i> Manual payment review</li><li><i class="fa-solid fa-check"></i> Dashboard tracking</li><li><i class="fa-solid fa-check"></i> Global access</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Invest Now</a><p class="pkg-note">Upload proof on portal after payment</p></div>
+      </div>
+    </section>
+    <section class="content-section">
+      <div class="plan-section-header"><span class="plan-tier-badge vip">💎 VIP Plan — USD (1 Month)</span></div>
+      <div class="section-grid two">
+        <div class="info-card pkg-card"><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>$1,500</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">$5,300</div><div class="pkg-roi">ROI: 253%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> 1 Month subscription</li><li><i class="fa-solid fa-check"></i> USDT / BTC / SOL / USDC</li><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard access</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Invest Now</a><p class="pkg-note">Upload proof on portal after payment</p></div>
+        <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Best Value</div><div class="pkg-tier vip-tier">VIP</div><div class="pkg-invest">Invest <strong>$3,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">$10,500</div><div class="pkg-roi">ROI: 250%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> 1 Month subscription</li><li><i class="fa-solid fa-check"></i> USDT / BTC / SOL / USDC</li><li><i class="fa-solid fa-check"></i> Priority review</li><li><i class="fa-solid fa-check"></i> VIP dashboard access</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Invest Now</a><p class="pkg-note">Upload proof on portal after payment</p></div>
+      </div>
+    </section>
+    <section class="content-section">
+      <div class="plan-section-header"><span class="plan-tier-badge gold-tier-badge">🥇 Gold Plan — USD (3 Months)</span></div>
+      <div class="section-grid two">
+        <div class="info-card pkg-card"><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>$5,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">$17,500</div><div class="pkg-roi">ROI: 250%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> 3 Month subscription</li><li><i class="fa-solid fa-check"></i> USDT / BTC / SOL / USDC</li><li><i class="fa-solid fa-check"></i> Elite priority review</li><li><i class="fa-solid fa-check"></i> Gold dashboard badge</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Invest Now</a><p class="pkg-note">Upload proof on portal after payment</p></div>
+        <div class="info-card pkg-card pkg-featured"><div class="pkg-popular-badge">Top Tier</div><div class="pkg-tier gold-tier">GOLD</div><div class="pkg-invest">Invest <strong>$10,000</strong></div><div class="pkg-divider"></div><div class="pkg-earn-label">Expected Return</div><div class="pkg-earn">$35,000</div><div class="pkg-roi">ROI: 250%</div><ul class="pkg-features"><li><i class="fa-solid fa-check"></i> 3 Month subscription</li><li><i class="fa-solid fa-check"></i> USDT / BTC / SOL / USDC</li><li><i class="fa-solid fa-check"></i> Elite priority review</li><li><i class="fa-solid fa-check"></i> Gold dashboard badge</li></ul><a href="{% if session.get('user_id') %}/portal{% else %}/register{% endif %}" class="btn gold pkg-btn">Invest Now</a><p class="pkg-note">Upload proof on portal after payment</p></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- REGISTER/LOGIN PROMPT for guests -->
+  {% if not session.get('user_id') %}
+  <section class="content-section">
+    <div class="register-prompt-bar">
+      <div>
+        <strong>Ready to invest?</strong>
+        <p>Create your free account to access the client portal and submit your investment.</p>
+      </div>
+      <div class="register-prompt-btns">
+        <a href="/register" class="btn gold"><i class="fa-solid fa-user-plus"></i> Create Account</a>
+        <a href="/login" class="btn dark"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+</div>
+
+<!-- RISK DISCLAIMER -->
+<section class="content-section">
+  <div class="risk-disclaimer">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <div>
+      <strong>Risk Disclosure</strong>
+      <p>All investment plans are subject to manual review, verification, and admin approval before activation. Trading and digital asset participation involve risk. Only invest what you can afford to lose. Past performance does not guarantee future results. Returns shown are projections based on current programme structure and are not guaranteed.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const countryData = {
+    mz:    { name: "Mozambique",   flag: "🇲🇿", currency: "MZN" },
+    zm:    { name: "Zambia",       flag: "🇿🇲", currency: "ZMW" },
+    za:    { name: "South Africa", flag: "🇿🇦", currency: "ZAR" },
+    ao:    { name: "Angola",       flag: "🇦🇴", currency: "AOA" },
+    br:    { name: "Brazil",       flag: "🇧🇷", currency: "BRL" },
+    ug:    { name: "Uganda",       flag: "🇺🇬", currency: "UGX" },
+    other: { name: "Others",       flag: "🌍",  currency: "USD" },
+  };
+
+  let selectedCountry = null;
+
+  function selectCountry(code) {
+    selectedCountry = code;
+    const data = countryData[code];
+
+    document.getElementById("selectedFlag").textContent = data.flag;
+    document.getElementById("selectedCountryName").textContent = data.name;
+    document.getElementById("localCurrencyLabel").textContent = data.flag + " " + data.currency + " — Local Currency";
+
+    document.getElementById("countrySection").style.display = "none";
+    document.getElementById("plansSection").style.display = "block";
+
+    if (code === "other") {
+      document.getElementById("currencyToggleSection").style.display = "none";
+      document.getElementById("localPlans").style.display = "none";
+      document.getElementById("cryptoPlans").style.display = "block";
+    } else {
+      document.getElementById("currencyToggleSection").style.display = "block";
+      showCurrency("local");
+    }
+
+    document.querySelectorAll(".country-plans").forEach(el => el.style.display = "none");
+    const planEl = document.getElementById("plans-" + code);
+    if (planEl) planEl.style.display = "block";
+
+    document.getElementById("plansSection").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function changeCountry() {
+    document.getElementById("countrySection").style.display = "block";
+    document.getElementById("plansSection").style.display = "none";
+    document.getElementById("countrySection").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function showCurrency(type) {
+    const localPlans  = document.getElementById("localPlans");
+    const cryptoPlans = document.getElementById("cryptoPlans");
+    const btnLocal    = document.getElementById("btnLocal");
+    const btnCrypto   = document.getElementById("btnCrypto");
+
+    if (type === "local") {
+      localPlans.style.display  = "block";
+      cryptoPlans.style.display = "none";
+      btnLocal.classList.add("active");
+      btnCrypto.classList.remove("active");
+      document.querySelectorAll(".country-plans").forEach(el => el.style.display = "none");
+      const planEl = document.getElementById("plans-" + selectedCountry);
+      if (planEl) planEl.style.display = "block";
+    } else {
+      localPlans.style.display  = "none";
+      cryptoPlans.style.display = "block";
+      btnCrypto.classList.add("active");
+      btnLocal.classList.remove("active");
+    }
+  }
+</script>
+
+{% endblock %}

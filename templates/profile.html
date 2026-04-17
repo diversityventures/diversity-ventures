@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag">{{ t('profile') }}</span>
+    <h1>{{ t('profile_title') }}</h1>
+    <p>{{ t('profile_subtitle') }}</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="form-box">
+    <form method="POST">
+      <div class="form-group">
+        <label>{{ t('full_name') }}</label>
+        <input type="text" name="full_name" value="{{ user.full_name }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>{{ t('email_address') }}</label>
+        <input type="email" name="email" value="{{ user.email }}" required>
+      </div>
+
+      <hr class="section-divider">
+
+      <h3 class="settings-subtitle">{{ t('change_password') }}</h3>
+
+      <div class="form-group password-wrapper">
+        <label>{{ t('current_password') }}</label>
+        <div class="password-input-wrap">
+          <input type="password" name="current_password" id="current-password">
+          <button type="button" class="eye-btn" onclick="togglePassword('current-password', this)">👁</button>
+        </div>
+      </div>
+
+      <div class="form-group password-wrapper">
+        <label>{{ t('new_password') }}</label>
+        <div class="password-input-wrap">
+          <input type="password" name="new_password" id="new-password" onkeyup="checkProfilePasswordStrength()">
+          <button type="button" class="eye-btn" onclick="togglePassword('new-password', this)">👁</button>
+        </div>
+      </div>
+
+      <div class="form-group password-wrapper">
+        <label>{{ t('confirm_password') }}</label>
+        <div class="password-input-wrap">
+          <input type="password" name="confirm_password" id="confirm-password">
+          <button type="button" class="eye-btn" onclick="togglePassword('confirm-password', this)">👁</button>
+        </div>
+      </div>
+
+      <div class="password-rules">
+        <div id="profile-rule-length">✗ At least 8 characters</div>
+        <div id="profile-rule-upper">✗ At least 1 uppercase letter</div>
+        <div id="profile-rule-lower">✗ At least 1 lowercase letter</div>
+        <div id="profile-rule-number">✗ At least 1 number</div>
+      </div>
+
+      <button type="submit" class="btn gold">{{ t('save_changes') }}</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

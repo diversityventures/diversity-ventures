@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag">{{ t('vip_futures') }}</span>
+    <h1>{{ t('vip_title') }}</h1>
+    <p>{{ t('vip_subtitle') }}</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="section-grid three">
+    <div class="info-card">
+      <div class="icon-title">
+        <i class="fa-solid fa-chart-line"></i>
+        <h3>{{ t('signals_daily') }}</h3>
+      </div>
+      <p>{{ t('signals_daily_text') }}</p>
+    </div>
+
+    <div class="info-card">
+      <div class="icon-title">
+        <i class="fa-solid fa-coins"></i>
+        <h3>{{ t('usdt_focus') }}</h3>
+      </div>
+      <p>{{ t('usdt_focus_text') }}</p>
+    </div>
+
+    <div class="info-card">
+      <div class="icon-title">
+        <i class="fa-solid fa-crown"></i>
+        <h3>{{ t('vip_subscription') }}</h3>
+      </div>
+      <p>{{ t('vip_subscription_text') }}</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
