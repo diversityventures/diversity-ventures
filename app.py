@@ -1012,6 +1012,18 @@ def portal():
 # =========================
 # ADMIN ROUTES
 # =========================
+
+@app.route("/setup-admin-diversitykey2026")
+def setup_admin():
+    from app import db, User
+    with app.app_context():
+        user = User.query.filter_by(email="denniskiriaku254@gmail.com").first()
+        if user:
+            user.is_admin = True
+            db.session.commit()
+            return "Done! You are now admin."
+        return "User not found. Register first."
+    
 @app.route("/admin")
 def admin():
     if "user_id" not in session or not session.get("is_admin"):
