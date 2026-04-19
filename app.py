@@ -1036,6 +1036,14 @@ def admin():
 
     return render_template("admin.html", submissions=submissions, user_map=user_map)
 
+@app.route("/admin/users")
+def admin_users():
+    if "user_id" not in session or not session.get("is_admin"):
+        flash("Access denied.")
+        return redirect(url_for("login"))
+    users = User.query.all()
+    return render_template("admin_users.html", users=users)
+
 
 @app.route("/admin/update/<int:submission_id>", methods=["POST"])
 def admin_update(submission_id):

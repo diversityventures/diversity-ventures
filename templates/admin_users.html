@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="content-section" style="padding-top:40px;">
+  <div class="dash-welcome">
+    <div>
+      <h1 class="dash-title">All Registered Users</h1>
+      <p class="dash-sub">Total: <strong style="color:var(--gold)">{{ users|length }} users</strong></p>
+    </div>
+    <a href="/admin" class="btn dark">
+      <i class="fa-solid fa-arrow-left"></i> Back to Admin
+    </a>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="info-card" style="overflow-x:auto;">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Verified</th>
+          <th>Admin</th>
+          <th>Submissions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td class="muted">{{ user.id }}</td>
+          <td><strong>{{ user.full_name }}</strong></td>
+          <td>{{ user.email }}</td>
+          <td>
+            {% if user.is_verified %}
+              <span class="status-badge status-approved">Verified</span>
+            {% else %}
+              <span class="status-badge status-pending">Unverified</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if user.is_admin %}
+              <span class="status-badge status-approved">Admin</span>
+            {% else %}
+              <span class="status-badge status-pending">User</span>
+            {% endif %}
+          </td>
+          <td>
+            <a href="/admin?user={{ user.id }}" class="inline-link">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% endblock %}

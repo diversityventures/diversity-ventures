@@ -2257,3 +2257,36 @@ main { min-height: 70vh; }
   .ip-progress-steps { flex-direction: column; align-items: flex-start; gap: 8px; }
   .ip-card-top    { flex-direction: column; align-items: flex-start; }
 }
+
+
+/* =========================
+   ADMIN TABLE
+========================= */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 12px 16px;
+  background: var(--bg-card2);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: var(--bg-card2); }
+.admin-table td.muted { color: var(--muted); font-size: 13px; }
