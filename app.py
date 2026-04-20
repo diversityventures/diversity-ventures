@@ -3,13 +3,20 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
+from dotenv import load_dotenv
 import os
 import random
 import re
 import requests as req
+import pyotp
+import qrcode
+import io
+import base64
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "diversity_secret_key_change_this"
+app.secret_key = os.environ.get("SECRET_KEY")
 
 # =========================
 # DATABASE / UPLOAD CONFIG
@@ -24,9 +31,9 @@ app.config["UPLOAD_FOLDER"] = "static/uploads"
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USERNAME"] = "m73027222@gmail.com"
-app.config["MAIL_PASSWORD"] = "grcefjpkobrgmjsm"
-app.config["MAIL_DEFAULT_SENDER"] = "m73027222@gmail.com"
+app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
+app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_USERNAME")
 
 # PUBLIC LOGO URL FOR EMAILS
 LOGO_URL = "https://yourdomain.com/static/images/logo.png"
@@ -372,6 +379,8 @@ class User(db.Model):
     is_verified = db.Column(db.Boolean, default=False)
     verification_code = db.Column(db.String(10), nullable=True)
     reset_code = db.Column(db.String(10), nullable=True)
+    totp_secret = db.Column(db.String(32), nullable=True)
+    totp_enabled = db.Column(db.Boolean, default=False)
 
 
 class Submission(db.Model):
@@ -392,7 +401,7 @@ class Submission(db.Model):
 class Trade(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
-    trade_type = db.Column(db.String(10), nullable=False)  # BUY or SELL
+    trade_type = db.Column(db.String(10), nullable=False)
     country = db.Column(db.String(50), nullable=True)
     payment_method = db.Column(db.String(50), nullable=True)
     amount = db.Column(db.String(50), nullable=True)
@@ -740,13 +749,12 @@ def register():
         try:
             plain_body = build_verification_email_text(full_name, verification_code)
             html_body = build_verification_email_html(full_name, verification_code)
-            send_email_code(email, "Welcome to Diversity Ventures - Verification Code", plain_body, html_body)
+            send_email_code(email, "Welcome to Diversity Ventures - Verify Your Email", plain_body, html_body)
             flash("Account created. A verification code has been sent to your email.")
-            return redirect(url_for("verify_email", email=email))
         except Exception as e:
             print("MAIL ERROR:", e)
-            flash(f"Email could not be sent. Your verification code is: {verification_code}")
-            return redirect(url_for("verify_email", email=email))
+            flash(f"Account created. Your verification code is: {verification_code}")
+        return redirect(url_for("verify_email", email=email))
 
     return render_template("register.html")
 
@@ -768,6 +776,34 @@ def verify_email():
             user.is_verified = True
             user.verification_code = None
             db.session.commit()
+
+            try:
+                msg = Message(
+                    subject="Your Diversity Ventures Account is Now Active",
+                    recipients=[user.email]
+                )
+                msg.html = f"""<div style="background:#0b0e11;padding:30px;font-family:Arial,sans-serif;">
+                  <div style="max-width:600px;margin:0 auto;background:#1e2329;border-radius:16px;border:1px solid rgba(255,255,255,0.07);">
+                    <div style="padding:24px;background:#161a1e;text-align:center;">
+                      <div style="font-size:18px;font-weight:800;color:#f0b90b;">DIVERSITY VENTURES</div>
+                    </div>
+                    <div style="padding:28px;">
+                      <div style="font-size:22px;font-weight:800;color:#fff;margin-bottom:10px;">Account Verified ✓</div>
+                      <p style="color:#848e9c;line-height:1.8;">Hello <strong style="color:#eaecef;">{user.full_name}</strong>,<br><br>
+                      Your account has been verified. You now have full access to Diversity Ventures.</p>
+                      <div style="background:#252930;border-radius:10px;padding:16px;margin:18px 0;color:#eaecef;font-size:13px;line-height:2.0;">
+                        ✅ Investment Packages &nbsp; ✅ Trading Bots<br>
+                        ✅ VIP Futures Signals &nbsp; ✅ P2P Exchange
+                      </div>
+                      <a href="https://diversity-ventures.onrender.com/dashboard" style="display:inline-block;padding:13px 26px;background:#f0b90b;color:#000;font-weight:800;border-radius:10px;text-decoration:none;">Go to Dashboard</a>
+                    </div>
+                    <div style="padding:14px;border-top:1px solid rgba(255,255,255,0.06);text-align:center;font-size:12px;color:#5e6673;">&copy; 2026 Diversity Ventures</div>
+                  </div>
+                </div>"""
+                mail.send(msg)
+            except Exception as e:
+                print("Verified email error:", e)
+
             flash("Email verified successfully. Please login.")
             return redirect(url_for("login"))
 
@@ -818,6 +854,10 @@ def login():
                 flash("Please verify your email first.")
                 return redirect(url_for("verify_email", email=user.email))
 
+            if user.totp_enabled:
+                session["pending_2fa_user_id"] = user.id
+                return redirect(url_for("verify_2fa"))
+
             session["user_id"] = user.id
             session["user_name"] = user.full_name
             session["user_email"] = user.email
@@ -829,6 +869,90 @@ def login():
         return redirect(url_for("login"))
 
     return render_template("login.html")
+
+
+@app.route("/verify-2fa", methods=["GET", "POST"])
+def verify_2fa():
+    if "pending_2fa_user_id" not in session:
+        return redirect(url_for("login"))
+
+    user = User.query.get(session["pending_2fa_user_id"])
+
+    if not user:
+        flash("Session expired. Please login again.")
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        code = request.form["code"].strip()
+        totp = pyotp.TOTP(user.totp_secret)
+
+        if totp.verify(code):
+            session.pop("pending_2fa_user_id", None)
+            session["user_id"] = user.id
+            session["user_name"] = user.full_name
+            session["user_email"] = user.email
+            session["is_admin"] = user.is_admin
+            flash("Login successful.")
+            return redirect(url_for("dashboard"))
+
+        flash("Invalid code. Please try again.")
+        return redirect(url_for("verify_2fa"))
+
+    return render_template("verify_2fa.html", email=user.email)
+
+
+@app.route("/setup-2fa")
+def setup_2fa():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    user = User.query.get(session["user_id"])
+
+    if not user.totp_secret:
+        user.totp_secret = pyotp.random_base32()
+        db.session.commit()
+
+    totp = pyotp.TOTP(user.totp_secret)
+    uri = totp.provisioning_uri(name=user.email, issuer_name="Diversity Ventures")
+
+    img = qrcode.make(uri)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    qr_b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+
+    return render_template("setup_2fa.html", qr_b64=qr_b64, secret=user.totp_secret)
+
+
+@app.route("/enable-2fa", methods=["POST"])
+def enable_2fa():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    user = User.query.get(session["user_id"])
+    code = request.form["code"].strip()
+    totp = pyotp.TOTP(user.totp_secret)
+
+    if totp.verify(code):
+        user.totp_enabled = True
+        db.session.commit()
+        flash("Google Authenticator enabled successfully!")
+        return redirect(url_for("profile"))
+
+    flash("Invalid code. Please scan the QR code again and try.")
+    return redirect(url_for("setup_2fa"))
+
+
+@app.route("/disable-2fa")
+def disable_2fa():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    user = User.query.get(session["user_id"])
+    user.totp_enabled = False
+    user.totp_secret = None
+    db.session.commit()
+    flash("Google Authenticator disabled.")
+    return redirect(url_for("profile"))
 
 
 @app.route("/forgot-password", methods=["GET", "POST"])
@@ -1034,7 +1158,6 @@ def portal():
         db.session.add(new_submission)
         db.session.commit()
 
-        # Send email notification to admin
         try:
             admin_msg = Message(
                 subject="New Investment Submission - Diversity Ventures",
@@ -1190,7 +1313,6 @@ https://diversity-ventures.onrender.com/admin/trades
         except Exception as e:
             print("Mail error:", e)
 
-        # Notify user by email
         try:
             user_msg = Message(
                 subject="Trade Initiated - Diversity Ventures",
@@ -1253,7 +1375,6 @@ def admin_trade_update(trade_id):
     trade.admin_message = request.form.get("admin_message")
     db.session.commit()
 
-    # Notify user
     user = User.query.get(trade.user_id)
     try:
         msg = Message(
@@ -1307,8 +1428,45 @@ def admin_update(submission_id):
     submission = Submission.query.get_or_404(submission_id)
     submission.status = request.form["status"]
     submission.admin_note = request.form["admin_note"]
-
     db.session.commit()
+
+    user = User.query.get(submission.user_id)
+    if user:
+        try:
+            status_color = "#0ecb81" if submission.status == "Approved" else "#f6465d" if submission.status == "Rejected" else "#f0b90b"
+            msg = Message(
+                subject=f"Investment Update: {submission.status} — Diversity Ventures",
+                recipients=[user.email]
+            )
+            msg.html = f"""<div style="background:#0b0e11;padding:30px;font-family:Arial,sans-serif;">
+              <div style="max-width:600px;margin:0 auto;background:#1e2329;border-radius:16px;border:1px solid rgba(255,255,255,0.07);">
+                <div style="padding:24px;background:#161a1e;text-align:center;">
+                  <div style="font-size:18px;font-weight:800;color:#f0b90b;">DIVERSITY VENTURES</div>
+                </div>
+                <div style="padding:28px;">
+                  <div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:10px;">Investment Status Update</div>
+                  <p style="color:#848e9c;line-height:1.8;">Hello <strong style="color:#eaecef;">{user.full_name}</strong>,<br>Your investment submission has been updated.</p>
+                  <div style="background:#252930;border-radius:10px;padding:16px;margin:18px 0;">
+                    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;">
+                      <span style="color:#848e9c;">Plan</span><span style="color:#eaecef;">{submission.plan_name}</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;">
+                      <span style="color:#848e9c;">Payment</span><span style="color:#eaecef;">{submission.payment_method}</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;">
+                      <span style="color:#848e9c;">Status</span><span style="color:{status_color};font-weight:800;">{submission.status}</span>
+                    </div>
+                  </div>
+                  {"<p style='background:rgba(14,203,129,0.08);border-radius:8px;padding:12px;color:#eaecef;font-size:13px;'>" + (submission.admin_note or "") + "</p>" if submission.admin_note else ""}
+                  <a href="https://diversity-ventures.onrender.com/dashboard" style="display:inline-block;padding:13px 26px;background:#f0b90b;color:#000;font-weight:800;border-radius:10px;text-decoration:none;">View Dashboard</a>
+                </div>
+                <div style="padding:14px;border-top:1px solid rgba(255,255,255,0.06);text-align:center;font-size:12px;color:#5e6673;">&copy; 2026 Diversity Ventures</div>
+              </div>
+            </div>"""
+            mail.send(msg)
+        except Exception as e:
+            print("Status email error:", e)
+
     flash("Submission updated successfully.")
     return redirect(url_for("admin"))
 

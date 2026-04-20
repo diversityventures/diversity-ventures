@@ -59,6 +59,32 @@
 
       <button type="submit" class="btn gold">{{ t('save_changes') }}</button>
     </form>
+
+    <!-- ========================= -->
+    <!-- GOOGLE AUTHENTICATOR      -->
+    <!-- ========================= -->
+    <hr class="section-divider">
+
+    <h3 class="settings-subtitle">Two-Factor Authentication (Google Authenticator)</h3>
+
+    {% if user.totp_enabled %}
+      <div style="background:rgba(14,203,129,0.08);border:1px solid rgba(14,203,129,0.2);border-radius:12px;padding:16px;margin-bottom:20px;">
+        <p style="color:#0ecb81;margin:0 0 8px 0;font-weight:700;">✓ Google Authenticator is enabled</p>
+        <p style="color:#94a3b8;font-size:13px;margin:0;">Your account is protected with 2FA. Every login requires a code from your Google Authenticator app.</p>
+      </div>
+      <a href="/disable-2fa" class="btn" style="background:#f6465d;color:#fff;display:inline-block;text-decoration:none;">
+        Disable Google Authenticator
+      </a>
+    {% else %}
+      <div style="background:rgba(240,185,11,0.08);border:1px solid rgba(240,185,11,0.2);border-radius:12px;padding:16px;margin-bottom:20px;">
+        <p style="color:#f0b90b;margin:0 0 8px 0;font-weight:700;">⚠ Google Authenticator is not enabled</p>
+        <p style="color:#94a3b8;font-size:13px;margin:0;">Enable 2FA to add an extra layer of security to your account.</p>
+      </div>
+      <a href="/setup-2fa" class="btn gold" style="display:inline-block;text-decoration:none;">
+        Enable Google Authenticator
+      </a>
+    {% endif %}
+
   </div>
 </section>
 {% endblock %}

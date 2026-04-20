@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="max-width:480px;margin:60px auto;text-align:center;">
+  <h2>Set Up Google Authenticator</h2>
+  <p>Scan this QR code with your Google Authenticator app, then enter the 6-digit code to confirm.</p>
+
+  <img src="data:image/png;base64,{{ qr_b64 }}" alt="QR Code" style="width:220px;margin:20px auto;display:block;">
+
+  <p style="font-size:13px;color:#888;">Can't scan? Enter this secret manually:<br>
+    <strong>{{ secret }}</strong>
+  </p>
+
+  <form method="POST" action="/enable-2fa">
+    <input type="text" name="code" placeholder="Enter 6-digit code" maxlength="6"
+      style="padding:12px;width:100%;margin:10px 0;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#fff;text-align:center;font-size:20px;letter-spacing:6px;">
+    <button type="submit"
+      style="padding:12px 28px;background:#f0b90b;color:#000;font-weight:800;border:none;border-radius:10px;cursor:pointer;width:100%;">
+      Confirm & Enable
+    </button>
+  </form>
+</div>
+{% endblock %}

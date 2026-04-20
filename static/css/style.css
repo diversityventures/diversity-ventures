@@ -3374,3 +3374,145 @@ main { min-height: 70vh; }
   .vip-exchanges-grid { grid-template-columns: repeat(2, 1fr); }
   .vip-plans-toggle   { grid-template-columns: 1fr; }
 }
+
+
+/* =========================
+   2FA PAGE
+========================= */
+.tfa-info-box {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 16px;
+  background: rgba(24,144,255,0.06);
+  border: 1px solid rgba(24,144,255,0.15);
+  border-radius: var(--radius);
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+
+.tfa-info-box i { color: var(--blue); font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+
+/* =========================
+   MOBILE FIXES — GLOBAL
+========================= */
+@media (max-width: 768px) {
+
+  /* NAVBAR */
+  .nav-container { height: auto; min-height: 56px; padding: 10px 14px; }
+  .logo span { font-size: 14px; }
+  .nav-logo-img { width: 18px; height: 18px; }
+
+  /* TICKER */
+  .ticker-bar { height: 32px; }
+  .ticker-item { padding: 0 12px; gap: 5px; }
+  .ticker-pair, .ticker-price { font-size: 11px; }
+  .ticker-change { font-size: 11px; }
+
+  /* PAGE HERO */
+  .page-hero { padding: 32px 14px 20px; }
+  .page-hero h1 { font-size: 22px; }
+  .page-hero p  { font-size: 13px; }
+
+  /* SECTIONS */
+  .content-section { padding: 20px 14px 8px; }
+  .section-header h2 { font-size: 20px; }
+
+  /* CARDS */
+  .info-card, .portal-step-card, .ip-card { padding: 16px; }
+
+  /* AUTH PAGES */
+  .auth-section { padding: 20px 14px; min-height: auto; }
+  .auth-card { padding: 24px 16px; }
+  .auth-title { font-size: 20px; }
+  .code-box { width: 42px; height: 48px; font-size: 18px; }
+
+  /* PORTAL */
+  .portal-grid { grid-template-columns: 1fr; }
+  .portal-summary-card { position: static; }
+  .payment-method-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .pay-method-btn { padding: 10px 6px; }
+  .pay-method-name { font-size: 11px; }
+  .pay-method-sub  { font-size: 10px; }
+
+  /* DASHBOARD */
+  .dash-welcome { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .dash-title { font-size: 20px; }
+  .section-grid.four { grid-template-columns: repeat(2, 1fr); }
+  .dash-quick-actions { gap: 8px; }
+  .quick-action-btn { padding: 10px 12px; font-size: 12px; }
+
+  /* MARKET TABLE */
+  .market-hero { padding: 16px 14px; }
+  .market-hero-left h1 { font-size: 24px; }
+  .mini-stats { grid-template-columns: 1fr; gap: 8px; }
+  .market-table-head,
+  .market-row { grid-template-columns: 2fr 1fr 1fr; }
+  .market-table-head span:last-child,
+  .market-row .market-data:last-child { display: none; }
+
+  /* PACKAGES */
+  .country-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .country-btn { padding: 14px 8px; }
+  .country-flag { font-size: 22px; }
+  .country-name { font-size: 12px; }
+  .selected-country-bar { flex-direction: column; align-items: flex-start; padding: 14px; gap: 12px; }
+  .selected-flag { font-size: 24px; }
+  .selected-country-name { font-size: 16px; }
+  .section-grid.three { grid-template-columns: 1fr; }
+  .section-grid.two   { grid-template-columns: 1fr; }
+  .pkg-earn { font-size: 22px; }
+
+  /* VIP PAGE */
+  .vip-hero { padding: 32px 14px; }
+  .vip-hero-left h1 { font-size: 26px; }
+  .vip-hero-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .vip-hero-stat strong { font-size: 16px; }
+  .vip-exchanges-grid { grid-template-columns: repeat(2, 1fr); }
+  .vip-sub-plans { grid-template-columns: 1fr; }
+  .vip-plans-toggle { grid-template-columns: 1fr; }
+  .vip-price-card { padding: 20px; }
+
+  /* BOTS */
+  .bots-hero-stats { gap: 8px; }
+  .bot-hero-stat { padding: 10px 12px; min-width: 80px; }
+  .bot-hero-stat strong { font-size: 16px; }
+  .modal-box { padding: 18px; margin: 10px; }
+  .modal-title { font-size: 18px; }
+  .section-grid.three { grid-template-columns: 1fr; }
+
+  /* EXCHANGE */
+  .exchange-choice-grid { grid-template-columns: 1fr; }
+  .exc-amount-wrap { font-size: 14px; }
+
+  /* TRADE STATUS */
+  .trade-status-card { padding: 18px; }
+  .trade-big-icon { font-size: 40px; }
+  .trade-status-title { font-size: 20px; }
+  .trade-progress-steps { gap: 4px; }
+  .trade-step-line { width: 24px; }
+
+  /* RESULTS */
+  .accuracy-inner { flex-direction: column; }
+  .accuracy-num   { font-size: 40px; }
+  .accuracy-dots  { justify-content: flex-start; }
+  .results-cta-bar { flex-direction: column; padding: 18px; }
+
+  /* FOOTER */
+  .footer-content { grid-template-columns: 1fr; gap: 20px; padding: 24px 14px; }
+  .footer-logo span { font-size: 13px; }
+
+  /* HOME WIDE PANEL */
+  .home-wide-panel { flex-direction: column; padding: 18px; gap: 16px; }
+  .home-wide-panel h2 { font-size: 18px; }
+  .home-wide-actions { flex-direction: column; min-width: 0; }
+  .home-wide-actions .btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 380px) {
+  .auth-card  { padding: 18px 12px; }
+  .code-box   { width: 36px; height: 42px; font-size: 16px; gap: 6px; }
+  .country-grid { grid-template-columns: repeat(2, 1fr); }
+  .payment-method-grid { grid-template-columns: repeat(2, 1fr); }
+  .section-grid.four { grid-template-columns: 1fr; }
+}

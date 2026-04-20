@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Diversity Ventures">
+      <span>DIVERSITY VENTURES</span>
+    </div>
+
+    <div class="auth-icon-badge" style="color:var(--blue)">
+      <i class="fa-solid fa-shield-halved"></i>
+    </div>
+
+    <h1 class="auth-title">Two-Factor Authentication</h1>
+    <p class="auth-sub">Open your <strong>Google Authenticator</strong> app and enter the 6-digit code for Diversity Ventures.</p>
+
+    <form method="POST" id="tfa-form" class="auth-form">
+      <input type="hidden" name="code" id="tfa-full-code">
+
+      <div class="code-inputs">
+        <input type="text" maxlength="1" class="code-box tfa-box">
+        <input type="text" maxlength="1" class="code-box tfa-box">
+        <input type="text" maxlength="1" class="code-box tfa-box">
+        <input type="text" maxlength="1" class="code-box tfa-box">
+        <input type="text" maxlength="1" class="code-box tfa-box">
+        <input type="text" maxlength="1" class="code-box tfa-box">
+      </div>
+
+      <button type="submit" class="btn gold auth-btn">
+        <i class="fa-solid fa-shield-check"></i> Verify & Login
+      </button>
+    </form>
+
+    <div class="tfa-info-box">
+      <i class="fa-solid fa-circle-info"></i>
+      <div>
+        <div style="font-weight:700;color:var(--text);margin-bottom:4px;">Don't have the app?</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">
+          Download <strong>Google Authenticator</strong> from the
+          <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank" class="inline-link">Play Store</a>
+          or
+          <a href="https://apps.apple.com/app/google-authenticator/id388497605" target="_blank" class="inline-link">App Store</a>.
+          Then go to <a href="/setup-2fa" class="inline-link">set up 2FA</a> from your profile.
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-switch">
+      <a href="/login" class="inline-link"><i class="fa-solid fa-arrow-left"></i> Back to Login</a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+const inputs = document.querySelectorAll(".tfa-box");
+const fullCode = document.getElementById("tfa-full-code");
+
+inputs.forEach((input, index) => {
+  input.addEventListener("input", () => {
+    input.value = input.value.replace(/[^0-9]/g, "");
+    if (input.value && index < inputs.length - 1) inputs[index + 1].focus();
+    updateCode();
+    if (getAllDigits().length === 6) {
+      setTimeout(() => document.getElementById("tfa-form").submit(), 300);
+    }
+  });
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace" && !input.value && index > 0) inputs[index - 1].focus();
+  });
+});
+
+document.addEventListener("paste", (e) => {
+  const paste = e.clipboardData.getData("text").replace(/\D/g,"").slice(0, 6);
+  inputs.forEach((input, i) => { input.value = paste[i] || ""; });
+  updateCode();
+});
+
+function getAllDigits() {
+  return Array.from(inputs).map(i => i.value).join("");
+}
+
+function updateCode() {
+  fullCode.value = getAllDigits();
+}
+
+inputs[0].focus();
+</script>
+{% endblock %}
