@@ -6,19 +6,20 @@
 <div class="ticker-bar">
   <div class="ticker-track" id="tickerTrack">
     {% for coin in market_data %}
-    <div class="ticker-item">
-      <img src="{{ coin.logo }}" alt="{{ coin.short }}">
+    <div class="ticker-item" id="ticker-{{ coin.short }}">
+      <img src="{{ coin.logo }}" alt="{{ coin.short }}" onerror="this.style.display='none'">
       <span class="ticker-pair">{{ coin.pair }}</span>
-      <span class="ticker-price">{{ coin.price }}</span>
-      <span class="ticker-change {{ coin.direction }}">{{ coin.change }}</span>
+      <span class="ticker-price" id="tick-price-{{ coin.short }}">—</span>
+      <span class="ticker-change up" id="tick-change-{{ coin.short }}">—</span>
     </div>
     {% endfor %}
+    <!-- Duplicate for seamless scroll -->
     {% for coin in market_data %}
     <div class="ticker-item">
-      <img src="{{ coin.logo }}" alt="{{ coin.short }}">
+      <img src="{{ coin.logo }}" alt="{{ coin.short }}" onerror="this.style.display='none'">
       <span class="ticker-pair">{{ coin.pair }}</span>
-      <span class="ticker-price">{{ coin.price }}</span>
-      <span class="ticker-change {{ coin.direction }}">{{ coin.change }}</span>
+      <span class="ticker-price" id="tick-price-{{ coin.short }}-2">—</span>
+      <span class="ticker-change up" id="tick-change-{{ coin.short }}-2">—</span>
     </div>
     {% endfor %}
   </div>
@@ -91,27 +92,27 @@
           {% for coin in market_data %}
           <div class="market-row" data-symbol="{{ coin.short }}USDT">
             <div class="market-coin">
-              <img src="{{ coin.logo }}" alt="{{ coin.short }}" onerror="this.src='https://via.placeholder.com/30'">
+              <img src="{{ coin.logo }}" alt="{{ coin.short }}" onerror="this.style.display='none'">
               <div>
                 <strong>{{ coin.pair }}</strong>
                 <span>{{ coin.name }}</span>
               </div>
             </div>
             <div class="market-data">
-              <strong class="m-price">{{ coin.price }}</strong>
+              <strong class="m-price">—</strong>
             </div>
             <div class="market-data">
-              <span class="market-volume {{ coin.direction }} m-change">{{ coin.change }}</span>
+              <span class="market-volume up m-change">—</span>
             </div>
             <div class="market-data">
-              <span class="market-vol-label m-volume">{{ coin.volume }}</span>
+              <span class="market-vol-label m-volume">—</span>
             </div>
           </div>
           {% endfor %}
         </div>
 
         <div class="panel-footer">
-          <span id="lastUpdated">Last updated just now</span>
+          <span id="lastUpdated">Fetching live prices...</span>
         </div>
       </div>
     </div>
@@ -132,19 +133,19 @@
       <div class="home-card-icon">💼</div>
       <h3>Diversity Investment Programme</h3>
       <p>Structured account-based onboarding for users who want a premium investment access flow with transparent review.</p>
-      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="inline-link">Open Access →</a>
+      <a href="/packages" class="inline-link">Open Access →</a>
     </div>
     <div class="info-card premium-home-card">
       <div class="home-card-icon">🤝</div>
       <h3>Affiliate Programmes</h3>
       <p>Earn by connecting serious investors and qualified users from trusted digital communities and networks.</p>
-      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="inline-link">Start Earning →</a>
+      <a href="/packages" class="inline-link">Start Earning →</a>
     </div>
     <div class="info-card premium-home-card">
       <div class="home-card-icon">👑</div>
       <h3>VIP Daily Futures Signals</h3>
       <p>High-quality futures signal access with disciplined structure, premium market updates, and expert analysis.</p>
-      <a href="{% if session.get('user_id') %}/vip-futures{% else %}/login{% endif %}" class="inline-link">View VIP →</a>
+      <a href="/vip-futures" class="inline-link">View VIP →</a>
     </div>
   </div>
 </section>
@@ -168,13 +169,13 @@
       <div class="home-card-icon">🤖</div>
       <h3>Trading Bots</h3>
       <p>Private onboarding flow for users who want a bot-based execution environment with structured support.</p>
-      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="inline-link">Request Access →</a>
+      <a href="/trading-bots" class="inline-link">Request Access →</a>
     </div>
     <div class="info-card premium-home-card">
       <div class="home-card-icon">💱</div>
       <h3>Buy / Exchange Crypto</h3>
       <p>Access account-based crypto conversion and guided purchase flow inside the platform ecosystem.</p>
-      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="inline-link">Open Exchange →</a>
+      <a href="/exchange" class="inline-link">Open Exchange →</a>
     </div>
   </div>
 </section>
@@ -198,54 +199,55 @@
   </div>
 </section>
 
-<!-- AUTO-REFRESH SCRIPT -->
+<!-- MARKET DATA SCRIPT — CLIENT SIDE ONLY -->
 <script>
 const COINS = [
-    { symbol: "BTCUSDT",  name: "Bitcoin",  short: "BTC",  logo: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
-    { symbol: "ETHUSDT",  name: "Ethereum", short: "ETH",  logo: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
-    { symbol: "SOLUSDT",  name: "Solana",   short: "SOL",  logo: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
-    { symbol: "BNBUSDT",  name: "BNB",      short: "BNB",  logo: "https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png" },
-    { symbol: "XRPUSDT",  name: "XRP",      short: "XRP",  logo: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
-    { symbol: "ADAUSDT",  name: "Cardano",  short: "ADA",  logo: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
-    { symbol: "DOGEUSDT", name: "Dogecoin", short: "DOGE", logo: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
+  { symbol: "BTCUSDT",  short: "BTC",  name: "Bitcoin",  logo: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
+  { symbol: "ETHUSDT",  short: "ETH",  name: "Ethereum", logo: "https://assets.coingecko.com/coins/images/279/small/ethereum.png" },
+  { symbol: "SOLUSDT",  short: "SOL",  name: "Solana",   logo: "https://assets.coingecko.com/coins/images/4128/small/solana.png" },
+  { symbol: "BNBUSDT",  short: "BNB",  name: "BNB",      logo: "https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png" },
+  { symbol: "XRPUSDT",  short: "XRP",  name: "XRP",      logo: "https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" },
+  { symbol: "ADAUSDT",  short: "ADA",  name: "Cardano",  logo: "https://assets.coingecko.com/coins/images/975/small/cardano.png" },
+  { symbol: "DOGEUSDT", short: "DOGE", name: "Dogecoin", logo: "https://assets.coingecko.com/coins/images/5/small/dogecoin.png" },
 ];
 
-  let countdownVal = 30;
-  const countdownEl = document.getElementById("countdown");
-  const lastUpdatedEl = document.getElementById("lastUpdated");
+let countdownVal = 30;
+const countdownEl  = document.getElementById("countdown");
+const lastUpdatedEl = document.getElementById("lastUpdated");
 
-  function formatVolume(v) {
-    if (v >= 1e9) return "$" + (v / 1e9).toFixed(2) + "B";
-    if (v >= 1e6) return "$" + (v / 1e6).toFixed(2) + "M";
-    return "$" + v.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
+function formatVolume(v) {
+  if (v >= 1e9) return "$" + (v / 1e9).toFixed(2) + "B";
+  if (v >= 1e6) return "$" + (v / 1e6).toFixed(2) + "M";
+  return "$" + v.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
-  function formatPrice(p) {
-    if (p < 0.01) return "$" + p.toFixed(6);
-    if (p < 1)    return "$" + p.toFixed(4);
-    return "$" + p.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
+function formatPrice(p) {
+  if (p < 0.01)  return "$" + p.toFixed(6);
+  if (p < 1)     return "$" + p.toFixed(4);
+  return "$" + p.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
-  async function refreshMarket() {
-    try {
-      const symbols = COINS.map(c => `"${c.symbol}"`).join(",");
-      const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols}]`;
-      const res = await fetch(url);
-      const data = await res.json();
+async function fetchMarketData() {
+  try {
+    const symbols = COINS.map(c => '"' + c.symbol + '"').join(",");
+    const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols}]`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("API error");
+    const data = await res.json();
 
-      data.forEach(item => {
-        const coin = COINS.find(c => c.symbol === item.symbol);
-        if (!coin) return;
+    data.forEach(item => {
+      const coin   = COINS.find(c => c.symbol === item.symbol);
+      if (!coin) return;
 
-        const price   = parseFloat(item.lastPrice);
-        const change  = parseFloat(item.priceChangePercent);
-        const volume  = parseFloat(item.quoteVolume);
-        const dir     = change >= 0 ? "up" : "down";
-        const changeStr = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+      const price   = parseFloat(item.lastPrice);
+      const change  = parseFloat(item.priceChangePercent);
+      const volume  = parseFloat(item.quoteVolume);
+      const dir     = change >= 0 ? "up" : "down";
+      const changeStr = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
 
-        const row = document.querySelector(`.market-row[data-symbol="${item.symbol}"]`);
-        if (!row) return;
-
+      // Update market table row
+      const row = document.querySelector(`.market-row[data-symbol="${item.symbol}"]`);
+      if (row) {
         const priceEl  = row.querySelector(".m-price");
         const changeEl = row.querySelector(".m-change");
         const volEl    = row.querySelector(".m-volume");
@@ -255,39 +257,56 @@ const COINS = [
           priceEl.classList.add("flash-update");
           setTimeout(() => priceEl.classList.remove("flash-update"), 800);
         }
-
         if (changeEl) {
           changeEl.textContent = changeStr;
           changeEl.className = `market-volume ${dir} m-change`;
         }
-
         if (volEl) volEl.textContent = formatVolume(volume);
-      });
-
-      const now = new Date();
-      lastUpdatedEl.textContent = `Last updated ${now.toLocaleTimeString()}`;
-
-    } catch (e) {
-      console.warn("Market refresh failed:", e);
-    }
-  }
-
-  // COUNTDOWN TIMER
-  function startCountdown() {
-    countdownVal = 30;
-    const timer = setInterval(() => {
-      countdownVal--;
-      if (countdownEl) countdownEl.textContent = countdownVal + "s";
-      if (countdownVal <= 0) {
-        clearInterval(timer);
-        refreshMarket();
-        startCountdown();
       }
-    }, 1000);
-  }
 
-  // START
-  startCountdown();
+      // Update ticker bar
+      const tickPrice1  = document.getElementById(`tick-price-${coin.short}`);
+      const tickChange1 = document.getElementById(`tick-change-${coin.short}`);
+      const tickPrice2  = document.getElementById(`tick-price-${coin.short}-2`);
+      const tickChange2 = document.getElementById(`tick-change-${coin.short}-2`);
+
+      if (tickPrice1)  tickPrice1.textContent  = formatPrice(price);
+      if (tickChange1) {
+        tickChange1.textContent = changeStr;
+        tickChange1.className   = `ticker-change ${dir}`;
+      }
+      if (tickPrice2)  tickPrice2.textContent  = formatPrice(price);
+      if (tickChange2) {
+        tickChange2.textContent = changeStr;
+        tickChange2.className   = `ticker-change ${dir}`;
+      }
+    });
+
+    const now = new Date();
+    if (lastUpdatedEl) lastUpdatedEl.textContent = "Last updated " + now.toLocaleTimeString();
+
+  } catch (e) {
+    console.warn("Market fetch failed:", e);
+    if (lastUpdatedEl) lastUpdatedEl.textContent = "Retrying...";
+  }
+}
+
+function startCountdown() {
+  countdownVal = 30;
+  const timer = setInterval(() => {
+    countdownVal--;
+    if (countdownEl) countdownEl.textContent = countdownVal + "s";
+    if (countdownVal <= 0) {
+      clearInterval(timer);
+      fetchMarketData();
+      startCountdown();
+    }
+  }, 1000);
+}
+
+// Load immediately on page load then every 30s
+fetchMarketData();
+startCountdown();
 </script>
 
 {% endblock %}
