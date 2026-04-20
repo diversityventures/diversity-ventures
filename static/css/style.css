@@ -3921,3 +3921,52 @@ main { min-height: 70vh; }
   main                { padding-bottom: 0 !important; }
   footer.footer       { margin-bottom: 0 !important; }
 }
+
+
+/* =========================
+   BOTTOM NAV UNIFORM ICONS
+========================= */
+.mob-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 56px;
+  max-width: 72px;
+  transition: color 0.2s, background 0.15s;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mob-nav-item i {
+  font-size: 22px;
+  line-height: 1;
+  display: block;
+  text-align: center;
+}
+
+.mob-nav-item span {
+  font-size: 10px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mob-nav-item.active {
+  color: var(--gold);
+}
+
+.mob-nav-item:active {
+  background: rgba(240,185,11,0.08);
+  color: var(--gold);
+}
