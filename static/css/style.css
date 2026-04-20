@@ -3069,3 +3069,308 @@ main { min-height: 70vh; }
   .trade-status-card { padding: 20px; }
   .trade-step-line { width: 30px; }
 }
+
+
+/* =========================
+   VIP FUTURES PAGE
+========================= */
+.vip-hero {
+  background: linear-gradient(135deg, #0b0e11 0%, rgba(240,185,11,0.05) 50%, #0b0e11 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 60px 20px;
+}
+
+.vip-hero-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 48px;
+  align-items: center;
+}
+
+.vip-crown-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(240,185,11,0.1);
+  border: 1px solid var(--border-gold);
+  border-radius: 999px;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+}
+
+.vip-hero-left h1 {
+  font-size: 52px;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1.05;
+  margin-bottom: 18px;
+  letter-spacing: -0.5px;
+}
+
+.vip-hero-left p {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 600px;
+  margin-bottom: 32px;
+}
+
+.vip-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.vip-hero-stat {
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.vip-hero-stat strong { display: block; font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 4px; }
+.vip-hero-stat span   { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+
+/* VIP PRICE CARD */
+.vip-price-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: 0 16px 48px rgba(240,185,11,0.1);
+}
+
+.vip-price-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 16px; }
+
+.vip-plans-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.vip-plan-opt {
+  padding: 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-card2);
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.vip-plan-opt:hover { border-color: var(--border-gold); }
+.vip-plan-opt.active { border-color: var(--gold); background: rgba(240,185,11,0.08); }
+
+.vip-plan-period { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 700; text-transform: uppercase; }
+.vip-plan-price  { font-size: 26px; font-weight: 900; color: var(--text); }
+.vip-plan-sub    { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+.vip-plan-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: #000;
+  font-size: 9px;
+  font-weight: 900;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.vip-cta-btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 16px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.vip-price-note { text-align: center; font-size: 12px; color: var(--muted2); }
+
+/* VIP FEATURE CARDS */
+.vip-feature-card { transition: border-color 0.2s, transform 0.2s; }
+.vip-feature-card:hover { border-color: var(--border-gold); transform: translateY(-3px); }
+
+.vip-feature-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: rgba(240,185,11,0.1);
+  border: 1px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+
+/* EXCHANGES */
+.vip-exchanges-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.vip-exchange-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 14px;
+  text-align: center;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.vip-exchange-card:hover { border-color: var(--border-gold); transform: translateY(-2px); }
+.active-exchange { border-color: rgba(240,185,11,0.3); background: rgba(240,185,11,0.04); }
+
+.vip-exchange-card img {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 10px;
+  display: block;
+}
+
+.vip-exchange-icon   { font-size: 32px; margin-bottom: 10px; }
+.vip-exchange-name   { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.vip-exchange-sub    { font-size: 11px; color: var(--muted); }
+.vip-exchange-badge  { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; font-size: 9px; font-weight: 900; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+
+/* PAIRS GRID */
+.vip-pairs-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.vip-pair-tag {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  transition: all 0.15s;
+}
+
+.vip-pair-tag:hover { border-color: var(--border-gold); color: var(--gold); }
+.vip-pair-more { background: rgba(240,185,11,0.08); border-color: var(--border-gold); color: var(--gold); }
+
+/* SUBSCRIPTION SECTION */
+.vip-sub-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.vip-sub-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+
+.vip-sub-plan-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.vip-sub-plan-card:hover { border-color: var(--border-gold); }
+.vip-sub-plan-card.active { border-color: var(--gold); background: rgba(240,185,11,0.05); }
+
+.vip-sub-plan-badge-wrap { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); }
+.vip-sub-best-badge { background: var(--gold); color: #000; font-size: 10px; font-weight: 900; padding: 3px 12px; border-radius: 999px; white-space: nowrap; }
+
+.vip-sub-plan-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 10px; }
+.vip-sub-plan-name { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.vip-sub-plan-desc { font-size: 12px; color: var(--muted); }
+.vip-sub-plan-price { font-size: 20px; font-weight: 900; color: var(--gold); white-space: nowrap; }
+.vip-sub-plan-price span { font-size: 12px; color: var(--muted); font-weight: 600; }
+
+.vip-sub-plan-features { display: flex; flex-direction: column; gap: 6px; }
+.vip-sub-plan-features span { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.vip-sub-plan-features i { color: var(--green); font-size: 10px; }
+
+.vip-summary-card { border-color: var(--border-gold); }
+.summary-val.gold { color: var(--gold); }
+
+.vip-delivery-box { margin-top: 16px; }
+
+.vip-delivery-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vip-del-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  padding: 8px 12px;
+  background: var(--bg-card2);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.vip-del-step i   { color: var(--border); font-size: 11px; }
+.vip-del-step.done i { color: var(--gold); }
+.vip-del-step.done   { color: var(--text); }
+
+/* LOGIN GATE */
+.vip-login-gate {
+  text-align: center;
+  padding: 60px 20px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.vip-gate-icon {
+  font-size: 52px;
+  color: var(--gold);
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.vip-login-gate h2 { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+.vip-login-gate p  { color: var(--muted); font-size: 15px; line-height: 1.8; margin-bottom: 24px; }
+.vip-gate-btns     { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .vip-hero-inner     { grid-template-columns: 1fr; }
+  .vip-hero-left h1   { font-size: 38px; }
+  .vip-hero-stats     { grid-template-columns: repeat(2, 1fr); }
+  .vip-exchanges-grid { grid-template-columns: repeat(3, 1fr); }
+  .vip-sub-grid       { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .vip-hero           { padding: 40px 16px; }
+  .vip-hero-left h1   { font-size: 28px; }
+  .vip-sub-plans      { grid-template-columns: 1fr; }
+  .vip-exchanges-grid { grid-template-columns: repeat(2, 1fr); }
+  .vip-plans-toggle   { grid-template-columns: 1fr; }
+}

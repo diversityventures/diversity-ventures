@@ -1,39 +1,476 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<section class="page-hero">
-  <div class="page-hero-content">
-    <span class="tag">{{ t('vip_futures') }}</span>
-    <h1>{{ t('vip_title') }}</h1>
-    <p>{{ t('vip_subtitle') }}</p>
+
+<!-- HERO -->
+<section class="vip-hero">
+  <div class="vip-hero-inner">
+    <div class="vip-hero-left">
+      <div class="vip-crown-badge">
+        <i class="fa-solid fa-crown"></i> VIP ACCESS
+      </div>
+      <h1>Premium Futures<br>Trading Signals</h1>
+      <p>Join our exclusive VIP futures environment with structured market analysis, premium USDT-pair signals across Binance and Bybit, and disciplined trading support — 24 hours a day, 7 days a week.</p>
+      <div class="vip-hero-stats">
+        <div class="vip-hero-stat">
+          <strong>3–9</strong>
+          <span>Signals Daily</span>
+        </div>
+        <div class="vip-hero-stat">
+          <strong>70–80%</strong>
+          <span>Accuracy</span>
+        </div>
+        <div class="vip-hero-stat">
+          <strong>24/7</strong>
+          <span>Active Platform</span>
+        </div>
+        <div class="vip-hero-stat">
+          <strong>100+</strong>
+          <span>USDT Pairs</span>
+        </div>
+      </div>
+    </div>
+    <div class="vip-hero-right">
+      <div class="vip-price-card">
+        <div class="vip-price-label">Choose Your Plan</div>
+        <div class="vip-plans-toggle">
+          <div class="vip-plan-opt active" id="plan1month" onclick="selectVipPlan('1month')">
+            <div class="vip-plan-period">1 Month</div>
+            <div class="vip-plan-price">$100</div>
+            <div class="vip-plan-sub">USDT</div>
+          </div>
+          <div class="vip-plan-opt" id="plan3months" onclick="selectVipPlan('3months')">
+            <div class="vip-plan-period">3 Months</div>
+            <div class="vip-plan-price">$250</div>
+            <div class="vip-plan-sub">USDT — Save $50</div>
+            <div class="vip-plan-badge">BEST VALUE</div>
+          </div>
+        </div>
+        <a href="#subscribe" class="btn gold vip-cta-btn" onclick="scrollToSubscribe()">
+          <i class="fa-solid fa-bolt"></i> Subscribe Now
+        </a>
+        <div class="vip-price-note">Crypto payment only · Instant access after approval</div>
+      </div>
+    </div>
   </div>
 </section>
 
+<!-- WHAT YOU GET -->
 <section class="content-section">
+  <div class="section-header">
+    <span class="tag">What's Included</span>
+    <h2>Everything in Your VIP Plan</h2>
+    <p>A complete professional trading signals environment designed for serious futures traders.</p>
+  </div>
   <div class="section-grid three">
-    <div class="info-card">
-      <div class="icon-title">
-        <i class="fa-solid fa-chart-line"></i>
-        <h3>{{ t('signals_daily') }}</h3>
-      </div>
-      <p>{{ t('signals_daily_text') }}</p>
+    <div class="info-card vip-feature-card">
+      <div class="vip-feature-icon"><i class="fa-solid fa-bolt"></i></div>
+      <h3>3–9 Signals Daily</h3>
+      <p>Carefully selected futures setups with clear entry, take profit and stop loss levels. Shared with a structured disciplined approach every single day.</p>
     </div>
-
-    <div class="info-card">
-      <div class="icon-title">
-        <i class="fa-solid fa-coins"></i>
-        <h3>{{ t('usdt_focus') }}</h3>
-      </div>
-      <p>{{ t('usdt_focus_text') }}</p>
+    <div class="info-card vip-feature-card">
+      <div class="vip-feature-icon"><i class="fa-solid fa-chart-candlestick"></i></div>
+      <h3>USDT Pairs Focus</h3>
+      <p>Focused exclusively on the most actively traded USDT pairs across Binance and Bybit futures markets for maximum liquidity and clean execution.</p>
     </div>
-
-    <div class="info-card">
-      <div class="icon-title">
-        <i class="fa-solid fa-crown"></i>
-        <h3>{{ t('vip_subscription') }}</h3>
-      </div>
-      <p>{{ t('vip_subscription_text') }}</p>
+    <div class="info-card vip-feature-card">
+      <div class="vip-feature-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <h3>70–80% Accuracy</h3>
+      <p>Proven track record across live community tracking. Every signal includes risk management parameters and position sizing guidance.</p>
+    </div>
+    <div class="info-card vip-feature-card">
+      <div class="vip-feature-icon"><i class="fa-solid fa-clock"></i></div>
+      <h3>24/7 Platform</h3>
+      <p>The VIP platform is active and monitored around the clock. Signals are posted in real time regardless of time zone or market session.</p>
+    </div>
+    <div class="info-card vip-feature-card">
+      <div class="vip-feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+      <h3>Market Analysis</h3>
+      <p>Daily structured market analysis covering macro trends, key support and resistance levels, and high-probability trade setups.</p>
+    </div>
+    <div class="info-card vip-feature-card">
+      <div class="vip-feature-icon"><i class="fa-brands fa-telegram"></i></div>
+      <h3>VIP Telegram Access</h3>
+      <p>Exclusive access to the private VIP Telegram channel where all signals, analysis and trading updates are delivered instantly.</p>
     </div>
   </div>
 </section>
+
+<!-- EXCHANGES SUPPORTED -->
+<section class="content-section">
+  <div class="section-header">
+    <span class="tag">Supported Exchanges</span>
+    <h2>Trade on Any Exchange</h2>
+    <p>Our signals work across all major futures exchanges. Trade wherever you are most comfortable.</p>
+  </div>
+  <div class="vip-exchanges-grid">
+    <div class="vip-exchange-card active-exchange">
+      <img src="https://assets.coingecko.com/markets/images/52/small/binance.jpg" alt="Binance">
+      <div class="vip-exchange-name">Binance Futures</div>
+      <div class="vip-exchange-sub">USDT-M Perpetual</div>
+      <span class="vip-exchange-badge">Primary</span>
+    </div>
+    <div class="vip-exchange-card active-exchange">
+      <img src="https://assets.coingecko.com/markets/images/116/small/bybit_spot.jpg" alt="Bybit">
+      <div class="vip-exchange-name">Bybit Futures</div>
+      <div class="vip-exchange-sub">USDT Perpetual</div>
+      <span class="vip-exchange-badge">Primary</span>
+    </div>
+    <div class="vip-exchange-card">
+      <div class="vip-exchange-icon">📊</div>
+      <div class="vip-exchange-name">OKX</div>
+      <div class="vip-exchange-sub">Futures & Perps</div>
+    </div>
+    <div class="vip-exchange-card">
+      <div class="vip-exchange-icon">⚡</div>
+      <div class="vip-exchange-name">KuCoin</div>
+      <div class="vip-exchange-sub">Futures</div>
+    </div>
+    <div class="vip-exchange-card">
+      <div class="vip-exchange-icon">🔷</div>
+      <div class="vip-exchange-name">BitGet</div>
+      <div class="vip-exchange-sub">Copy & Futures</div>
+    </div>
+    <div class="vip-exchange-card">
+      <div class="vip-exchange-icon">🌐</div>
+      <div class="vip-exchange-name">Any Exchange</div>
+      <div class="vip-exchange-sub">USDT pairs</div>
+    </div>
+  </div>
+</section>
+
+<!-- SAMPLE PAIRS -->
+<section class="content-section">
+  <div class="section-header">
+    <span class="tag">Covered Markets</span>
+    <h2>100+ USDT Pairs Covered</h2>
+    <p>From major coins to high-volatility altcoins — our analysts cover the full Binance and Bybit futures catalogue.</p>
+  </div>
+  <div class="vip-pairs-grid">
+    <div class="vip-pair-tag">BTC/USDT</div>
+    <div class="vip-pair-tag">ETH/USDT</div>
+    <div class="vip-pair-tag">SOL/USDT</div>
+    <div class="vip-pair-tag">BNB/USDT</div>
+    <div class="vip-pair-tag">XRP/USDT</div>
+    <div class="vip-pair-tag">ADA/USDT</div>
+    <div class="vip-pair-tag">DOGE/USDT</div>
+    <div class="vip-pair-tag">AVAX/USDT</div>
+    <div class="vip-pair-tag">LINK/USDT</div>
+    <div class="vip-pair-tag">DOT/USDT</div>
+    <div class="vip-pair-tag">MATIC/USDT</div>
+    <div class="vip-pair-tag">LTC/USDT</div>
+    <div class="vip-pair-tag">UNI/USDT</div>
+    <div class="vip-pair-tag">ATOM/USDT</div>
+    <div class="vip-pair-tag">FIL/USDT</div>
+    <div class="vip-pair-tag">NEAR/USDT</div>
+    <div class="vip-pair-tag">APT/USDT</div>
+    <div class="vip-pair-tag">ARB/USDT</div>
+    <div class="vip-pair-tag">OP/USDT</div>
+    <div class="vip-pair-tag">INJ/USDT</div>
+    <div class="vip-pair-tag vip-pair-more">+ 80 more pairs</div>
+  </div>
+</section>
+
+<!-- SUBSCRIPTION SECTION -->
+<section class="content-section" id="subscribe">
+  {% if session.get('user_id') %}
+
+  <div class="section-header">
+    <span class="tag">Subscribe</span>
+    <h2>Choose Your VIP Plan</h2>
+    <p>Select your subscription period, pay via crypto, and get access within 24 hours of approval.</p>
+  </div>
+
+  <div class="vip-sub-grid">
+
+    <!-- PLAN SELECTION -->
+    <div class="vip-sub-left">
+
+      <!-- PLAN CARDS -->
+      <div class="vip-sub-plans">
+        <div class="vip-sub-plan-card active" id="subPlan1" onclick="selectSubPlan('1month', this)">
+          <div class="vip-sub-plan-top">
+            <div>
+              <div class="vip-sub-plan-name">1 Month Access</div>
+              <div class="vip-sub-plan-desc">Full VIP access for 30 days</div>
+            </div>
+            <div class="vip-sub-plan-price">$100 <span>USDT</span></div>
+          </div>
+          <div class="vip-sub-plan-features">
+            <span><i class="fa-solid fa-check"></i> 3-9 signals daily</span>
+            <span><i class="fa-solid fa-check"></i> 24/7 access</span>
+            <span><i class="fa-solid fa-check"></i> Market analysis</span>
+            <span><i class="fa-solid fa-check"></i> VIP Telegram</span>
+          </div>
+        </div>
+
+        <div class="vip-sub-plan-card" id="subPlan3" onclick="selectSubPlan('3months', this)">
+          <div class="vip-sub-plan-badge-wrap">
+            <span class="vip-sub-best-badge">SAVE $50</span>
+          </div>
+          <div class="vip-sub-plan-top">
+            <div>
+              <div class="vip-sub-plan-name">3 Months Access</div>
+              <div class="vip-sub-plan-desc">Full VIP access for 90 days</div>
+            </div>
+            <div class="vip-sub-plan-price">$250 <span>USDT</span></div>
+          </div>
+          <div class="vip-sub-plan-features">
+            <span><i class="fa-solid fa-check"></i> 3-9 signals daily</span>
+            <span><i class="fa-solid fa-check"></i> 24/7 access</span>
+            <span><i class="fa-solid fa-check"></i> Market analysis</span>
+            <span><i class="fa-solid fa-check"></i> VIP Telegram</span>
+            <span><i class="fa-solid fa-check"></i> Priority support</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYMENT FORM -->
+      <form method="POST" action="/portal" enctype="multipart/form-data" class="vip-pay-form">
+        <input type="hidden" name="plan_name" id="vip_plan_name" value="VIP Futures - 1 Month ($100 USDT)">
+
+        <!-- PAYMENT METHOD -->
+        <div class="portal-step-card">
+          <div class="portal-step-num">2</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Select Payment Method</div>
+            <div class="payment-method-grid">
+              <button type="button" class="pay-method-btn" onclick="selectVipPayment('USDT_TRC20', this)">
+                <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">USDT</span>
+                <span class="pay-method-sub">TRC20</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectVipPayment('USDT_ERC20', this)">
+                <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">USDT</span>
+                <span class="pay-method-sub">ERC20</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectVipPayment('BTC', this)">
+                <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">Bitcoin</span>
+                <span class="pay-method-sub">BTC</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectVipPayment('SOL', this)">
+                <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">Solana</span>
+                <span class="pay-method-sub">SOL</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectVipPayment('USDC', this)">
+                <img src="https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png" alt="USDC" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">USDC</span>
+                <span class="pay-method-sub">ERC20</span>
+              </button>
+            </div>
+            <input type="hidden" name="payment_method" id="vip_payment_method">
+          </div>
+        </div>
+
+        <!-- WALLET ADDRESS DISPLAY -->
+        <div class="portal-step-card" id="vipWalletSection" style="display:none;">
+          <div class="portal-step-num">3</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Send Payment To This Address</div>
+            <div class="wallet-display-box">
+              <div class="wallet-coin-header">
+                <img id="vipCoinLogo" src="" alt="" style="width:32px;height:32px;border-radius:50%;background:#fff;">
+                <div>
+                  <div class="wallet-coin-name" id="vipCoinName"></div>
+                  <div class="wallet-network" id="vipCoinNetwork"></div>
+                </div>
+              </div>
+              <div class="qr-container">
+                <div id="vipQrcode"></div>
+                <div class="qr-label">Scan to pay</div>
+              </div>
+              <div class="wallet-addr-label">Wallet Address</div>
+              <div class="wallet-addr-box">
+                <span id="vipWalletAddress" class="wallet-address-text"></span>
+                <button type="button" class="copy-btn" onclick="copyVipAddress()">
+                  <i class="fa-solid fa-copy"></i> Copy
+                </button>
+              </div>
+              <div id="vipCopyMsg" class="copy-message" style="display:none;">
+                <i class="fa-solid fa-circle-check"></i> Copied!
+              </div>
+              <div class="wallet-warning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Send only <strong id="vipWarnCoin"></strong> to this address.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROOF UPLOAD -->
+        <div class="portal-step-card" id="vipProofSection" style="display:none;">
+          <div class="portal-step-num">4</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Upload Payment Proof & Submit</div>
+            <div class="form-group">
+              <label>Transaction Hash / Reference</label>
+              <input type="text" name="transaction_ref" placeholder="Paste your transaction hash">
+            </div>
+            <div class="form-group">
+              <label>Upload Payment Screenshot</label>
+              <div class="upload-area" onclick="document.getElementById('vip_proof').click()">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <div class="upload-text">Click to upload screenshot</div>
+                <div class="upload-sub">PNG, JPG up to 10MB</div>
+                <input type="file" name="proof_file" id="vip_proof" accept="image/*" style="display:none;" onchange="previewVipImage(this)">
+              </div>
+              <div id="vipImgPreview" style="display:none;margin-top:12px;">
+                <img id="vipPreviewImg" class="proof-preview" alt="Preview">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Your Telegram Username (for VIP access delivery)</label>
+              <input type="text" name="notes" placeholder="@yourusername">
+            </div>
+            <button type="submit" class="btn gold auth-btn">
+              <i class="fa-solid fa-crown"></i> Complete VIP Subscription
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- SUMMARY CARD -->
+    <div class="vip-sub-right">
+      <div class="portal-summary-card vip-summary-card">
+        <div class="portal-summary-title" style="color:var(--gold);">
+          <i class="fa-solid fa-crown"></i> VIP Subscription
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Plan</span>
+          <span class="summary-val" id="vipSumPlan">1 Month</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Price</span>
+          <span class="summary-val gold" id="vipSumPrice">$100 USDT</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Access</span>
+          <span class="summary-val">VIP Telegram Channel</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Signals</span>
+          <span class="summary-val">3–9 per day</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Platform</span>
+          <span class="summary-val">Binance + Bybit</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Support</span>
+          <span class="summary-val">24/7 Active</span>
+        </div>
+        <div class="portal-summary-divider"></div>
+        <div class="portal-info-box">
+          <i class="fa-solid fa-circle-info"></i>
+          <p>After payment approval, you will receive your VIP platform link and access instructions via Telegram within 24 hours.</p>
+        </div>
+        <div class="vip-delivery-box">
+          <div class="vip-delivery-steps">
+            <div class="vip-del-step done"><i class="fa-solid fa-check"></i> Pay via crypto</div>
+            <div class="vip-del-step"><i class="fa-solid fa-check"></i> Admin approves</div>
+            <div class="vip-del-step"><i class="fa-solid fa-check"></i> VIP link sent</div>
+            <div class="vip-del-step"><i class="fa-solid fa-check"></i> Start trading</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {% else %}
+
+  <!-- NOT LOGGED IN -->
+  <div class="vip-login-gate">
+    <div class="vip-gate-icon"><i class="fa-solid fa-lock"></i></div>
+    <h2>Login Required</h2>
+    <p>You need a verified Diversity Ventures account to subscribe to VIP Futures access.</p>
+    <div class="vip-gate-btns">
+      <a href="/register" class="btn gold"><i class="fa-solid fa-user-plus"></i> Create Account</a>
+      <a href="/login" class="btn dark"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+    </div>
+  </div>
+
+  {% endif %}
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const vipWallets = {
+  USDT_TRC20: { address: "TJS7YqGf6zLLKtmwEx3V6k3i3Lwy9VYyCi", name: "USDT (TRC20)", network: "Tron Network — TRC20", logo: "https://assets.coingecko.com/coins/images/325/small/Tether.png", warn: "USDT TRC20" },
+  USDT_ERC20: { address: "0x380abcdbeb8fee93c4287650c1749adf6bf6aa01", name: "USDT (ERC20)", network: "Ethereum Network", logo: "https://assets.coingecko.com/coins/images/325/small/Tether.png", warn: "USDT ERC20" },
+  BTC:  { address: "1C7RmLPPbYzJ6hTa9k7EHys6MXSeb9sKNB", name: "Bitcoin (BTC)", network: "Bitcoin Network", logo: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png", warn: "BTC" },
+  SOL:  { address: "8cBtQsKmKsyEeA59qGBzKzNZx4ASnbuArtr79t9TfGfL", name: "Solana (SOL)", network: "Solana Network", logo: "https://assets.coingecko.com/coins/images/4128/small/solana.png", warn: "SOL" },
+  USDC: { address: "0x380abcdbeb8fee93c4287650c1749adf6bf6aa01", name: "USDC", network: "Ethereum Network — ERC20", logo: "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png", warn: "USDC" }
+};
+
+let currentVipPlan = '1month';
+
+function selectVipPlan(plan) {
+  currentVipPlan = plan;
+  document.querySelectorAll('.vip-plan-opt').forEach(el => el.classList.remove('active'));
+  document.getElementById('plan' + (plan === '1month' ? '1month' : '3months')).classList.add('active');
+}
+
+function selectSubPlan(plan, card) {
+  currentVipPlan = plan;
+  document.querySelectorAll('.vip-sub-plan-card').forEach(el => el.classList.remove('active'));
+  card.classList.add('active');
+  if (plan === '1month') {
+    document.getElementById('vip_plan_name').value = 'VIP Futures - 1 Month ($100 USDT)';
+    document.getElementById('vipSumPlan').textContent = '1 Month';
+    document.getElementById('vipSumPrice').textContent = '$100 USDT';
+  } else {
+    document.getElementById('vip_plan_name').value = 'VIP Futures - 3 Months ($250 USDT)';
+    document.getElementById('vipSumPlan').textContent = '3 Months';
+    document.getElementById('vipSumPrice').textContent = '$250 USDT';
+  }
+}
+
+function selectVipPayment(method, btn) {
+  document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('vip_payment_method').value = method;
+  const w = vipWallets[method];
+  document.getElementById('vipCoinName').textContent = w.name;
+  document.getElementById('vipCoinNetwork').textContent = w.network;
+  document.getElementById('vipCoinLogo').src = w.logo;
+  document.getElementById('vipWalletAddress').textContent = w.address;
+  document.getElementById('vipWarnCoin').textContent = w.warn;
+  const qrDiv = document.getElementById('vipQrcode');
+  qrDiv.innerHTML = '';
+  new QRCode(qrDiv, { text: w.address, width: 160, height: 160, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+  document.getElementById('vipWalletSection').style.display = 'block';
+  document.getElementById('vipProofSection').style.display = 'block';
+  document.getElementById('vipWalletSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyVipAddress() {
+  const addr = document.getElementById('vipWalletAddress').textContent;
+  navigator.clipboard.writeText(addr).then(() => {
+    const msg = document.getElementById('vipCopyMsg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 2500);
+  });
+}
+
+function previewVipImage(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('vipPreviewImg').src = e.target.result;
+      document.getElementById('vipImgPreview').style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function scrollToSubscribe() {
+  document.getElementById('subscribe').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+
 {% endblock %}
