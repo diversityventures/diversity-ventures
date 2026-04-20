@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag">P2P Exchange</span>
+    <h1>Buy & Sell Crypto</h1>
+    <p>Fast, secure peer-to-peer cryptocurrency exchange. Buy crypto with local currency or sell your crypto for local payouts. All trades verified by our team within 30 minutes.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="exchange-choice-grid">
+
+    <div class="exchange-choice-card buy-card" onclick="window.location='/exchange/buy'">
+      <div class="exchange-choice-icon buy-icon">
+        <i class="fa-solid fa-arrow-trend-up"></i>
+      </div>
+      <div class="exchange-choice-body">
+        <div class="exchange-choice-title buy-title">Buy Crypto</div>
+        <div class="exchange-choice-desc">Send local currency via bank or mobile money and receive crypto directly to your wallet.</div>
+        <div class="exchange-choice-tags">
+          <span class="exc-tag">USDT</span>
+          <span class="exc-tag">BTC</span>
+          <span class="exc-tag">SOL</span>
+          <span class="exc-tag">USDC</span>
+          <span class="exc-tag">Monero</span>
+        </div>
+      </div>
+      <div class="exchange-choice-footer">
+        <div class="exc-rate">You receive <strong>80%</strong> of sent amount</div>
+        <button class="btn gold exc-btn">
+          <i class="fa-solid fa-arrow-trend-up"></i> Buy Crypto
+        </button>
+      </div>
+    </div>
+
+    <div class="exchange-choice-card sell-card" onclick="window.location='/exchange/sell'">
+      <div class="exchange-choice-icon sell-icon">
+        <i class="fa-solid fa-arrow-trend-down"></i>
+      </div>
+      <div class="exchange-choice-body">
+        <div class="exchange-choice-title sell-title">Sell Crypto</div>
+        <div class="exchange-choice-desc">Send your crypto to our wallet and receive local currency payout via bank or mobile money.</div>
+        <div class="exchange-choice-tags">
+          <span class="exc-tag">USDT</span>
+          <span class="exc-tag">BTC</span>
+          <span class="exc-tag">SOL</span>
+          <span class="exc-tag">USDC</span>
+        </div>
+      </div>
+      <div class="exchange-choice-footer">
+        <div class="exc-rate">You receive <strong>80%</strong> of deposited value</div>
+        <button class="btn exc-btn-sell">
+          <i class="fa-solid fa-arrow-trend-down"></i> Sell Crypto
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="section-grid three">
+    <div class="info-card" style="text-align:center;padding:28px;">
+      <div style="font-size:32px;margin-bottom:12px;">⚡</div>
+      <h3>Fast Processing</h3>
+      <p>All trades processed within 30 minutes by our verified team.</p>
+    </div>
+    <div class="info-card" style="text-align:center;padding:28px;">
+      <div style="font-size:32px;margin-bottom:12px;">🔒</div>
+      <h3>Secure & Verified</h3>
+      <p>Every trade is manually verified before crypto or fiat is released.</p>
+    </div>
+    <div class="info-card" style="text-align:center;padding:28px;">
+      <div style="font-size:32px;margin-bottom:12px;">💬</div>
+      <h3>Live Support</h3>
+      <p>Direct communication with our agent throughout your trade.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

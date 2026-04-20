@@ -1,72 +1,429 @@
 {% extends 'base.html' %}
-
 {% block content %}
+
 <section class="page-hero">
   <div class="page-hero-content">
-    <span class="tag">{{ t('portal') }}</span>
-    <h1>{{ t('portal_title') }}</h1>
-    <p>{{ t('portal_subtitle') }}</p>
+    <span class="tag">Client Portal</span>
+    <h1>Submit Your Investment</h1>
+    <p>Select your payment method, send the exact amount to the wallet address shown, then upload your payment screenshot for admin confirmation.</p>
   </div>
 </section>
 
 <section class="content-section">
-  <div class="form-box">
-    <form method="POST" enctype="multipart/form-data">
-      <div class="form-group">
-        <label>{{ t('package') }}</label>
-        <select name="plan_name" required>
-          <option value="VIP Futures">VIP Futures</option>
-          <option value="VIP Futures Pro">VIP Futures Pro</option>
-          <option value="Private Partnership">Private Partnership</option>
-        </select>
-      </div>
+  <div class="portal-grid">
 
-      <div class="form-group">
-        <label>{{ t('payment_method') }}</label>
-        <select name="payment_method" id="payment_method" required onchange="updatePaymentInstructions()">
-          <option value="USDT">USDT</option>
-          <option value="BTC">BTC</option>
-          <option value="SOL">SOL</option>
-          <option value="USDC">USDC</option>
-          <option value="Local Currency">Local Currency</option>
-        </select>
-      </div>
+    <!-- LEFT: PLAN + PAYMENT METHOD -->
+    <div class="portal-left">
 
-      <div id="payment-instructions" class="payment-box">
-        <h3>Crypto Payment Instructions</h3>
-        <p><strong>USDT Payment Selected</strong></p>
-        <p>Send your payment to the wallet below, then upload proof and enter your transaction reference.</p>
-
-        <div class="wallet-box">
-          <div class="wallet-label">USDT Wallet Address</div>
-          <div class="wallet-address" id="wallet-address">YOUR_USDT_WALLET_ADDRESS_HERE</div>
-          <button type="button" class="copy-btn" onclick="copyWalletAddress()">Copy Address</button>
-          <div id="copy-message" class="copy-message"></div>
+      <!-- STEP 1: PLAN -->
+      <div class="portal-step-card">
+        <div class="portal-step-num">1</div>
+        <div class="portal-step-content">
+          <div class="portal-step-title">Select Your Plan</div>
+          <div class="form-group" style="margin-bottom:0;">
+            <select id="plan_select" onchange="updatePlan()">
+              <option value="">-- Choose a plan --</option>
+              <optgroup label="🇲🇿 Mozambique (MZN)">
+                <option value="Basic MZN - 12,650 MZN">Basic - Invest 12,650 MZN</option>
+                <option value="Basic MZN - 19,200 MZN">Basic - Invest 19,200 MZN</option>
+                <option value="Basic MZN - 32,600 MZN">Basic - Invest 32,600 MZN</option>
+                <option value="VIP MZN - 50,600 MZN">VIP - Invest 50,600 MZN</option>
+                <option value="VIP MZN - 63,250 MZN">VIP - Invest 63,250 MZN</option>
+                <option value="VIP MZN - 88,550 MZN">VIP - Invest 88,550 MZN</option>
+                <option value="Gold MZN - 126,500 MZN">Gold - Invest 126,500 MZN</option>
+                <option value="Gold MZN - 151,800 MZN">Gold - Invest 151,800 MZN</option>
+                <option value="Gold MZN - 189,750 MZN">Gold - Invest 189,750 MZN</option>
+              </optgroup>
+              <optgroup label="🇿🇲 Zambia (ZMW)">
+                <option value="Basic ZMW - K 4,700">Basic - Invest K 4,700</option>
+                <option value="Basic ZMW - K 7,100">Basic - Invest K 7,100</option>
+                <option value="Basic ZMW - K 12,000">Basic - Invest K 12,000</option>
+                <option value="VIP ZMW - K 18,700">VIP - Invest K 18,700</option>
+                <option value="VIP ZMW - K 23,400">VIP - Invest K 23,400</option>
+                <option value="VIP ZMW - K 32,800">VIP - Invest K 32,800</option>
+                <option value="Gold ZMW - K 46,800">Gold - Invest K 46,800</option>
+                <option value="Gold ZMW - K 56,200">Gold - Invest K 56,200</option>
+                <option value="Gold ZMW - K 70,200">Gold - Invest K 70,200</option>
+              </optgroup>
+              <optgroup label="🇿🇦 South Africa (ZAR)">
+                <option value="Basic ZAR - R 3,900">Basic - Invest R 3,900</option>
+                <option value="Basic ZAR - R 6,000">Basic - Invest R 6,000</option>
+                <option value="Basic ZAR - R 10,100">Basic - Invest R 10,100</option>
+                <option value="VIP ZAR - R 15,700">VIP - Invest R 15,700</option>
+                <option value="VIP ZAR - R 19,600">VIP - Invest R 19,600</option>
+                <option value="VIP ZAR - R 27,500">VIP - Invest R 27,500</option>
+                <option value="Gold ZAR - R 39,200">Gold - Invest R 39,200</option>
+                <option value="Gold ZAR - R 47,100">Gold - Invest R 47,100</option>
+                <option value="Gold ZAR - R 58,800">Gold - Invest R 58,800</option>
+              </optgroup>
+              <optgroup label="🇦🇴 Angola (AOA)">
+                <option value="Basic AOA - Kz 180,000">Basic - Invest Kz 180,000</option>
+                <option value="Basic AOA - Kz 275,000">Basic - Invest Kz 275,000</option>
+                <option value="Basic AOA - Kz 465,000">Basic - Invest Kz 465,000</option>
+                <option value="VIP AOA - Kz 725,000">VIP - Invest Kz 725,000</option>
+                <option value="VIP AOA - Kz 905,000">VIP - Invest Kz 905,000</option>
+                <option value="VIP AOA - Kz 1,265,000">VIP - Invest Kz 1,265,000</option>
+                <option value="Gold AOA - Kz 1,810,000">Gold - Invest Kz 1,810,000</option>
+                <option value="Gold AOA - Kz 2,170,000">Gold - Invest Kz 2,170,000</option>
+                <option value="Gold AOA - Kz 2,715,000">Gold - Invest Kz 2,715,000</option>
+              </optgroup>
+              <optgroup label="🇧🇷 Brazil (BRL)">
+                <option value="Basic BRL - R$ 1,025">Basic - Invest R$ 1,025</option>
+                <option value="Basic BRL - R$ 1,550">Basic - Invest R$ 1,550</option>
+                <option value="Basic BRL - R$ 2,650">Basic - Invest R$ 2,650</option>
+                <option value="VIP BRL - R$ 4,100">VIP - Invest R$ 4,100</option>
+                <option value="VIP BRL - R$ 5,150">VIP - Invest R$ 5,150</option>
+                <option value="VIP BRL - R$ 7,200">VIP - Invest R$ 7,200</option>
+                <option value="Gold BRL - R$ 10,250">Gold - Invest R$ 10,250</option>
+                <option value="Gold BRL - R$ 12,300">Gold - Invest R$ 12,300</option>
+                <option value="Gold BRL - R$ 15,400">Gold - Invest R$ 15,400</option>
+              </optgroup>
+              <optgroup label="🇺🇬 Uganda (UGX)">
+                <option value="Basic UGX - USh 700,000">Basic - Invest USh 700,000</option>
+                <option value="Basic UGX - USh 1,050,000">Basic - Invest USh 1,050,000</option>
+                <option value="Basic UGX - USh 1,800,000">Basic - Invest USh 1,800,000</option>
+                <option value="VIP UGX - USh 2,800,000">VIP - Invest USh 2,800,000</option>
+                <option value="VIP UGX - USh 3,500,000">VIP - Invest USh 3,500,000</option>
+                <option value="VIP UGX - USh 4,900,000">VIP - Invest USh 4,900,000</option>
+                <option value="Gold UGX - USh 7,000,000">Gold - Invest USh 7,000,000</option>
+                <option value="Gold UGX - USh 8,400,000">Gold - Invest USh 8,400,000</option>
+                <option value="Gold UGX - USh 10,500,000">Gold - Invest USh 10,500,000</option>
+              </optgroup>
+              <optgroup label="🌍 USD / Crypto (All Countries)">
+                <option value="Basic USD - $200">Basic - Invest $200</option>
+                <option value="Basic USD - $300">Basic - Invest $300</option>
+                <option value="Basic USD - $500">Basic - Invest $500</option>
+                <option value="VIP USD - $1,500">VIP - Invest $1,500</option>
+                <option value="VIP USD - $3,000">VIP - Invest $3,000</option>
+                <option value="Gold USD - $5,000">Gold - Invest $5,000</option>
+                <option value="Gold USD - $10,000">Gold - Invest $10,000</option>
+                <option value="VIP Signals - $100/month">VIP Signals - $100/month</option>
+                <option value="VIP Signals - $250/3 months">VIP Signals - $250/3 months</option>
+              </optgroup>
+            </select>
+          </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label>{{ t('transaction_ref') }}</label>
-        <input type="text" name="transaction_ref" placeholder="{{ t('transaction_ref') }}">
+      <!-- STEP 2: PAYMENT METHOD -->
+      <div class="portal-step-card">
+        <div class="portal-step-num">2</div>
+        <div class="portal-step-content">
+          <div class="portal-step-title">Select Payment Method</div>
+          <div class="payment-method-grid">
+            <button type="button" class="pay-method-btn" onclick="selectPayment('USDT_TRC20')">
+              <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT">
+              <span class="pay-method-name">USDT</span>
+              <span class="pay-method-sub">TRC20</span>
+            </button>
+            <button type="button" class="pay-method-btn" onclick="selectPayment('USDT_ERC20')">
+              <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT">
+              <span class="pay-method-name">USDT</span>
+              <span class="pay-method-sub">ERC20</span>
+            </button>
+            <button type="button" class="pay-method-btn" onclick="selectPayment('BTC')">
+              <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC">
+              <span class="pay-method-name">Bitcoin</span>
+              <span class="pay-method-sub">BTC</span>
+            </button>
+            <button type="button" class="pay-method-btn" onclick="selectPayment('SOL')">
+              <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL">
+              <span class="pay-method-name">Solana</span>
+              <span class="pay-method-sub">SOL</span>
+            </button>
+            <button type="button" class="pay-method-btn" onclick="selectPayment('USDC')">
+              <img src="https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png" alt="USDC">
+              <span class="pay-method-name">USDC</span>
+              <span class="pay-method-sub">ERC20</span>
+            </button>
+            <button type="button" class="pay-method-btn local" onclick="selectPayment('Local Currency')">
+              <span style="font-size:24px;">💵</span>
+              <span class="pay-method-name">Local</span>
+              <span class="pay-method-sub">Currency</span>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label>{{ t('upload_proof') }}</label>
-        <input type="file" name="proof_file" id="proof_file" accept="image/*" onchange="previewProof(event)">
+      <!-- STEP 3: WALLET ADDRESS -->
+      <div class="portal-step-card" id="walletSection" style="display:none;">
+        <div class="portal-step-num">3</div>
+        <div class="portal-step-content">
+          <div class="portal-step-title">Send Payment To This Address</div>
+
+          <div id="localCurrencyBox" style="display:none;">
+            <div class="local-currency-box">
+              <i class="fa-brands fa-telegram" style="color:var(--blue);font-size:24px;"></i>
+              <div>
+                <div style="font-weight:700;color:var(--text);margin-bottom:4px;">Local Currency Payment</div>
+                <div style="color:var(--muted);font-size:13px;line-height:1.7;">Contact our local agent to process your payment in your local currency.</div>
+                <div style="margin-top:10px;font-size:15px;font-weight:800;color:var(--gold);">@agent_rogermanuel</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="cryptoBox">
+            <div class="wallet-display-box">
+              <div class="wallet-coin-header">
+                <img id="walletCoinLogo" src="" alt="" style="width:32px;height:32px;border-radius:50%;background:#fff;">
+                <div>
+                  <div class="wallet-coin-name" id="walletCoinName"></div>
+                  <div class="wallet-network" id="walletNetwork"></div>
+                </div>
+              </div>
+
+              <!-- QR CODE -->
+              <div class="qr-container">
+                <div id="qrcode"></div>
+                <div class="qr-label">Scan with your wallet app</div>
+              </div>
+
+              <!-- ADDRESS -->
+              <div class="wallet-addr-label">Wallet Address</div>
+              <div class="wallet-addr-box">
+                <span id="walletAddress" class="wallet-address-text"></span>
+                <button class="copy-btn" onclick="copyAddress()">
+                  <i class="fa-solid fa-copy"></i> Copy
+                </button>
+              </div>
+              <div id="copyMsg" class="copy-message" style="display:none;">
+                <i class="fa-solid fa-circle-check"></i> Address copied!
+              </div>
+
+              <div class="wallet-warning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Send only <strong id="warnCoin"></strong> to this address. Sending wrong coins will result in permanent loss.
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
 
-      <div id="proof-preview-box" class="proof-preview-box" style="display: none;">
-        <div class="wallet-label">Proof Preview</div>
-        <img id="proof-preview" class="proof-preview" alt="Proof Preview">
+      <!-- STEP 4: SUBMIT PROOF -->
+      <div class="portal-step-card" id="proofSection" style="display:none;">
+        <div class="portal-step-num">4</div>
+        <div class="portal-step-content">
+          <div class="portal-step-title">Upload Payment Proof & Submit</div>
+
+          <form method="POST" enctype="multipart/form-data" id="portalForm">
+            <input type="hidden" name="plan_name" id="hidden_plan">
+            <input type="hidden" name="payment_method" id="hidden_method">
+
+            <div class="form-group">
+              <label>Transaction Reference / Hash</label>
+              <input type="text" name="transaction_ref" placeholder="Paste your transaction hash or reference">
+            </div>
+
+            <div class="form-group">
+              <label>Upload Payment Screenshot</label>
+              <div class="upload-area" onclick="document.getElementById('proof_file').click()">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <div class="upload-text">Click to upload screenshot</div>
+                <div class="upload-sub">PNG, JPG up to 10MB</div>
+                <input type="file" name="proof_file" id="proof_file" accept="image/*" style="display:none;" onchange="previewImage(this)">
+              </div>
+              <div id="imagePreviewWrap" style="display:none;margin-top:12px;">
+                <img id="imagePreview" class="proof-preview" alt="Preview">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Additional Notes (optional)</label>
+              <textarea name="notes" placeholder="Any additional information..."></textarea>
+            </div>
+
+            <button type="submit" class="btn gold auth-btn">
+              <i class="fa-solid fa-paper-plane"></i> Submit Investment
+            </button>
+          </form>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label>{{ t('notes') }}</label>
-        <textarea name="notes" placeholder="{{ t('notes') }}"></textarea>
-      </div>
+    </div>
 
-      <button type="submit" class="btn gold">{{ t('submit_review') }}</button>
-    </form>
+    <!-- RIGHT: SUMMARY -->
+    <div class="portal-right">
+      <div class="portal-summary-card">
+        <div class="portal-summary-title">
+          <i class="fa-solid fa-receipt"></i> Submission Summary
+        </div>
+
+        <div class="summary-row">
+          <span class="summary-key">Plan</span>
+          <span class="summary-val" id="sum-plan">Not selected</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Payment</span>
+          <span class="summary-val" id="sum-method">Not selected</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Status</span>
+          <span class="summary-val"><span class="status-badge status-pending">Pending Review</span></span>
+        </div>
+
+        <div class="portal-summary-divider"></div>
+
+        <div class="portal-summary-steps">
+          <div class="ps-step active">
+            <div class="ps-dot"></div>
+            <span>Select plan & payment</span>
+          </div>
+          <div class="ps-step" id="ps2">
+            <div class="ps-dot"></div>
+            <span>Send payment</span>
+          </div>
+          <div class="ps-step" id="ps3">
+            <div class="ps-dot"></div>
+            <span>Upload proof</span>
+          </div>
+          <div class="ps-step" id="ps4">
+            <div class="ps-dot"></div>
+            <span>Admin approval</span>
+          </div>
+          <div class="ps-step" id="ps5">
+            <div class="ps-dot"></div>
+            <span>Investment active</span>
+          </div>
+        </div>
+
+        <div class="portal-summary-divider"></div>
+
+        <div class="portal-info-box">
+          <i class="fa-solid fa-circle-info"></i>
+          <p>After submission, our admin team will verify your payment within 24 hours and activate your investment.</p>
+        </div>
+
+        <a href="/dashboard" class="btn dark" style="width:100%;justify-content:center;margin-top:16px;">
+          <i class="fa-solid fa-gauge"></i> Go to Dashboard
+        </a>
+      </div>
+    </div>
+
   </div>
 </section>
+
+<!-- QR CODE LIBRARY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+const wallets = {
+  USDT_TRC20: {
+    address: "TJS7YqGf6zLLKtmwEx3V6k3i3Lwy9VYyCi",
+    name: "USDT (TRC20)",
+    network: "Tron Network — TRC20",
+    logo: "https://assets.coingecko.com/coins/images/325/small/Tether.png",
+    warn: "USDT TRC20"
+  },
+  USDT_ERC20: {
+    address: "0x380abcdbeb8fee93c4287650c1749adf6bf6aa01",
+    name: "USDT (ERC20)",
+    network: "Ethereum Network — ERC20",
+    logo: "https://assets.coingecko.com/coins/images/325/small/Tether.png",
+    warn: "USDT ERC20"
+  },
+  BTC: {
+    address: "1C7RmLPPbYzJ6hTa9k7EHys6MXSeb9sKNB",
+    name: "Bitcoin (BTC)",
+    network: "Bitcoin Network",
+    logo: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png",
+    warn: "BTC"
+  },
+  SOL: {
+    address: "8cBtQsKmKsyEeA59qGBzKzNZx4ASnbuArtr79t9TfGfL",
+    name: "Solana (SOL)",
+    network: "Solana Network",
+    logo: "https://assets.coingecko.com/coins/images/4128/small/solana.png",
+    warn: "SOL"
+  },
+  USDC: {
+    address: "0x380abcdbeb8fee93c4287650c1749adf6bf6aa01",
+    name: "USDC",
+    network: "Ethereum Network — ERC20",
+    logo: "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png",
+    warn: "USDC"
+  }
+};
+
+let selectedMethod = null;
+
+function updatePlan() {
+  const plan = document.getElementById("plan_select").value;
+  document.getElementById("sum-plan").textContent = plan || "Not selected";
+  document.getElementById("hidden_plan").value = plan;
+}
+
+function selectPayment(method) {
+  selectedMethod = method;
+  document.querySelectorAll(".pay-method-btn").forEach(b => b.classList.remove("active"));
+  event.currentTarget.classList.add("active");
+  document.getElementById("hidden_method").value = method;
+  document.getElementById("sum-method").textContent = method.replace("_", " ");
+  document.getElementById("walletSection").style.display = "block";
+  document.getElementById("proofSection").style.display = "block";
+  document.getElementById("ps2").classList.add("active");
+  document.getElementById("ps3").classList.add("active");
+
+  if (method === "Local Currency") {
+    document.getElementById("localCurrencyBox").style.display = "block";
+    document.getElementById("cryptoBox").style.display = "none";
+  } else {
+    document.getElementById("localCurrencyBox").style.display = "none";
+    document.getElementById("cryptoBox").style.display = "block";
+    const w = wallets[method];
+    document.getElementById("walletCoinName").textContent = w.name;
+    document.getElementById("walletNetwork").textContent = w.network;
+    document.getElementById("walletCoinLogo").src = w.logo;
+    document.getElementById("walletAddress").textContent = w.address;
+    document.getElementById("warnCoin").textContent = w.warn;
+
+    // Generate QR code
+    const qrDiv = document.getElementById("qrcode");
+    qrDiv.innerHTML = "";
+    new QRCode(qrDiv, {
+      text: w.address,
+      width: 160,
+      height: 160,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  }
+
+  document.getElementById("walletSection").scrollIntoView({ behavior: "smooth" });
+}
+
+function copyAddress() {
+  const addr = document.getElementById("walletAddress").textContent;
+  navigator.clipboard.writeText(addr).then(() => {
+    const msg = document.getElementById("copyMsg");
+    msg.style.display = "block";
+    setTimeout(() => msg.style.display = "none", 2500);
+  });
+}
+
+function previewImage(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById("imagePreview").src = e.target.result;
+      document.getElementById("imagePreviewWrap").style.display = "block";
+      document.getElementById("ps4").classList.add("active");
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function togglePassword(id, btn) {
+  const input = document.getElementById(id);
+  if (input.type === "password") {
+    input.type = "text";
+    btn.textContent = "🙈";
+  } else {
+    input.type = "password";
+    btn.textContent = "👁";
+  }
+}
+</script>
+
 {% endblock %}

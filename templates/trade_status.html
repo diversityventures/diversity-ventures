@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="content-section" style="padding-top:50px;">
+  <div class="trade-status-wrap">
+
+    <div class="trade-status-card">
+
+      <!-- STATUS ICON -->
+      <div class="trade-status-top">
+        {% if trade.status == 'Trade Successful' %}
+          <div class="trade-big-icon success"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="trade-status-title success">Trade Successful!</div>
+        {% elif trade.status == 'Awaiting Confirmation' %}
+          <div class="trade-big-icon pending"><i class="fa-solid fa-hourglass-half"></i></div>
+          <div class="trade-status-title pending">Awaiting Confirmation</div>
+        {% elif trade.status == 'Payment Verified' %}
+          <div class="trade-big-icon verified"><i class="fa-solid fa-shield-check"></i></div>
+          <div class="trade-status-title verified">Payment Verified</div>
+        {% elif trade.status == 'Payout Pending' %}
+          <div class="trade-big-icon payout"><i class="fa-solid fa-clock-rotate-left"></i></div>
+          <div class="trade-status-title payout">Payout Processing</div>
+        {% else %}
+          <div class="trade-big-icon pending"><i class="fa-solid fa-hourglass-half"></i></div>
+          <div class="trade-status-title pending">{{ trade.status }}</div>
+        {% endif %}
+        <div class="trade-status-sub">Trade #{{ trade.id }} &mdash;
+          <span class="{% if trade.trade_type == 'BUY' %}trade-type-buy{% else %}trade-type-sell{% endif %}">
+            {{ trade.trade_type }}
+          </span>
+        </div>
+      </div>
+
+      <!-- PROGRESS STEPS -->
+      <div class="trade-progress-steps">
+        <div class="trade-step {% if trade.status in ['Awaiting Confirmation','Payment Verified','Payout Pending','Trade Successful'] %}done{% endif %}">
+          <div class="trade-step-dot"></div>
+          <div class="trade-step-label">Submitted</div>
+        </div>
+        <div class="trade-step-line"></div>
+        <div class="trade-step {% if trade.status in ['Payment Verified','Payout Pending','Trade Successful'] %}done{% endif %}">
+          <div class="trade-step-dot"></div>
+          <div class="trade-step-label">Verified</div>
+        </div>
+        <div class="trade-step-line"></div>
+        <div class="trade-step {% if trade.status in ['Payout Pending','Trade Successful'] %}done{% endif %}">
+          <div class="trade-step-dot"></div>
+          <div class="trade-step-label">Payout</div>
+        </div>
+        <div class="trade-step-line"></div>
+        <div class="trade-step {% if trade.status == 'Trade Successful' %}done success-step{% endif %}">
+          <div class="trade-step-dot"></div>
+          <div class="trade-step-label">Complete</div>
+        </div>
+      </div>
+
+      <!-- TRADE DETAILS -->
+      <div class="trade-details-grid">
+        <div class="trade-detail-row"><span class="trade-detail-key">Trade ID</span><span class="trade-detail-val">#{{ trade.id }}</span></div>
+        <div class="trade-detail-row"><span class="trade-detail-key">Type</span>
+          <span class="trade-detail-val {% if trade.trade_type == 'BUY' %}trade-type-buy{% else %}trade-type-sell{% endif %}">{{ trade.trade_type }}</span>
+        </div>
+        <div class="trade-detail-row"><span class="trade-detail-key">Asset</span><span class="trade-detail-val">{{ trade.crypto_asset }}</span></div>
+        <div class="trade-detail-row"><span class="trade-detail-key">Amount</span><span class="trade-detail-val">{{ trade.amount }} {{ trade.currency }}</span></div>
+        <div class="trade-detail-row"><span class="trade-detail-key">Country</span><span class="trade-detail-val">{{ trade.country }}</span></div>
+        <div class="trade-detail-row"><span class="trade-detail-key">Payment</span><span class="trade-detail-val">{{ trade.payment_method }}</span></div>
+        {% if trade.wallet_address %}
+        <div class="trade-detail-row"><span class="trade-detail-key">Wallet</span><span class="trade-detail-val small">{{ trade.wallet_address[:20] }}...</span></div>
+        {% endif %}
+        {% if trade.bank_account %}
+        <div class="trade-detail-row"><span class="trade-detail-key">Account</span><span class="trade-detail-val">{{ trade.bank_account }}</span></div>
+        {% endif %}
+      </div>
+
+      <!-- ADMIN MESSAGE -->
+      {% if trade.admin_message %}
+      <div class="trade-admin-msg">
+        <div class="trade-admin-msg-label"><i class="fa-solid fa-headset"></i> Message from Admin</div>
+        <p>{{ trade.admin_message }}</p>
+      </div>
+      {% endif %}
+
+      <!-- ACTIONS -->
+      <div class="trade-actions">
+        <a href="/dashboard" class="btn dark"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+        <a href="https://t.me/agent_rogermanuel" target="_blank" class="btn gold">
+          <i class="fa-brands fa-telegram"></i> Contact Agent
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

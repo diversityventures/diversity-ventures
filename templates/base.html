@@ -34,9 +34,9 @@
           <a href="/packages">
             <i class="fa-solid fa-layer-group"></i> Investment Packages
           </a>
-<a href="/packages">
-  <i class="fa-solid fa-briefcase"></i> Diversity Investment Programme
-</a>
+          <a href="/packages">
+            <i class="fa-solid fa-briefcase"></i> Diversity Investment Programme
+          </a>
           <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}">
             <i class="fa-solid fa-handshake"></i> Earn by Affiliates Programmes
           </a>
@@ -46,13 +46,13 @@
           <a href="{% if session.get('user_id') %}/vip-futures{% else %}/login{% endif %}">
             <i class="fa-solid fa-crown"></i> VIP Daily Futures Trading Signals
           </a>
-          <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}">
+          <a href="/trading-bots">
             <i class="fa-solid fa-robot"></i> Trading Bots
           </a>
         </div>
       </div>
 
-      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="nav-item">
+      <a href="/exchange" class="nav-item">
         <i class="fa-solid fa-right-left"></i>
         <span>Buy / Exchange Crypto</span>
       </a>
@@ -137,12 +137,12 @@
   <!-- MOBILE MENU -->
   <div id="mobileMenu" class="mobile-menu">
     <a href="/"><i class="fa-solid fa-house"></i> {{ t('home') }}</a>
-<a href="/packages"><i class="fa-solid fa-briefcase"></i> Diversity Investment Programme</a>
+    <a href="/packages"><i class="fa-solid fa-briefcase"></i> Diversity Investment Programme</a>
     <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}"><i class="fa-solid fa-handshake"></i> Earn by Affiliates Programmes</a>
     <a href="/free-signals"><i class="fa-solid fa-signal"></i> Free Futures Pairs Trading Signals</a>
     <a href="{% if session.get('user_id') %}/vip-futures{% else %}/login{% endif %}"><i class="fa-solid fa-crown"></i> VIP Daily Futures Trading Signals</a>
-    <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}"><i class="fa-solid fa-robot"></i> Trading Bots</a>
-    <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}"><i class="fa-solid fa-right-left"></i> Buy / Exchange Crypto</a>
+    <a href="/trading-bots"><i class="fa-solid fa-robot"></i> Trading Bots</a>
+    <a href="/exchange"><i class="fa-solid fa-right-left"></i> Buy / Exchange Crypto</a>
     <a href="/vip-futures"><i class="fa-solid fa-book-open"></i> Learn Future Trading</a>
     <a href="/community"><i class="fa-brands fa-telegram"></i> Diversity Ventures Telegram Community</a>
     <a href="/contact"><i class="fa-solid fa-headset"></i> Customer Support</a>

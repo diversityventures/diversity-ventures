@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- BUY TERMS MODAL -->
+<div id="buyTermsModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-icon" style="color:var(--green);font-size:36px;"><i class="fa-solid fa-arrow-trend-up"></i></div>
+      <div>
+        <div class="modal-title">Buy Crypto — Terms</div>
+        <div class="modal-sub">Please read carefully before proceeding</div>
+      </div>
+    </div>
+    <div class="modal-terms">
+      <div class="modal-term-item">
+        <i class="fa-solid fa-coins" style="color:var(--green)"></i>
+        <div><strong>Minimum Transaction</strong><p>Minimum transaction is $100 USD worth in your local currency equivalent.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-percent" style="color:var(--gold)"></i>
+        <div><strong>Exchange Rate</strong><p>You will receive 80% of the amount sent. 20% covers company fees and transaction costs.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-wallet" style="color:var(--blue)"></i>
+        <div><strong>Wallet Address</strong><p>Countercheck your wallet address carefully before pasting. Sending to wrong address results in permanent loss.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-clock" style="color:var(--muted)"></i>
+        <div><strong>Processing Time</strong><p>Maximum time to receive your crypto is 30 minutes. If delayed, contact admin on Telegram: @agent_rogermanuel</p></div>
+      </div>
+    </div>
+    <div class="modal-accept">
+      <label class="modal-checkbox-label">
+        <input type="checkbox" id="acceptBuyTerms" onchange="toggleBuyBtn()">
+        <span>I have read and accept all the terms above</span>
+      </label>
+    </div>
+    <div class="modal-actions">
+      <a href="/exchange" class="btn dark"><i class="fa-solid fa-xmark"></i> Cancel</a>
+      <button id="proceedBuyBtn" class="btn gold" style="opacity:0.4;pointer-events:none;" onclick="showBuyForm()">
+        <i class="fa-solid fa-check"></i> I Agree — Proceed
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- BUY FORM -->
+<div id="buyForm" style="display:none;">
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag buy-tag">Buy Crypto</span>
+    <h1>Buy Crypto with Local Currency</h1>
+    <p>Send payment via bank or mobile money and receive crypto to your wallet within 30 minutes.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="portal-grid">
+    <div class="portal-left">
+      <form method="POST" id="buyTradeForm">
+
+        <!-- STEP 1: COUNTRY -->
+        <div class="portal-step-card">
+          <div class="portal-step-num buy-num">1</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Select Your Country</div>
+            <div class="form-group" style="margin-bottom:0;">
+              <select name="country" id="countrySelect" onchange="updateCurrency()" required>
+                <option value="">-- Select country --</option>
+                <option value="Mozambique">🇲🇿 Mozambique</option>
+                <option value="Zambia">🇿🇲 Zambia</option>
+                <option value="South Africa">🇿🇦 South Africa</option>
+                <option value="Angola">🇦🇴 Angola</option>
+                <option value="Uganda">🇺🇬 Uganda</option>
+                <option value="Other">🌍 Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: PAYMENT METHOD -->
+        <div class="portal-step-card">
+          <div class="portal-step-num buy-num">2</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Payment Method</div>
+            <div class="payment-method-grid">
+              <button type="button" class="pay-method-btn" onclick="selectExcMethod('Bank Transfer', this)">
+                <i class="fa-solid fa-building-columns" style="font-size:24px;color:var(--blue)"></i>
+                <span class="pay-method-name">Bank</span>
+                <span class="pay-method-sub">Transfer</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectExcMethod('Mobile Money', this)">
+                <i class="fa-solid fa-mobile-screen" style="font-size:24px;color:var(--green)"></i>
+                <span class="pay-method-name">Mobile</span>
+                <span class="pay-method-sub">Money</span>
+              </button>
+            </div>
+            <input type="hidden" name="payment_method" id="buy_payment_method">
+          </div>
+        </div>
+
+        <!-- STEP 3: AMOUNT -->
+        <div class="portal-step-card">
+          <div class="portal-step-num buy-num">3</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Amount to Send</div>
+            <div class="exc-amount-wrap">
+              <input type="number" name="amount" id="amountInput" placeholder="Enter amount" min="1" required onkeyup="calcReceive()" class="exc-amount-input">
+              <div class="exc-currency-badge" id="currencyBadge">USD</div>
+            </div>
+            <input type="hidden" name="currency" id="hiddenCurrency" value="USD">
+            <div class="exc-calc-box" id="calcBox">
+              <div class="exc-calc-row"><span>You send</span><span id="sendAmt">—</span></div>
+              <div class="exc-calc-row"><span>Exchange rate (80%)</span><span style="color:var(--red)">-20%</span></div>
+              <div class="exc-calc-row total"><span>You receive (crypto)</span><span id="receiveAmt" style="color:var(--green)">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: CRYPTO PAYOUT -->
+        <div class="portal-step-card">
+          <div class="portal-step-num buy-num">4</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Select Crypto to Receive</div>
+            <div class="payment-method-grid">
+              <button type="button" class="pay-method-btn" onclick="selectCrypto('USDT', this)">
+                <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">USDT</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectCrypto('BTC', this)">
+                <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">Bitcoin</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectCrypto('SOL', this)">
+                <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">Solana</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectCrypto('USDC', this)">
+                <img src="https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png" alt="USDC" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">USDC</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectCrypto('Monero', this)">
+                <span style="font-size:22px;">🔐</span>
+                <span class="pay-method-name">Monero</span>
+              </button>
+            </div>
+            <input type="hidden" name="crypto_asset" id="cryptoAsset">
+          </div>
+        </div>
+
+        <!-- STEP 5: WALLET ADDRESS -->
+        <div class="portal-step-card">
+          <div class="portal-step-num buy-num">5</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Your Receiving Wallet Address</div>
+            <div class="form-group">
+              <label>Paste Wallet Address</label>
+              <input type="text" name="wallet_address" id="walletAddr" placeholder="Paste your wallet address here" required>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label>Confirm Wallet Address</label>
+              <input type="text" name="wallet_confirm" id="walletConfirm" placeholder="Paste again to confirm" required onkeyup="checkWalletMatch()">
+              <div id="walletMatchMsg" style="font-size:12px;margin-top:6px;"></div>
+            </div>
+            <div class="wallet-warning" style="margin-top:14px;">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              Double check your wallet address. Sending to wrong address results in <strong>permanent loss</strong>.
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn gold auth-btn" style="margin-top:8px;">
+          <i class="fa-solid fa-bolt"></i> Open Trade
+        </button>
+
+      </form>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="portal-right">
+      <div class="portal-summary-card">
+        <div class="portal-summary-title" style="color:var(--green);">
+          <i class="fa-solid fa-arrow-trend-up"></i> Buy Trade Summary
+        </div>
+        <div class="summary-row"><span class="summary-key">Type</span><span class="summary-val" style="color:var(--green);">BUY Crypto</span></div>
+        <div class="summary-row"><span class="summary-key">Country</span><span class="summary-val" id="sum-country">—</span></div>
+        <div class="summary-row"><span class="summary-key">Method</span><span class="summary-val" id="sum-method">—</span></div>
+        <div class="summary-row"><span class="summary-key">Amount</span><span class="summary-val" id="sum-amount">—</span></div>
+        <div class="summary-row"><span class="summary-key">You Receive</span><span class="summary-val" id="sum-receive" style="color:var(--green);">—</span></div>
+        <div class="summary-row"><span class="summary-key">Asset</span><span class="summary-val" id="sum-asset">—</span></div>
+        <div class="portal-summary-divider"></div>
+        <div class="portal-info-box">
+          <i class="fa-solid fa-circle-info"></i>
+          <p>After submitting, our agent will contact you with payment instructions and process your crypto within 30 minutes.</p>
+        </div>
+        <div class="bot-agent-box" style="margin-top:14px;">
+          <div class="bot-agent-label">Support Agent</div>
+          <div class="bot-agent-handle">@agent_rogermanuel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<script>
+const currencies = {
+  'Mozambique': { code: 'MZN', rate: 64 },
+  'Zambia': { code: 'ZMW', rate: 26 },
+  'South Africa': { code: 'ZAR', rate: 19 },
+  'Angola': { code: 'AOA', rate: 900 },
+  'Uganda': { code: 'UGX', rate: 3800 },
+  'Other': { code: 'USD', rate: 1 }
+};
+
+function toggleBuyBtn() {
+  const btn = document.getElementById('proceedBuyBtn');
+  const checked = document.getElementById('acceptBuyTerms').checked;
+  btn.style.opacity = checked ? '1' : '0.4';
+  btn.style.pointerEvents = checked ? 'auto' : 'none';
+}
+
+function showBuyForm() {
+  document.getElementById('buyTermsModal').style.display = 'none';
+  document.getElementById('buyForm').style.display = 'block';
+}
+
+function updateCurrency() {
+  const country = document.getElementById('countrySelect').value;
+  const curr = currencies[country] || { code: 'USD', rate: 1 };
+  document.getElementById('currencyBadge').textContent = curr.code;
+  document.getElementById('hiddenCurrency').value = curr.code;
+  document.getElementById('sum-country').textContent = country;
+  calcReceive();
+}
+
+function selectExcMethod(method, btn) {
+  document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('buy_payment_method').value = method;
+  document.getElementById('sum-method').textContent = method;
+}
+
+function selectCrypto(asset, btn) {
+  document.querySelectorAll('.pay-method-btn').forEach(b => {
+    if (!b.getAttribute('onclick').includes('selectExcMethod')) b.classList.remove('active');
+  });
+  btn.classList.add('active');
+  document.getElementById('cryptoAsset').value = asset;
+  document.getElementById('sum-asset').textContent = asset;
+}
+
+function calcReceive() {
+  const amount = parseFloat(document.getElementById('amountInput').value) || 0;
+  const country = document.getElementById('countrySelect').value;
+  const curr = currencies[country] || { code: 'USD', rate: 1 };
+  const usdVal = amount / curr.rate;
+  const receive = (usdVal * 0.8).toFixed(2);
+  document.getElementById('sendAmt').textContent = amount + ' ' + curr.code;
+  document.getElementById('receiveAmt').textContent = '$' + receive + ' worth';
+  document.getElementById('sum-amount').textContent = amount + ' ' + curr.code;
+  document.getElementById('sum-receive').textContent = '$' + receive + ' worth';
+}
+
+function checkWalletMatch() {
+  const addr = document.getElementById('walletAddr').value;
+  const conf = document.getElementById('walletConfirm').value;
+  const msg = document.getElementById('walletMatchMsg');
+  if (conf.length > 0) {
+    if (addr === conf) {
+      msg.textContent = '✓ Addresses match';
+      msg.style.color = 'var(--green)';
+    } else {
+      msg.textContent = '✗ Addresses do not match';
+      msg.style.color = 'var(--red)';
+    }
+  }
+}
+</script>
+{% endblock %}

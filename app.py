@@ -14,11 +14,7 @@ app.secret_key = "diversity_secret_key_change_this"
 # =========================
 # DATABASE / UPLOAD CONFIG
 # =========================
-import os
-DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///database.db")
-if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
-app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = "static/uploads"
 
@@ -391,6 +387,28 @@ class Submission(db.Model):
 
 
 # =========================
+# TRADE MODEL
+# =========================
+class Trade(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    trade_type = db.Column(db.String(10), nullable=False)  # BUY or SELL
+    country = db.Column(db.String(50), nullable=True)
+    payment_method = db.Column(db.String(50), nullable=True)
+    amount = db.Column(db.String(50), nullable=True)
+    currency = db.Column(db.String(20), nullable=True)
+    crypto_asset = db.Column(db.String(20), nullable=True)
+    wallet_address = db.Column(db.String(255), nullable=True)
+    wallet_confirm = db.Column(db.String(255), nullable=True)
+    bank_account = db.Column(db.String(255), nullable=True)
+    proof_filename = db.Column(db.String(255), nullable=True)
+    status = db.Column(db.String(50), default="Awaiting Confirmation")
+    admin_message = db.Column(db.Text, nullable=True)
+    user_message = db.Column(db.Text, nullable=True)
+    created_at = db.Column(db.DateTime, default=__import__("datetime").datetime.utcnow)
+
+
+# =========================
 # HELPERS
 # =========================
 def send_email_code(to_email, subject, plain_body, html_body=None):
@@ -671,6 +689,19 @@ def packages():
 @app.route("/results")
 def results():
     return render_template("results.html")
+
+
+@app.route("/trading-bots")
+def trading_bots():
+    return render_template("trading_bots.html")
+
+
+@app.route("/bot-payment")
+def bot_payment():
+    if "user_id" not in session:
+        flash("Please login or create an account to subscribe to a bot.")
+        return redirect(url_for("register"))
+    return render_template("bot_payment.html")
 
 
 # =========================
@@ -1003,27 +1034,257 @@ def portal():
         db.session.add(new_submission)
         db.session.commit()
 
-        flash("Submission created successfully.")
+        # Send email notification to admin
+        try:
+            admin_msg = Message(
+                subject="New Investment Submission - Diversity Ventures",
+                recipients=["denniskiriaku254@gmail.com"]
+            )
+            admin_msg.body = f"""
+New investment submission received!
+
+User: {session.get('user_name')}
+Email: {session.get('user_email')}
+Plan: {plan_name}
+Payment Method: {payment_method}
+Reference: {transaction_ref}
+Notes: {notes}
+
+Login to admin panel to review:
+https://diversity-ventures.onrender.com/admin
+"""
+            mail.send(admin_msg)
+        except Exception as e:
+            print("Admin email error:", e)
+
+        flash("Submission created successfully. Our team will review within 24 hours.")
         return redirect(url_for("dashboard"))
 
     return render_template("portal.html")
 
 
 # =========================
+# TRADE / EXCHANGE ROUTES
+# =========================
+@app.route("/exchange")
+def exchange():
+    if "user_id" not in session:
+        flash("Please login or register to use the exchange.")
+        return redirect(url_for("register"))
+    return render_template("exchange.html")
+
+
+@app.route("/exchange/buy", methods=["GET", "POST"])
+def exchange_buy():
+    if "user_id" not in session:
+        flash("Please login first.")
+        return redirect(url_for("login"))
+    if request.method == "POST":
+        country = request.form.get("country")
+        payment_method = request.form.get("payment_method")
+        amount = request.form.get("amount")
+        currency = request.form.get("currency")
+        crypto_asset = request.form.get("crypto_asset")
+        wallet_address = request.form.get("wallet_address")
+        wallet_confirm = request.form.get("wallet_confirm")
+
+        if wallet_address != wallet_confirm:
+            flash("Wallet addresses do not match. Please check and try again.")
+            return redirect(url_for("exchange_buy"))
+
+        trade = Trade(
+            user_id=session["user_id"],
+            trade_type="BUY",
+            country=country,
+            payment_method=payment_method,
+            amount=amount,
+            currency=currency,
+            crypto_asset=crypto_asset,
+            wallet_address=wallet_address,
+            wallet_confirm=wallet_confirm,
+            status="Awaiting Confirmation"
+        )
+        db.session.add(trade)
+        db.session.commit()
+
+        try:
+            msg = Message(
+                subject="New BUY Trade - Diversity Ventures Exchange",
+                recipients=["denniskiriaku254@gmail.com"]
+            )
+            msg.body = f"""New BUY trade submitted!
+
+User: {session.get('user_name')}
+Email: {session.get('user_email')}
+Country: {country}
+Payment Method: {payment_method}
+Amount: {amount} {currency}
+Crypto Asset: {crypto_asset}
+Wallet: {wallet_address}
+
+Login to admin panel:
+https://diversity-ventures.onrender.com/admin/trades
+"""
+            mail.send(msg)
+        except Exception as e:
+            print("Mail error:", e)
+
+        flash("Trade submitted successfully!")
+        return redirect(url_for("trade_status", trade_id=trade.id))
+    return render_template("exchange_buy.html")
+
+
+@app.route("/exchange/sell", methods=["GET", "POST"])
+def exchange_sell():
+    if "user_id" not in session:
+        flash("Please login first.")
+        return redirect(url_for("login"))
+    if request.method == "POST":
+        country = request.form.get("country")
+        payment_method = request.form.get("payment_method")
+        crypto_asset = request.form.get("crypto_asset")
+        amount = request.form.get("amount")
+        bank_account = request.form.get("bank_account")
+        currency = request.form.get("currency")
+
+        proof = request.files.get("proof_file")
+        proof_filename = None
+        if proof and proof.filename:
+            proof_filename = secure_filename(proof.filename)
+            proof.save(os.path.join(app.config["UPLOAD_FOLDER"], proof_filename))
+
+        trade = Trade(
+            user_id=session["user_id"],
+            trade_type="SELL",
+            country=country,
+            payment_method=payment_method,
+            crypto_asset=crypto_asset,
+            amount=amount,
+            currency=currency,
+            bank_account=bank_account,
+            proof_filename=proof_filename,
+            status="Awaiting Confirmation"
+        )
+        db.session.add(trade)
+        db.session.commit()
+
+        try:
+            msg = Message(
+                subject="New SELL Trade - Diversity Ventures Exchange",
+                recipients=["denniskiriaku254@gmail.com"]
+            )
+            msg.body = f"""New SELL trade submitted!
+
+User: {session.get('user_name')}
+Email: {session.get('user_email')}
+Country: {country}
+Crypto Asset: {crypto_asset}
+Amount: {amount} USDT worth
+Payout Method: {payment_method}
+Account: {bank_account}
+
+Login to admin panel:
+https://diversity-ventures.onrender.com/admin/trades
+"""
+            mail.send(msg)
+        except Exception as e:
+            print("Mail error:", e)
+
+        # Notify user by email
+        try:
+            user_msg = Message(
+                subject="Trade Initiated - Diversity Ventures",
+                recipients=[session.get("user_email")]
+            )
+            user_msg.body = f"""Hello {session.get('user_name')},
+
+Your SELL trade has been initiated successfully.
+
+Asset: {crypto_asset}
+Amount: {amount}
+Payout: {payment_method} to {bank_account}
+
+Our team will verify your payment and process your payout within 30 minutes.
+
+Track your trade at:
+https://diversity-ventures.onrender.com/trade/{trade.id}
+
+Diversity Ventures
+"""
+            mail.send(user_msg)
+        except Exception as e:
+            print("User mail error:", e)
+
+        flash("Sell trade submitted!")
+        return redirect(url_for("trade_status", trade_id=trade.id))
+    return render_template("exchange_sell.html")
+
+
+@app.route("/trade/<int:trade_id>")
+def trade_status(trade_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    trade = Trade.query.get_or_404(trade_id)
+    if trade.user_id != session["user_id"] and not session.get("is_admin"):
+        flash("Access denied.")
+        return redirect(url_for("dashboard"))
+    user = User.query.get(trade.user_id)
+    return render_template("trade_status.html", trade=trade, user=user)
+
+
+@app.route("/admin/trades")
+def admin_trades():
+    if "user_id" not in session or not session.get("is_admin"):
+        flash("Access denied.")
+        return redirect(url_for("login"))
+    trades = Trade.query.order_by(Trade.id.desc()).all()
+    users = User.query.all()
+    user_map = {u.id: u for u in users}
+    return render_template("admin_trades.html", trades=trades, user_map=user_map)
+
+
+@app.route("/admin/trade/update/<int:trade_id>", methods=["POST"])
+def admin_trade_update(trade_id):
+    if "user_id" not in session or not session.get("is_admin"):
+        flash("Access denied.")
+        return redirect(url_for("login"))
+    trade = Trade.query.get_or_404(trade_id)
+    trade.status = request.form.get("status")
+    trade.admin_message = request.form.get("admin_message")
+    db.session.commit()
+
+    # Notify user
+    user = User.query.get(trade.user_id)
+    try:
+        msg = Message(
+            subject=f"Trade Update - {trade.status} | Diversity Ventures",
+            recipients=[user.email]
+        )
+        msg.body = f"""Hello {user.full_name},
+
+Your trade status has been updated.
+
+Trade ID: #{trade.id}
+Type: {trade.trade_type}
+Status: {trade.status}
+Admin Message: {trade.admin_message or 'No message'}
+
+Track your trade:
+https://diversity-ventures.onrender.com/trade/{trade.id}
+
+Diversity Ventures
+"""
+        mail.send(msg)
+    except Exception as e:
+        print("Mail error:", e)
+
+    flash("Trade updated successfully.")
+    return redirect(url_for("admin_trades"))
+
+
+# =========================
 # ADMIN ROUTES
 # =========================
-
-@app.route("/setup-admin-diversitykey2026")
-def setup_admin():
-    from app import db, User
-    with app.app_context():
-        user = User.query.filter_by(email="denniskiriaku254@gmail.com").first()
-        if user:
-            user.is_admin = True
-            db.session.commit()
-            return "Done! You are now admin."
-        return "User not found. Register first."
-    
 @app.route("/admin")
 def admin():
     if "user_id" not in session or not session.get("is_admin"):
@@ -1035,14 +1296,6 @@ def admin():
     user_map = {user.id: user for user in users}
 
     return render_template("admin.html", submissions=submissions, user_map=user_map)
-
-@app.route("/admin/users")
-def admin_users():
-    if "user_id" not in session or not session.get("is_admin"):
-        flash("Access denied.")
-        return redirect(url_for("login"))
-    users = User.query.all()
-    return render_template("admin_users.html", users=users)
 
 
 @app.route("/admin/update/<int:submission_id>", methods=["POST"])
@@ -1063,8 +1316,7 @@ def admin_update(submission_id):
 # =========================
 # RUN APP
 # =========================
-with app.app_context():
-    db.create_all()
-
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)

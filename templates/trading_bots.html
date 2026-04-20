@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag">Automated Trading</span>
+    <h1>Professional Trading Bots</h1>
+    <p>Institutional-grade automated trading bots for every market. Tested, proven, and upgraded monthly. Subscribe and receive your bot file with full setup instructions.</p>
+    <div class="bots-hero-stats">
+      <div class="bot-hero-stat"><strong>70-80%</strong><span>Accuracy Rate</span></div>
+      <div class="bot-hero-stat"><strong>Monthly</strong><span>Upgrades</span></div>
+      <div class="bot-hero-stat"><strong>$100 USDT</strong><span>Most Bots</span></div>
+      <div class="bot-hero-stat"><strong>24/7</strong><span>Automated</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TERMS MODAL -->
+<div id="termsModal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-icon" id="modalIcon"></div>
+      <div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-sub" id="modalSub"></div>
+      </div>
+    </div>
+    <div class="modal-price-badge" id="modalPrice"></div>
+    <div class="modal-terms">
+      <div class="modal-term-item">
+        <i class="fa-solid fa-chart-line" style="color:var(--green)"></i>
+        <div><strong>Accuracy Rate</strong><p>All bots are well tested with a proven 70-80% accuracy rate across live and demo environments.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-rotate" style="color:var(--blue)"></i>
+        <div><strong>Monthly Upgrades</strong><p>All bots are upgraded every month. Your subscription is valid for one month only and covers the latest version.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-file-zipper" style="color:var(--gold)"></i>
+        <div><strong>Bot Delivery</strong><p>After payment approval, you will receive your bot file accompanied by a PDF guide with full setup instructions via Telegram.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-flask" style="color:var(--muted)"></i>
+        <div><strong>Demo First</strong><p>It is strongly advised to test the bot on a demo account first until you are fully familiar with its behaviour before going live.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-arrows-rotate" style="color:var(--gold)"></i>
+        <div><strong>Exchange Policy</strong><p>If your bot is not working within the subscription month, you are entitled to a free exchange for the same period.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i>
+        <div><strong>Risk Warning</strong><p>Automated trading involves financial risk. Past performance does not guarantee future results. Only trade with funds you can afford to lose.</p></div>
+      </div>
+    </div>
+    <div class="modal-accept">
+      <label class="modal-checkbox-label">
+        <input type="checkbox" id="acceptTerms" onchange="toggleSubscribeBtn()">
+        <span>I have read and accept all the terms and conditions above</span>
+      </label>
+    </div>
+    <div class="modal-actions">
+      <button class="btn dark" onclick="closeModal()">
+        <i class="fa-solid fa-xmark"></i> Cancel
+      </button>
+      <a id="subscribeBtn" href="#" class="btn gold" style="opacity:0.4;pointer-events:none;">
+        <i class="fa-solid fa-bolt"></i> Subscribe Now
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN MARKETS -->
+<section class="content-section">
+  <div class="bots-section-header">
+    <span class="tag">Main Markets</span>
+    <h2>Market Trading Bots</h2>
+    <p>Automated bots for the world's most traded financial markets. Each bot is optimised for its specific market.</p>
+  </div>
+  <div class="section-grid three">
+
+    <div class="bot-card" onclick="openModal('Futures Bot', '📈', 'Automated futures trading across major crypto pairs', '$100 USDT / month', 'futures')">
+      <div class="bot-card-icon futures-icon">📈</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Futures Bot</div>
+        <div class="bot-desc">Automated long & short trading on crypto futures pairs with dynamic TP and SL management.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">BTC/USDT</span>
+          <span class="bot-tag">ETH/USDT</span>
+          <span class="bot-tag">SOL/USDT</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price">$100 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">70-80% accuracy</div>
+      </div>
+    </div>
+
+    <div class="bot-card" onclick="openModal('Spot Trading Bot', '💹', 'Automated spot market buying and selling', '$100 USDT / month', 'spot')">
+      <div class="bot-card-icon spot-icon">💹</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Spot Trading Bot</div>
+        <div class="bot-desc">Smart buy-low sell-high automation for spot markets with trend detection and auto rebalancing.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">BTC</span>
+          <span class="bot-tag">ETH</span>
+          <span class="bot-tag">BNB</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price">$100 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">70-80% accuracy</div>
+      </div>
+    </div>
+
+    <div class="bot-card" onclick="openModal('Forex Bot', '💱', 'Automated forex trading on major currency pairs', '$100 USDT / month', 'forex')">
+      <div class="bot-card-icon forex-icon">💱</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Forex Bot</div>
+        <div class="bot-desc">Precision trading on major and minor forex pairs using multi-timeframe analysis and risk management.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">EUR/USD</span>
+          <span class="bot-tag">GBP/USD</span>
+          <span class="bot-tag">USD/JPY</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price">$100 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">70-80% accuracy</div>
+      </div>
+    </div>
+
+    <div class="bot-card" onclick="openModal('Synthetic Indices Bot', '🎯', 'Automated trading on synthetic indices', '$100 USDT / month', 'synthetic')">
+      <div class="bot-card-icon synthetic-icon">🎯</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Synthetic Indices Bot</div>
+        <div class="bot-desc">Optimised for Deriv synthetic markets — trades 24/7 without market hours restrictions.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">Volatility 75</span>
+          <span class="bot-tag">Volatility 100</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price">$100 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">70-80% accuracy</div>
+      </div>
+    </div>
+
+    <div class="bot-card" onclick="openModal('Stocks Bot', '🏦', 'Automated stock market trading bot', '$100 USDT / month', 'stocks')">
+      <div class="bot-card-icon stocks-icon">🏦</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Stocks Bot</div>
+        <div class="bot-desc">Automated trading on major stock indices and individual stocks with earnings-aware logic.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">S&P 500</span>
+          <span class="bot-tag">NASDAQ</span>
+          <span class="bot-tag">Tesla</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price">$100 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">70-80% accuracy</div>
+      </div>
+    </div>
+
+    <div class="bot-card" onclick="openModal('Options Bot', '⚡', 'Automated options trading with expiry management', '$100 USDT / month', 'options')">
+      <div class="bot-card-icon options-icon">⚡</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Options Bot</div>
+        <div class="bot-desc">Smart options trading with automatic strike selection, expiry management and delta hedging.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">Call/Put</span>
+          <span class="bot-tag">Binary</span>
+          <span class="bot-tag">Expiry</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price">$100 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">70-80% accuracy</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SPECIALIZED BOTS -->
+<section class="content-section">
+  <div class="bots-section-header">
+    <span class="tag">Specialized Bots</span>
+    <h2>Specialized Trading Bots</h2>
+    <p>Purpose-built bots for niche markets and trading styles that require specific strategies.</p>
+  </div>
+  <div class="section-grid three">
+
+    <div class="bot-card bot-special" onclick="openModal('Crash & Boom Bot', '💥', 'Automated trading on Crash and Boom synthetic indices', '$100 USDT / month', 'crash')">
+      <div class="bot-card-icon crash-icon">💥</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Crash & Boom Bot</div>
+        <div class="bot-desc">Specifically engineered for Deriv Crash 500, Crash 1000, Boom 500 and Boom 1000 indices.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">Crash 500</span>
+          <span class="bot-tag">Crash 1000</span>
+          <span class="bot-tag">Boom 500</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price">$100 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">70-80% accuracy</div>
+      </div>
+    </div>
+
+    <div class="bot-card bot-special" onclick="openModal('Binary Options Bot', '🔢', 'Automated binary options trading', '$100 USDT / month', 'binary')">
+      <div class="bot-card-icon binary-icon">🔢</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Binary Options Bot</div>
+        <div class="bot-desc">High-frequency binary options trading with martingale and anti-martingale money management systems.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">Rise/Fall</span>
+          <span class="bot-tag">Higher/Lower</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price">$100 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">70-80% accuracy</div>
+      </div>
+    </div>
+
+    <div class="bot-card bot-special" onclick="openModal('Copy Trading Bot', '👥', 'Automated copy trading system', '$100 USDT / month', 'copy')">
+      <div class="bot-card-icon copy-icon">👥</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Copy Trading Bot</div>
+        <div class="bot-desc">Automatically mirrors trades from verified top-performing traders in real time with proportional sizing.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">Auto Copy</span>
+          <span class="bot-tag">Risk Control</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price">$100 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">70-80% accuracy</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ADVANCED BOTS -->
+<section class="content-section">
+  <div class="bots-section-header">
+    <span class="tag">Advanced Bots</span>
+    <h2>Advanced Trading Bots</h2>
+    <p>Next-generation bots using artificial intelligence, cross-exchange arbitrage and institutional grid strategies.</p>
+  </div>
+  <div class="section-grid three">
+
+    <div class="bot-card bot-advanced" onclick="openModal('AI Trading Bot', '🤖', 'Machine learning powered trading bot', '$250 USDT / month', 'ai')">
+      <div class="bot-card-icon ai-icon">🤖</div>
+      <div class="bot-advanced-badge">ADVANCED</div>
+      <div class="bot-card-body">
+        <div class="bot-name">AI Trading Bot</div>
+        <div class="bot-desc">Machine learning model trained on millions of candles. Adapts to market conditions in real time with self-optimising parameters.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">ML Model</span>
+          <span class="bot-tag">Self-learning</span>
+          <span class="bot-tag">All Markets</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price advanced">$250 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">75-85% accuracy</div>
+      </div>
+    </div>
+
+    <div class="bot-card bot-advanced" onclick="openModal('Arbitrage Bot', '⚖️', 'Cross-exchange price arbitrage bot', '$200 USDT / month', 'arb')">
+      <div class="bot-card-icon arb-icon">⚖️</div>
+      <div class="bot-advanced-badge">ADVANCED</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Arbitrage Bot</div>
+        <div class="bot-desc">Exploits price differences across multiple exchanges simultaneously. Near risk-free profits from market inefficiencies.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">Multi-exchange</span>
+          <span class="bot-tag">Low Risk</span>
+          <span class="bot-tag">Fast Execution</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price advanced">$200 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">80-90% accuracy</div>
+      </div>
+    </div>
+
+    <div class="bot-card bot-advanced" onclick="openModal('Grid Trading Bot', '📊', 'Automated grid trading bot', '$150 USDT / month', 'grid')">
+      <div class="bot-card-icon grid-icon">📊</div>
+      <div class="bot-advanced-badge">ADVANCED</div>
+      <div class="bot-card-body">
+        <div class="bot-name">Grid Trading Bot</div>
+        <div class="bot-desc">Places buy and sell orders at preset intervals creating a grid. Profits from volatility in both directions without predicting direction.</div>
+        <div class="bot-tags">
+          <span class="bot-tag">Range Trading</span>
+          <span class="bot-tag">Volatility</span>
+          <span class="bot-tag">Passive</span>
+        </div>
+      </div>
+      <div class="bot-card-footer">
+        <div class="bot-price advanced">$150 <span>USDT/mo</span></div>
+        <div class="bot-accuracy">70-80% accuracy</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="content-section">
+  <div class="bots-section-header">
+    <span class="tag">Process</span>
+    <h2>How It Works</h2>
+    <p>From subscription to your first automated trade in 4 simple steps.</p>
+  </div>
+  <div class="section-grid four">
+    <div class="how-step-card">
+      <div class="how-step-num">1</div>
+      <div class="how-step-icon">🎯</div>
+      <div class="how-step-title">Choose Your Bot</div>
+      <div class="how-step-desc">Browse our bot catalogue and select the one that matches your trading style and market preference.</div>
+    </div>
+    <div class="how-step-card">
+      <div class="how-step-num">2</div>
+      <div class="how-step-icon">💳</div>
+      <div class="how-step-title">Pay & Subscribe</div>
+      <div class="how-step-desc">Pay via USDT, BTC or SOL. Upload your proof screenshot for fast verification.</div>
+    </div>
+    <div class="how-step-card">
+      <div class="how-step-num">3</div>
+      <div class="how-step-icon">📦</div>
+      <div class="how-step-title">Receive Your Bot</div>
+      <div class="how-step-desc">Once approved, your bot file and PDF instructions guide are delivered via Telegram within 24 hours.</div>
+    </div>
+    <div class="how-step-card">
+      <div class="how-step-num">4</div>
+      <div class="how-step-icon">🚀</div>
+      <div class="how-step-title">Start Trading</div>
+      <div class="how-step-desc">Follow the PDF guide to set up on demo first, then go live when you are confident.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="content-section">
+  <div class="results-cta-bar">
+    <div>
+      <h2>Ready to Automate Your Trading?</h2>
+      <p>Join hundreds of traders already using Diversity Ventures bots to trade 24/7.</p>
+    </div>
+    <div class="results-cta-btns">
+      <a href="https://t.me/+ANky3Lzpq-A0ZDQ0" target="_blank" class="btn dark">
+        <i class="fa-brands fa-telegram"></i> Join Community
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+let currentBotName = '';
+let currentBotPrice = '';
+
+function openModal(name, icon, desc, price, type) {
+  currentBotName = name + ' - ' + price;
+  currentBotPrice = price;
+  document.getElementById('modalIcon').textContent = icon;
+  document.getElementById('modalTitle').textContent = name;
+  document.getElementById('modalSub').textContent = desc;
+  document.getElementById('modalPrice').textContent = price;
+  document.getElementById('acceptTerms').checked = false;
+  const btn = document.getElementById('subscribeBtn');
+  btn.style.opacity = '0.4';
+  btn.style.pointerEvents = 'none';
+  btn.href = '{% if session.get("user_id") %}/bot-payment?bot=' + encodeURIComponent(currentBotName) + '{% else %}/register{% endif %}';
+  document.getElementById('termsModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('termsModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function toggleSubscribeBtn() {
+  const checked = document.getElementById('acceptTerms').checked;
+  const btn = document.getElementById('subscribeBtn');
+  btn.style.opacity = checked ? '1' : '0.4';
+  btn.style.pointerEvents = checked ? 'auto' : 'none';
+}
+
+document.getElementById('termsModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+
+{% endblock %}

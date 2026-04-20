@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag">Bot Subscription</span>
+    <h1>Complete Your Bot Subscription</h1>
+    <p>Pay via cryptocurrency, upload your proof, and receive your bot file within 24 hours on Telegram.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="portal-grid">
+    <div class="portal-left">
+
+      <!-- BOT SELECTED -->
+      <div class="portal-step-card">
+        <div class="portal-step-num">1</div>
+        <div class="portal-step-content">
+          <div class="portal-step-title">Bot Selected</div>
+          <div class="bot-selected-box">
+            <div class="bot-selected-name">{{ request.args.get('bot', 'Trading Bot') }}</div>
+            <div class="bot-selected-note">Monthly subscription — bot file + PDF guide delivered via Telegram</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYMENT METHOD -->
+      <div class="portal-step-card">
+        <div class="portal-step-num">2</div>
+        <div class="portal-step-content">
+          <div class="portal-step-title">Select Payment Method</div>
+          <div class="payment-method-grid">
+            <button type="button" class="pay-method-btn" onclick="selectPayment('USDT_TRC20')">
+              <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT">
+              <span class="pay-method-name">USDT</span>
+              <span class="pay-method-sub">TRC20</span>
+            </button>
+            <button type="button" class="pay-method-btn" onclick="selectPayment('USDT_ERC20')">
+              <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT">
+              <span class="pay-method-name">USDT</span>
+              <span class="pay-method-sub">ERC20</span>
+            </button>
+            <button type="button" class="pay-method-btn" onclick="selectPayment('BTC')">
+              <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC">
+              <span class="pay-method-name">Bitcoin</span>
+              <span class="pay-method-sub">BTC</span>
+            </button>
+            <button type="button" class="pay-method-btn" onclick="selectPayment('SOL')">
+              <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL">
+              <span class="pay-method-name">Solana</span>
+              <span class="pay-method-sub">SOL</span>
+            </button>
+            <button type="button" class="pay-method-btn" onclick="selectPayment('USDC')">
+              <img src="https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png" alt="USDC">
+              <span class="pay-method-name">USDC</span>
+              <span class="pay-method-sub">ERC20</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WALLET -->
+      <div class="portal-step-card" id="walletSection" style="display:none;">
+        <div class="portal-step-num">3</div>
+        <div class="portal-step-content">
+          <div class="portal-step-title">Send Payment To This Address</div>
+          <div class="wallet-display-box">
+            <div class="wallet-coin-header">
+              <img id="walletCoinLogo" src="" alt="" style="width:32px;height:32px;border-radius:50%;background:#fff;">
+              <div>
+                <div class="wallet-coin-name" id="walletCoinName"></div>
+                <div class="wallet-network" id="walletNetwork"></div>
+              </div>
+            </div>
+            <div class="qr-container">
+              <div id="qrcode"></div>
+              <div class="qr-label">Scan with your wallet app</div>
+            </div>
+            <div class="wallet-addr-label">Wallet Address</div>
+            <div class="wallet-addr-box">
+              <span id="walletAddress" class="wallet-address-text"></span>
+              <button class="copy-btn" onclick="copyAddress()">
+                <i class="fa-solid fa-copy"></i> Copy
+              </button>
+            </div>
+            <div id="copyMsg" class="copy-message" style="display:none;">
+              <i class="fa-solid fa-circle-check"></i> Address copied!
+            </div>
+            <div class="wallet-warning">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              Send only <strong id="warnCoin"></strong> to this address.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBMIT -->
+      <div class="portal-step-card" id="proofSection" style="display:none;">
+        <div class="portal-step-num">4</div>
+        <div class="portal-step-content">
+          <div class="portal-step-title">Upload Proof & Submit</div>
+          <form method="POST" action="/portal" enctype="multipart/form-data">
+            <input type="hidden" name="plan_name" value="BOT: {{ request.args.get('bot', 'Trading Bot') }}">
+            <input type="hidden" name="payment_method" id="hidden_method">
+            <div class="form-group">
+              <label>Transaction Hash / Reference</label>
+              <input type="text" name="transaction_ref" placeholder="Paste your transaction hash">
+            </div>
+            <div class="form-group">
+              <label>Upload Payment Screenshot</label>
+              <div class="upload-area" onclick="document.getElementById('proof_file').click()">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <div class="upload-text">Click to upload screenshot</div>
+                <div class="upload-sub">PNG, JPG up to 10MB</div>
+                <input type="file" name="proof_file" id="proof_file" accept="image/*" style="display:none;" onchange="previewImage(this)">
+              </div>
+              <div id="imagePreviewWrap" style="display:none;margin-top:12px;">
+                <img id="imagePreview" class="proof-preview" alt="Preview">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Your Telegram Username</label>
+              <input type="text" name="notes" placeholder="e.g. @yourusername — for bot delivery">
+            </div>
+            <button type="submit" class="btn gold auth-btn">
+              <i class="fa-solid fa-paper-plane"></i> Submit Subscription
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="portal-right">
+      <div class="portal-summary-card">
+        <div class="portal-summary-title">
+          <i class="fa-solid fa-robot"></i> Bot Subscription
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Bot</span>
+          <span class="summary-val">{{ request.args.get('bot', 'Trading Bot') }}</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Duration</span>
+          <span class="summary-val">1 Month</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Delivery</span>
+          <span class="summary-val">Via Telegram</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-key">Status</span>
+          <span class="summary-val"><span class="status-badge status-pending">Pending</span></span>
+        </div>
+        <div class="portal-summary-divider"></div>
+        <div class="portal-info-box">
+          <i class="fa-brands fa-telegram" style="color:var(--blue)"></i>
+          <p>After approval, contact our agent on Telegram to receive your bot file and PDF instructions.</p>
+        </div>
+        <div class="bot-agent-box">
+          <div class="bot-agent-label">Your Delivery Agent</div>
+          <div class="bot-agent-handle">@agent_rogermanuel</div>
+          <a href="https://t.me/agent_rogermanuel" target="_blank" class="btn gold" style="width:100%;justify-content:center;margin-top:12px;">
+            <i class="fa-brands fa-telegram"></i> Open Telegram
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const wallets = {
+  USDT_TRC20: { address: "TJS7YqGf6zLLKtmwEx3V6k3i3Lwy9VYyCi", name: "USDT (TRC20)", network: "Tron Network — TRC20", logo: "https://assets.coingecko.com/coins/images/325/small/Tether.png", warn: "USDT TRC20" },
+  USDT_ERC20: { address: "0x380abcdbeb8fee93c4287650c1749adf6bf6aa01", name: "USDT (ERC20)", network: "Ethereum Network — ERC20", logo: "https://assets.coingecko.com/coins/images/325/small/Tether.png", warn: "USDT ERC20" },
+  BTC: { address: "1C7RmLPPbYzJ6hTa9k7EHys6MXSeb9sKNB", name: "Bitcoin (BTC)", network: "Bitcoin Network", logo: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png", warn: "BTC" },
+  SOL: { address: "8cBtQsKmKsyEeA59qGBzKzNZx4ASnbuArtr79t9TfGfL", name: "Solana (SOL)", network: "Solana Network", logo: "https://assets.coingecko.com/coins/images/4128/small/solana.png", warn: "SOL" },
+  USDC: { address: "0x380abcdbeb8fee93c4287650c1749adf6bf6aa01", name: "USDC", network: "Ethereum Network — ERC20", logo: "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png", warn: "USDC" }
+};
+
+function selectPayment(method) {
+  document.querySelectorAll(".pay-method-btn").forEach(b => b.classList.remove("active"));
+  event.currentTarget.classList.add("active");
+  document.getElementById("hidden_method").value = method;
+  document.getElementById("walletSection").style.display = "block";
+  document.getElementById("proofSection").style.display = "block";
+  const w = wallets[method];
+  document.getElementById("walletCoinName").textContent = w.name;
+  document.getElementById("walletNetwork").textContent = w.network;
+  document.getElementById("walletCoinLogo").src = w.logo;
+  document.getElementById("walletAddress").textContent = w.address;
+  document.getElementById("warnCoin").textContent = w.warn;
+  const qrDiv = document.getElementById("qrcode");
+  qrDiv.innerHTML = "";
+  new QRCode(qrDiv, { text: w.address, width: 160, height: 160, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
+  document.getElementById("walletSection").scrollIntoView({ behavior: "smooth" });
+}
+
+function copyAddress() {
+  const addr = document.getElementById("walletAddress").textContent;
+  navigator.clipboard.writeText(addr).then(() => {
+    const msg = document.getElementById("copyMsg");
+    msg.style.display = "block";
+    setTimeout(() => msg.style.display = "none", 2500);
+  });
+}
+
+function previewImage(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById("imagePreview").src = e.target.result;
+      document.getElementById("imagePreviewWrap").style.display = "block";
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+</script>
+{% endblock %}

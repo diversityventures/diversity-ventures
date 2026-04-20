@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="content-section" style="padding-top:40px;">
+  <div class="dash-welcome">
+    <div>
+      <h1 class="dash-title">Exchange Trades</h1>
+      <p class="dash-sub">Total: <strong style="color:var(--gold)">{{ trades|length }} trades</strong></p>
+    </div>
+    <a href="/admin" class="btn dark"><i class="fa-solid fa-arrow-left"></i> Back to Admin</a>
+  </div>
+</section>
+
+<section class="content-section">
+  {% for trade in trades %}
+  <div class="ip-card" style="margin-bottom:20px;">
+    <div class="ip-card-top">
+      <div class="ip-plan-info">
+        <span class="{% if trade.trade_type == 'BUY' %}trade-type-buy{% else %}trade-type-sell{% endif %}" style="font-size:18px;font-weight:900;">{{ trade.trade_type }}</span>
+        <div>
+          <div class="ip-plan-name">{{ trade.crypto_asset }} — {{ trade.amount }} {{ trade.currency }}</div>
+          <div class="ip-plan-method">{{ user_map[trade.user_id].full_name }} ({{ user_map[trade.user_id].email }})</div>
+        </div>
+      </div>
+      <span class="status-badge {% if trade.status == 'Trade Successful' %}status-approved{% elif trade.status == 'Awaiting Confirmation' %}status-pending{% else %}status-pending{% endif %}">
+        {{ trade.status }}
+      </span>
+    </div>
+
+    <div class="ip-stats-grid">
+      <div class="ip-stat"><div class="ip-stat-label">Country</div><div class="ip-stat-val">{{ trade.country }}</div></div>
+      <div class="ip-stat"><div class="ip-stat-label">Payment</div><div class="ip-stat-val">{{ trade.payment_method }}</div></div>
+      <div class="ip-stat"><div class="ip-stat-label">Wallet / Account</div><div class="ip-stat-val">{{ (trade.wallet_address or trade.bank_account or '—')[:30] }}</div></div>
+      <div class="ip-stat"><div class="ip-stat-label">Trade ID</div><div class="ip-stat-val">#{{ trade.id }}</div></div>
+    </div>
+
+    {% if trade.proof_filename %}
+    <div class="ip-proof-section">
+      <div class="ip-proof-label">Payment Proof</div>
+      <img src="{{ url_for('static', filename='uploads/' + trade.proof_filename) }}" alt="Proof" class="proof-image">
+    </div>
+    {% endif %}
+
+    <form method="POST" action="/admin/trade/update/{{ trade.id }}" class="admin-form">
+      <div class="form-group">
+        <label>Update Status</label>
+        <select name="status">
+          <option {% if trade.status == 'Awaiting Confirmation' %}selected{% endif %}>Awaiting Confirmation</option>
+          <option {% if trade.status == 'Payment Verified' %}selected{% endif %}>Payment Verified</option>
+          <option {% if trade.status == 'Payout Pending' %}selected{% endif %}>Payout Pending</option>
+          <option {% if trade.status == 'Trade Successful' %}selected{% endif %}>Trade Successful</option>
+          <option {% if trade.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message to User</label>
+        <textarea name="admin_message" placeholder="Type message to user...">{{ trade.admin_message or '' }}</textarea>
+      </div>
+      <button type="submit" class="btn gold">
+        <i class="fa-solid fa-paper-plane"></i> Update Trade
+      </button>
+    </form>
+
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+    <h3>No trades yet</h3>
+    <p>Exchange trades will appear here when users initiate buy or sell orders.</p>
+  </div>
+  {% endfor %}
+</section>
+
+{% endblock %}

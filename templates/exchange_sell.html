@@ -1,0 +1,300 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- SELL TERMS MODAL -->
+<div id="sellTermsModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-icon" style="color:var(--red);font-size:36px;"><i class="fa-solid fa-arrow-trend-down"></i></div>
+      <div>
+        <div class="modal-title">Sell Crypto — Terms</div>
+        <div class="modal-sub">Please read carefully before proceeding</div>
+      </div>
+    </div>
+    <div class="modal-terms">
+      <div class="modal-term-item">
+        <i class="fa-solid fa-percent" style="color:var(--gold)"></i>
+        <div><strong>Payout Rate</strong><p>You will receive 80% of the deposited crypto value. 20% covers transaction and processing fees.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-coins" style="color:var(--green)"></i>
+        <div><strong>Minimum Transaction</strong><p>Minimum transaction is $100 USDT worth of assets. Below this amount will not be processed.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-wallet" style="color:var(--blue)"></i>
+        <div><strong>Correct Sending Wallet</strong><p>Only send the selected asset from its correct network. Countercheck the sending wallet before initiating.</p></div>
+      </div>
+      <div class="modal-term-item">
+        <i class="fa-solid fa-clock" style="color:var(--muted)"></i>
+        <div><strong>Payout Time</strong><p>Maximum payout time is 30 minutes after payment verification. If delayed contact: @agent_rogermanuel on Telegram.</p></div>
+      </div>
+    </div>
+    <div class="modal-accept">
+      <label class="modal-checkbox-label">
+        <input type="checkbox" id="acceptSellTerms" onchange="toggleSellBtn()">
+        <span>I have read and accept all the terms above</span>
+      </label>
+    </div>
+    <div class="modal-actions">
+      <a href="/exchange" class="btn dark"><i class="fa-solid fa-xmark"></i> Cancel</a>
+      <button id="proceedSellBtn" class="btn exc-btn-sell" style="opacity:0.4;pointer-events:none;" onclick="showSellForm()">
+        <i class="fa-solid fa-check"></i> I Agree — Proceed
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SELL FORM -->
+<div id="sellForm" style="display:none;">
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="tag sell-tag">Sell Crypto</span>
+    <h1>Sell Crypto for Local Payout</h1>
+    <p>Send crypto to our wallet and receive local currency payout to your bank or mobile money within 30 minutes.</p>
+  </div>
+</section>
+
+<section class="content-section">
+  <div class="portal-grid">
+    <div class="portal-left">
+      <form method="POST" enctype="multipart/form-data">
+
+        <!-- STEP 1: ASSET -->
+        <div class="portal-step-card">
+          <div class="portal-step-num sell-num">1</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Select Asset to Sell</div>
+            <div class="payment-method-grid">
+              <button type="button" class="pay-method-btn" onclick="selectSellAsset('USDT', this)">
+                <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">USDT</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectSellAsset('USDC', this)">
+                <img src="https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png" alt="USDC" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">USDC</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectSellAsset('BTC', this)">
+                <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">Bitcoin</span>
+              </button>
+              <button type="button" class="pay-method-btn" onclick="selectSellAsset('SOL', this)">
+                <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL" style="width:28px;height:28px;border-radius:50%;background:#fff;">
+                <span class="pay-method-name">Solana</span>
+              </button>
+            </div>
+            <input type="hidden" name="crypto_asset" id="sellAsset">
+          </div>
+        </div>
+
+        <!-- STEP 2: DEPOSIT ADDRESS -->
+        <div class="portal-step-card" id="depositBox" style="display:none;">
+          <div class="portal-step-num sell-num">2</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Send Your Crypto To This Address</div>
+            <div class="wallet-display-box">
+              <div class="wallet-coin-header">
+                <img id="sellCoinLogo" src="" alt="" style="width:32px;height:32px;border-radius:50%;background:#fff;">
+                <div>
+                  <div class="wallet-coin-name" id="sellCoinName"></div>
+                  <div class="wallet-network" id="sellCoinNetwork"></div>
+                </div>
+              </div>
+              <div class="qr-container">
+                <div id="sellQrcode"></div>
+                <div class="qr-label">Scan to send</div>
+              </div>
+              <div class="wallet-addr-label">Deposit Address</div>
+              <div class="wallet-addr-box">
+                <span id="sellWalletAddress" class="wallet-address-text"></span>
+                <button type="button" class="copy-btn" onclick="copySellAddress()">
+                  <i class="fa-solid fa-copy"></i> Copy
+                </button>
+              </div>
+              <div id="sellCopyMsg" class="copy-message" style="display:none;">
+                <i class="fa-solid fa-circle-check"></i> Copied!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: AMOUNT -->
+        <div class="portal-step-card">
+          <div class="portal-step-num sell-num">3</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Amount Sent (USD Value)</div>
+            <div class="exc-amount-wrap">
+              <input type="number" name="amount" id="sellAmount" placeholder="Enter USD value sent" min="100" required onkeyup="calcSellReceive()">
+              <div class="exc-currency-badge">USD</div>
+            </div>
+            <input type="hidden" name="currency" value="USD">
+            <div class="exc-calc-box" id="sellCalcBox">
+              <div class="exc-calc-row"><span>You send</span><span id="sellSendAmt">—</span></div>
+              <div class="exc-calc-row"><span>Processing fee (20%)</span><span style="color:var(--red)">-20%</span></div>
+              <div class="exc-calc-row total"><span>You receive</span><span id="sellReceiveAmt" style="color:var(--green)">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: COUNTRY + PAYOUT -->
+        <div class="portal-step-card">
+          <div class="portal-step-num sell-num">4</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Payout Details</div>
+            <div class="form-group">
+              <label>Your Country</label>
+              <select name="country" id="sellCountry" onchange="updateSellCurrency()" required>
+                <option value="">-- Select country --</option>
+                <option value="Mozambique">🇲🇿 Mozambique</option>
+                <option value="Zambia">🇿🇲 Zambia</option>
+                <option value="South Africa">🇿🇦 South Africa</option>
+                <option value="Angola">🇦🇴 Angola</option>
+                <option value="Uganda">🇺🇬 Uganda</option>
+                <option value="Other">🌍 Other (USD)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Payout Method</label>
+              <select name="payment_method" required>
+                <option value="">-- Select method --</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Mobile Money">Mobile Money</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="accountLabel">Bank / Mobile Account Number</label>
+              <input type="text" name="bank_account" placeholder="Enter account number or phone number" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: PROOF -->
+        <div class="portal-step-card">
+          <div class="portal-step-num sell-num">5</div>
+          <div class="portal-step-content">
+            <div class="portal-step-title">Upload Payment Proof</div>
+            <div class="upload-area" onclick="document.getElementById('proof_file').click()">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <div class="upload-text">Upload transaction screenshot</div>
+              <div class="upload-sub">PNG, JPG up to 10MB</div>
+              <input type="file" name="proof_file" id="proof_file" accept="image/*" style="display:none;" onchange="previewSellImage(this)">
+            </div>
+            <div id="sellImgPreview" style="display:none;margin-top:12px;">
+              <img id="sellPreviewImg" class="proof-preview" alt="Preview">
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn exc-btn-sell auth-btn" style="margin-top:8px;">
+          <i class="fa-solid fa-paper-plane"></i> Submit Trade
+        </button>
+
+      </form>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="portal-right">
+      <div class="portal-summary-card">
+        <div class="portal-summary-title" style="color:var(--red);">
+          <i class="fa-solid fa-arrow-trend-down"></i> Sell Trade Summary
+        </div>
+        <div class="summary-row"><span class="summary-key">Type</span><span class="summary-val" style="color:var(--red);">SELL Crypto</span></div>
+        <div class="summary-row"><span class="summary-key">Asset</span><span class="summary-val" id="sum-sell-asset">—</span></div>
+        <div class="summary-row"><span class="summary-key">You Send</span><span class="summary-val" id="sum-sell-send">—</span></div>
+        <div class="summary-row"><span class="summary-key">You Receive</span><span class="summary-val" id="sum-sell-receive" style="color:var(--green);">—</span></div>
+        <div class="summary-row"><span class="summary-key">Status</span><span class="summary-val"><span class="status-badge status-pending">Awaiting</span></span></div>
+        <div class="portal-summary-divider"></div>
+        <div class="portal-info-box">
+          <i class="fa-solid fa-circle-info"></i>
+          <p>Send the exact amount shown to our wallet address. Upload your transaction screenshot as proof.</p>
+        </div>
+        <div class="bot-agent-box" style="margin-top:14px;">
+          <div class="bot-agent-label">Support Agent</div>
+          <div class="bot-agent-handle">@agent_rogermanuel</div>
+          <a href="https://t.me/agent_rogermanuel" target="_blank" class="btn exc-btn-sell" style="width:100%;justify-content:center;margin-top:12px;">
+            <i class="fa-brands fa-telegram"></i> Contact Agent
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const sellWallets = {
+  USDT: { address: "TJS7YqGf6zLLKtmwEx3V6k3i3Lwy9VYyCi", name: "USDT (TRC20)", network: "Tron Network — TRC20", logo: "https://assets.coingecko.com/coins/images/325/small/Tether.png" },
+  USDC: { address: "0x380abcdbeb8fee93c4287650c1749adf6bf6aa01", name: "USDC (ERC20)", network: "Ethereum Network", logo: "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png" },
+  BTC:  { address: "1C7RmLPPbYzJ6hTa9k7EHys6MXSeb9sKNB", name: "Bitcoin (BTC)", network: "Bitcoin Network", logo: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png" },
+  SOL:  { address: "8cBtQsKmKsyEeA59qGBzKzNZx4ASnbuArtr79t9TfGfL", name: "Solana (SOL)", network: "Solana Network", logo: "https://assets.coingecko.com/coins/images/4128/small/solana.png" }
+};
+
+const sellCurrencies = {
+  'Mozambique': 'MZN', 'Zambia': 'ZMW', 'South Africa': 'ZAR',
+  'Angola': 'AOA', 'Uganda': 'UGX', 'Other': 'USD'
+};
+
+const sellRates = { 'Mozambique': 64, 'Zambia': 26, 'South Africa': 19, 'Angola': 900, 'Uganda': 3800, 'Other': 1 };
+
+function toggleSellBtn() {
+  const btn = document.getElementById('proceedSellBtn');
+  const checked = document.getElementById('acceptSellTerms').checked;
+  btn.style.opacity = checked ? '1' : '0.4';
+  btn.style.pointerEvents = checked ? 'auto' : 'none';
+}
+
+function showSellForm() {
+  document.getElementById('sellTermsModal').style.display = 'none';
+  document.getElementById('sellForm').style.display = 'block';
+}
+
+function selectSellAsset(asset, btn) {
+  document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sellAsset').value = asset;
+  document.getElementById('sum-sell-asset').textContent = asset;
+  const w = sellWallets[asset];
+  document.getElementById('sellCoinName').textContent = w.name;
+  document.getElementById('sellCoinNetwork').textContent = w.network;
+  document.getElementById('sellCoinLogo').src = w.logo;
+  document.getElementById('sellWalletAddress').textContent = w.address;
+  document.getElementById('depositBox').style.display = 'block';
+  const qrDiv = document.getElementById('sellQrcode');
+  qrDiv.innerHTML = '';
+  new QRCode(qrDiv, { text: w.address, width: 160, height: 160, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+}
+
+function copySellAddress() {
+  const addr = document.getElementById('sellWalletAddress').textContent;
+  navigator.clipboard.writeText(addr).then(() => {
+    const msg = document.getElementById('sellCopyMsg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 2500);
+  });
+}
+
+function updateSellCurrency() {
+  const country = document.getElementById('sellCountry').value;
+}
+
+function calcSellReceive() {
+  const amount = parseFloat(document.getElementById('sellAmount').value) || 0;
+  const receive = (amount * 0.8).toFixed(2);
+  document.getElementById('sellSendAmt').textContent = '$' + amount + ' USD';
+  document.getElementById('sellReceiveAmt').textContent = '$' + receive + ' USD equivalent';
+  document.getElementById('sum-sell-send').textContent = '$' + amount;
+  document.getElementById('sum-sell-receive').textContent = '$' + receive;
+}
+
+function previewSellImage(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('sellPreviewImg').src = e.target.result;
+      document.getElementById('sellImgPreview').style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+</script>
+{% endblock %}
