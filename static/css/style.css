@@ -3516,3 +3516,393 @@ main { min-height: 70vh; }
   .payment-method-grid { grid-template-columns: repeat(2, 1fr); }
   .section-grid.four { grid-template-columns: 1fr; }
 }
+
+
+/* ============================================================
+   PROFESSIONAL MOBILE EXPERIENCE — BINANCE STYLE
+   Complete mobile overhaul with bottom nav + optimised layout
+============================================================ */
+
+/* MOBILE BOTTOM NAVIGATION BAR */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
+  background: var(--bg-soft);
+  border-top: 1px solid var(--border);
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+}
+
+.mobile-bottom-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.mob-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 52px;
+  transition: color 0.2s;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.mob-nav-item i {
+  font-size: 20px;
+  margin-bottom: 1px;
+}
+
+.mob-nav-item.active,
+.mob-nav-item:hover {
+  color: var(--gold);
+}
+
+.mob-nav-item.active i { color: var(--gold); }
+
+/* MORE MENU OVERLAY */
+.mob-more-overlay {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 1090;
+  background: rgba(0,0,0,0.5);
+  top: 0;
+}
+
+.mob-more-sheet {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  border-radius: 20px 20px 0 0;
+  padding: 16px 0 calc(80px + env(safe-area-inset-bottom));
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.mob-more-handle {
+  width: 36px; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+.mob-more-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  padding: 0 20px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.mob-more-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 12px 12px;
+}
+
+.mob-more-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 8px;
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  transition: background 0.15s;
+}
+
+.mob-more-item:hover,
+.mob-more-item:active { background: var(--bg-card2); }
+
+.mob-more-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.mob-icon-gold    { background: rgba(240,185,11,0.12); color: var(--gold); }
+.mob-icon-green   { background: rgba(14,203,129,0.12); color: var(--green); }
+.mob-icon-blue    { background: rgba(24,144,255,0.12); color: var(--blue); }
+.mob-icon-red     { background: rgba(246,70,93,0.12); color: var(--red); }
+.mob-icon-purple  { background: rgba(139,92,246,0.12); color: #8b5cf6; }
+.mob-icon-muted   { background: var(--bg-card2); color: var(--muted); }
+
+/* SHOW BOTTOM NAV ON MOBILE */
+@media (max-width: 980px) {
+  .mobile-bottom-nav { display: block; }
+  /* Add padding so content isn't hidden behind bottom nav */
+  main { padding-bottom: 80px; }
+  footer.footer { margin-bottom: 72px; }
+}
+
+/* ============================================================
+   MOBILE LAYOUT OVERHAUL
+============================================================ */
+@media (max-width: 980px) {
+
+  /* HIDE DESKTOP NAV on mobile */
+  .desktop-nav { display: none !important; }
+  .mobile-menu-btn { display: none !important; }
+  .mobile-menu { display: none !important; }
+
+  /* NAVBAR - clean mobile top bar */
+  .navbar { position: sticky; top: 0; z-index: 1000; }
+  .nav-container { height: 56px; padding: 0 16px; }
+  .logo span { font-size: 15px; }
+  .nav-logo-img { width: 20px; height: 20px; }
+
+  /* TICKER */
+  .ticker-bar { height: 34px; }
+  .ticker-item { padding: 0 14px; gap: 6px; }
+  .ticker-pair { font-size: 11px; font-weight: 700; }
+  .ticker-price { font-size: 11px; }
+  .ticker-change { font-size: 11px; }
+
+}
+
+@media (max-width: 768px) {
+
+  /* ---- HOME PAGE ---- */
+  .market-hero { padding: 20px 14px 14px; }
+  .market-hero-inner { grid-template-columns: 1fr; gap: 20px; }
+  .market-hero-left h1 { font-size: 26px; letter-spacing: -0.3px; margin: 10px 0 12px; }
+  .market-hero-left p  { font-size: 14px; margin-bottom: 18px; }
+  .mini-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .mini-stat { padding: 12px 8px; }
+  .mini-stat span   { font-size: 10px; }
+  .mini-stat strong { font-size: 12px; }
+  .hero-buttons { gap: 8px; }
+  .hero-buttons .btn { padding: 11px 16px; font-size: 13px; }
+
+  /* HOME MARKET PANEL */
+  .home-market-panel { border-radius: var(--radius); }
+  .panel-head { padding: 14px 16px; }
+  .panel-head h3 { font-size: 14px; }
+  .market-table-head { grid-template-columns: 2fr 1fr 1fr; padding: 7px 14px; }
+  .market-table-head span:last-child { display: none; }
+  .market-row { grid-template-columns: 2fr 1fr 1fr; padding: 10px 14px; }
+  .market-row .market-data:last-child { display: none; }
+  .market-coin img { width: 24px; height: 24px; }
+  .market-coin strong { font-size: 13px; }
+  .market-coin span   { font-size: 11px; }
+  .market-data strong { font-size: 13px; }
+  .market-volume      { font-size: 12px; }
+
+  /* HOME SECTIONS */
+  .content-section { padding: 18px 14px 8px; }
+  .section-header { margin-bottom: 18px; }
+  .section-header h2 { font-size: 20px; margin: 8px 0 8px; }
+  .section-header p  { font-size: 13px; }
+
+  /* HOME CARDS */
+  .section-grid.three { grid-template-columns: 1fr; }
+  .section-grid.two   { grid-template-columns: 1fr; }
+  .section-grid.four  { grid-template-columns: repeat(2, 1fr); }
+  .info-card { padding: 18px; }
+  .home-card-icon { font-size: 24px; margin-bottom: 8px; }
+
+  .home-wide-panel {
+    flex-direction: column;
+    padding: 20px 16px;
+    gap: 16px;
+    border-radius: var(--radius);
+  }
+  .home-wide-panel h2 { font-size: 18px; margin: 6px 0 8px; }
+  .home-wide-panel p  { font-size: 13px; }
+  .home-wide-actions  { flex-direction: column; min-width: 0; width: 100%; }
+  .home-wide-actions .btn { width: 100%; justify-content: center; }
+
+  /* ---- AUTH PAGES ---- */
+  .auth-section { padding: 20px 14px 100px; align-items: flex-start; }
+  .auth-card { padding: 24px 16px; max-width: 100%; }
+  .auth-logo img { width: 26px; height: 26px; }
+  .auth-logo span { font-size: 13px; }
+  .auth-title { font-size: 20px; }
+  .auth-sub   { font-size: 13px; }
+  .auth-btn   { padding: 13px; font-size: 14px; }
+  .code-box   { width: 44px; height: 50px; font-size: 20px; }
+  .code-inputs { gap: 8px; }
+
+  /* ---- DASHBOARD ---- */
+  .dash-welcome { flex-direction: column; align-items: flex-start; gap: 12px; padding-bottom: 16px; }
+  .dash-title   { font-size: 22px; }
+  .dash-sub     { font-size: 13px; }
+  .section-grid.four { grid-template-columns: repeat(2, 1fr); }
+  .summary-card { padding: 14px; }
+  .summary-icon { font-size: 18px; margin-bottom: 6px; }
+  .summary-value { font-size: 15px; }
+  .summary-value.small { font-size: 11px; }
+
+  .dash-quick-actions { gap: 8px; flex-wrap: wrap; }
+  .quick-action-btn { padding: 10px 14px; font-size: 12px; flex: 1; min-width: 100px; justify-content: center; }
+
+  .submission-card { padding: 16px; }
+  .submission-plan { font-size: 15px; }
+  .detail-row      { font-size: 12px; padding: 6px 0; }
+
+  /* ---- PACKAGES ---- */
+  .page-hero { padding: 28px 14px 16px; }
+  .page-hero h1 { font-size: 22px; }
+  .page-hero p  { font-size: 13px; }
+
+  .step-label { font-size: 11px; margin-bottom: 14px; }
+  .country-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .country-btn { padding: 16px 8px; gap: 6px; }
+  .country-flag { font-size: 26px; }
+  .country-name { font-size: 12px; font-weight: 700; }
+  .country-currency { font-size: 10px; }
+
+  .selected-country-bar { flex-direction: column; align-items: flex-start; padding: 14px 16px; gap: 10px; }
+  .selected-flag { font-size: 28px; }
+  .selected-country-name { font-size: 18px; }
+  .selected-country-sub  { font-size: 12px; }
+  .change-country-btn { width: 100%; justify-content: center; }
+
+  .currency-toggle-wrap { gap: 8px; }
+  .currency-btn { padding: 11px 14px; font-size: 13px; min-width: 0; }
+
+  .pkg-card { padding: 20px 14px; }
+  .pkg-invest strong { font-size: 20px; }
+  .pkg-earn { font-size: 22px; }
+  .pkg-features li { font-size: 12px; }
+  .pkg-btn { padding: 12px; font-size: 13px; }
+
+  /* ---- PORTAL ---- */
+  .portal-grid { grid-template-columns: 1fr; gap: 16px; }
+  .portal-step-card { padding: 16px; gap: 12px; flex-direction: row; }
+  .portal-step-num { width: 28px; height: 28px; font-size: 12px; flex-shrink: 0; }
+  .portal-step-title { font-size: 14px; margin-bottom: 12px; }
+  .portal-summary-card { position: static; padding: 18px; }
+  .payment-method-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .pay-method-btn { padding: 12px 6px; }
+  .pay-method-btn img { width: 26px; height: 26px; }
+  .pay-method-name { font-size: 11px; }
+  .pay-method-sub  { font-size: 10px; }
+  .wallet-display-box { padding: 16px; }
+  .qr-container #qrcode { transform: scale(0.9); transform-origin: center; }
+  .wallet-addr-box { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .wallet-address-text { font-size: 11px; }
+  .upload-area { padding: 22px 14px; }
+  .upload-area i { font-size: 24px; }
+
+  /* ---- VIP PAGE ---- */
+  .vip-hero { padding: 28px 14px; }
+  .vip-hero-inner { grid-template-columns: 1fr; gap: 24px; }
+  .vip-hero-left h1 { font-size: 26px; }
+  .vip-hero-left p  { font-size: 13px; }
+  .vip-hero-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .vip-hero-stat strong { font-size: 18px; }
+  .vip-crown-badge { font-size: 11px; }
+  .vip-price-card { padding: 20px; }
+  .vip-plan-price { font-size: 22px; }
+  .vip-exchanges-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .vip-exchange-card { padding: 14px 8px; }
+  .vip-exchange-name { font-size: 11px; }
+  .vip-sub-plans { grid-template-columns: 1fr; }
+  .vip-sub-grid  { grid-template-columns: 1fr; }
+  .vip-pairs-grid { gap: 6px; }
+  .vip-pair-tag { padding: 4px 10px; font-size: 11px; }
+
+  /* ---- BOTS ---- */
+  .bots-hero-stats { gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .bot-hero-stat { padding: 10px 14px; min-width: 80px; }
+  .bot-hero-stat strong { font-size: 16px; }
+  .bot-card { padding: 18px 14px; }
+  .bot-card-icon { font-size: 32px; }
+  .bot-name { font-size: 15px; }
+  .bot-desc { font-size: 12px; }
+  .modal-overlay { padding: 10px; align-items: flex-end; }
+  .modal-box { padding: 20px; border-radius: 20px 20px 0 0; max-height: 92vh; overflow-y: auto; }
+  .modal-title { font-size: 17px; }
+  .modal-actions { flex-direction: column; gap: 8px; }
+  .modal-actions .btn { width: 100%; justify-content: center; }
+
+  /* ---- EXCHANGE ---- */
+  .exchange-choice-grid { grid-template-columns: 1fr; gap: 14px; }
+  .exchange-choice-card { padding: 22px 18px; }
+  .exchange-choice-title { font-size: 20px; }
+  .exchange-choice-icon { width: 52px; height: 52px; font-size: 22px; }
+  .exc-amount-input { font-size: 18px; }
+
+  /* ---- TRADE STATUS ---- */
+  .trade-status-wrap { max-width: 100%; }
+  .trade-status-card { padding: 20px 16px; border-radius: var(--radius); }
+  .trade-big-icon { font-size: 44px; }
+  .trade-status-title { font-size: 20px; }
+  .trade-progress-steps { gap: 2px; justify-content: center; }
+  .trade-step-line { width: 20px; }
+  .trade-step-label { font-size: 10px; }
+  .trade-actions { flex-direction: column; gap: 8px; }
+  .trade-actions .btn { width: 100%; justify-content: center; }
+
+  /* ---- RESULTS ---- */
+  .results-section-header h2 { font-size: 22px; }
+  .result-card { padding: 16px; }
+  .result-pair { font-size: 16px; }
+  .accuracy-card { padding: 20px; }
+  .accuracy-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .accuracy-num   { font-size: 44px; }
+  .accuracy-dots  { justify-content: flex-start; max-width: 100%; }
+  .acc-dot        { width: 30px; height: 30px; font-size: 12px; }
+  .results-cta-bar { flex-direction: column; padding: 18px; gap: 14px; }
+  .results-cta-bar h2 { font-size: 18px; }
+  .results-cta-btns { flex-direction: column; gap: 8px; width: 100%; }
+  .results-cta-btns .btn { width: 100%; justify-content: center; }
+  .testi-card { padding: 18px; }
+
+  /* ---- INVESTOR PORTAL ---- */
+  .ip-card { padding: 18px 14px; }
+  .ip-card-top { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .ip-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .ip-profit-grid { grid-template-columns: repeat(2, 1fr); }
+  .ip-progress-steps { flex-wrap: wrap; gap: 6px; }
+  .ip-step { font-size: 11px; padding: 6px 10px; }
+  .ip-quick-grid { gap: 8px; }
+  .ip-quick-btn { padding: 10px 12px; font-size: 12px; flex: 1; min-width: 100px; justify-content: center; }
+
+  /* ---- ADMIN ---- */
+  .admin-table th, .admin-table td { padding: 10px 10px; font-size: 12px; }
+
+  /* ---- FOOTER ---- */
+  .footer-content { grid-template-columns: 1fr; gap: 20px; padding: 24px 14px; }
+  .footer-logo span { font-size: 13px; }
+  .footer-section p,
+  .footer-section a { font-size: 12px; }
+  .footer-bottom { font-size: 11px; padding: 14px; }
+}
+
+@media (max-width: 400px) {
+  .code-box { width: 38px; height: 44px; font-size: 17px; }
+  .code-inputs { gap: 6px; }
+  .country-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .country-flag { font-size: 22px; }
+  .market-hero-left h1 { font-size: 22px; }
+  .vip-hero-left h1 { font-size: 22px; }
+  .section-grid.four { grid-template-columns: 1fr; }
+  .mini-stats { grid-template-columns: repeat(2, 1fr); }
+  .vip-exchanges-grid { grid-template-columns: repeat(2, 1fr); }
+}

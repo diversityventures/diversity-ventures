@@ -31,10 +31,7 @@
           <i class="fa-solid fa-chevron-down"></i>
         </button>
         <div class="nav-drop-menu">
-          <a href="/packages">
-            <i class="fa-solid fa-layer-group"></i> Investment Packages
-          </a>
-          <a href="/packages">
+          <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}">
             <i class="fa-solid fa-briefcase"></i> Diversity Investment Programme
           </a>
           <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}">
@@ -46,13 +43,13 @@
           <a href="{% if session.get('user_id') %}/vip-futures{% else %}/login{% endif %}">
             <i class="fa-solid fa-crown"></i> VIP Daily Futures Trading Signals
           </a>
-          <a href="/trading-bots">
+          <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}">
             <i class="fa-solid fa-robot"></i> Trading Bots
           </a>
         </div>
       </div>
 
-      <a href="/exchange" class="nav-item">
+      <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}" class="nav-item">
         <i class="fa-solid fa-right-left"></i>
         <span>Buy / Exchange Crypto</span>
       </a>
@@ -78,9 +75,6 @@
       {% if session.get('user_id') %}
         <a href="/dashboard" class="nav-item">
           <i class="fa-solid fa-gauge"></i> {{ t('dashboard') }}
-        </a>
-        <a href="/investment-portal" class="nav-item">
-          <i class="fa-solid fa-chart-pie"></i> Investor Portal
         </a>
         <a href="/profile" class="nav-item">
           <i class="fa-solid fa-user-gear"></i> {{ t('profile') }}
@@ -137,19 +131,18 @@
   <!-- MOBILE MENU -->
   <div id="mobileMenu" class="mobile-menu">
     <a href="/"><i class="fa-solid fa-house"></i> {{ t('home') }}</a>
-    <a href="/packages"><i class="fa-solid fa-briefcase"></i> Diversity Investment Programme</a>
+    <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}"><i class="fa-solid fa-briefcase"></i> Diversity Investment Programme</a>
     <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}"><i class="fa-solid fa-handshake"></i> Earn by Affiliates Programmes</a>
     <a href="/free-signals"><i class="fa-solid fa-signal"></i> Free Futures Pairs Trading Signals</a>
     <a href="{% if session.get('user_id') %}/vip-futures{% else %}/login{% endif %}"><i class="fa-solid fa-crown"></i> VIP Daily Futures Trading Signals</a>
-    <a href="/trading-bots"><i class="fa-solid fa-robot"></i> Trading Bots</a>
-    <a href="/exchange"><i class="fa-solid fa-right-left"></i> Buy / Exchange Crypto</a>
+    <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}"><i class="fa-solid fa-robot"></i> Trading Bots</a>
+    <a href="{% if session.get('user_id') %}/portal{% else %}/login{% endif %}"><i class="fa-solid fa-right-left"></i> Buy / Exchange Crypto</a>
     <a href="/vip-futures"><i class="fa-solid fa-book-open"></i> Learn Future Trading</a>
     <a href="/community"><i class="fa-brands fa-telegram"></i> Diversity Ventures Telegram Community</a>
     <a href="/contact"><i class="fa-solid fa-headset"></i> Customer Support</a>
 
     {% if session.get('user_id') %}
       <a href="/dashboard"><i class="fa-solid fa-gauge"></i> {{ t('dashboard') }}</a>
-      <a href="/investment-portal"><i class="fa-solid fa-chart-pie"></i> Investor Portal</a>
       <a href="/profile"><i class="fa-solid fa-user-gear"></i> {{ t('profile') }}</a>
       <a href="/portal"><i class="fa-solid fa-wallet"></i> {{ t('portal') }}</a>
       {% if session.get('is_admin') %}
@@ -221,6 +214,102 @@
   </div>
 </footer>
 
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav">
+  <div class="mobile-bottom-nav-inner">
+    <a href="/" class="mob-nav-item {% if request.path == "/" %}active{% endif %}">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="/packages" class="mob-nav-item {% if "/packages" in request.path %}active{% endif %}">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>Invest</span>
+    </a>
+    <a href="/exchange" class="mob-nav-item {% if "/exchange" in request.path %}active{% endif %}">
+      <i class="fa-solid fa-right-left"></i>
+      <span>Exchange</span>
+    </a>
+    {% if session.get("user_id") %}
+    <a href="/dashboard" class="mob-nav-item {% if "/dashboard" in request.path %}active{% endif %}">
+      <i class="fa-solid fa-gauge"></i>
+      <span>Dashboard</span>
+    </a>
+    {% else %}
+    <a href="/login" class="mob-nav-item {% if "/login" in request.path %}active{% endif %}">
+      <i class="fa-solid fa-right-to-bracket"></i>
+      <span>Login</span>
+    </a>
+    {% endif %}
+    <button class="mob-nav-item" onclick="toggleMoreSheet()">
+      <i class="fa-solid fa-grid-2"></i>
+      <span>More</span>
+    </button>
+  </div>
+</nav>
+
+<!-- MORE SHEET -->
+<div class="mob-more-overlay" id="moreOverlay" onclick="toggleMoreSheet()">
+  <div class="mob-more-sheet" onclick="event.stopPropagation()">
+    <div class="mob-more-handle"></div>
+    <div class="mob-more-title">All Features</div>
+    <div class="mob-more-grid">
+      <a href="/vip-futures" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-gold"><i class="fa-solid fa-crown"></i></div>
+        <span>VIP Futures</span>
+      </a>
+      <a href="/trading-bots" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-blue"><i class="fa-solid fa-robot"></i></div>
+        <span>Trading Bots</span>
+      </a>
+      <a href="/free-signals" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-green"><i class="fa-solid fa-bolt"></i></div>
+        <span>Free Signals</span>
+      </a>
+      <a href="/results" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-green"><i class="fa-solid fa-chart-bar"></i></div>
+        <span>Results</span>
+      </a>
+      <a href="/community" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-blue"><i class="fa-brands fa-telegram"></i></div>
+        <span>Community</span>
+      </a>
+      <a href="/contact" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-muted"><i class="fa-solid fa-headset"></i></div>
+        <span>Support</span>
+      </a>
+      {% if session.get("user_id") %}
+      <a href="/investment-portal" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-gold"><i class="fa-solid fa-chart-pie"></i></div>
+        <span>My Portfolio</span>
+      </a>
+      <a href="/portal" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-gold"><i class="fa-solid fa-wallet"></i></div>
+        <span>Portal</span>
+      </a>
+      <a href="/profile" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-muted"><i class="fa-solid fa-user-gear"></i></div>
+        <span>Profile</span>
+      </a>
+      {% if session.get("is_admin") %}
+      <a href="/admin" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-red"><i class="fa-solid fa-user-shield"></i></div>
+        <span>Admin</span>
+      </a>
+      {% endif %}
+      <a href="/logout" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-red"><i class="fa-solid fa-right-from-bracket"></i></div>
+        <span>Logout</span>
+      </a>
+      {% else %}
+      <a href="/register" class="mob-more-item">
+        <div class="mob-more-icon mob-icon-gold"><i class="fa-solid fa-user-plus"></i></div>
+        <span>Register</span>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
 <!-- GLOBAL JS -->
 <script>
   const i18n = {
@@ -266,6 +355,17 @@
         link.classList.remove("disabled-link");
       }
     }, 1000);
+  }
+
+  function toggleMoreSheet() {
+    const overlay = document.getElementById("moreOverlay");
+    if (overlay.style.display === "flex") {
+      overlay.style.display = "none";
+      document.body.style.overflow = "";
+    } else {
+      overlay.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
   }
 
   function toggleMobileMenu() {
